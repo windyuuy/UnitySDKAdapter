@@ -1,0 +1,19 @@
+{
+    "name": "SDKAdpater.Wechatgame",
+    "rootNamespace": "",
+    "references": [
+        "GUID:753eef0037ca4ae4aa54056bfb9e4dd0",
+        "GUID:6db41b2a16902c1438c4d859046bd493",
+        "GUID:6d4a045688bc85844a0935da249a98d6",
+        "GUID:5efd170ecd8084500bed5692932fe14e"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
