@@ -59,7 +59,7 @@ namespace GDK
         /// <summary>
         /// 平台特性
         /// </summary>
-        // public ISupport support{get;set;}
+        public ISupport Support{get;set;}
         /// <summary>
         /// 全局错误处理
         /// </summary>
@@ -97,5 +97,6 @@ namespace GDK
         public IUser User { get; set; }
         public IAdvertV2 AdvertV2 { get; set; }
         public IGameInfo GameInfo { get; set; }
+        public ISupport Support { get; set; }
     }
 }

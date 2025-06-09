@@ -19,7 +19,7 @@ namespace GDK
         // public Func<ICustomer> Customer;
         // public Func<IWidgets> Widgets;
         // public Func<ISubContext> SubContext;
-        // public Func<ISupport> Support;
+        public Func<ISupport> Support;
         // public Func<IExcept> Except;
         // public Func<IAuth> Auth;
         // public Func<IHardware> Hardware = () => new HardwareBase();

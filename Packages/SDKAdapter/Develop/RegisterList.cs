@@ -1,11 +1,10 @@
-using GDK;
-
-namespace WechatGDK
+namespace DevelopGDK
 {
 	public class RegisterList : GDK.ModuleClassMap
 	{
 		public RegisterList()
 		{
+			this.AdvertV2 = () => new Advert();
 			this.GameInfo = () => new GameInfo();
 			this.User = () => new User();
 			// this.Pay = () => new Pay();
@@ -18,8 +17,6 @@ namespace WechatGDK
 			this.Support = () => new Support();
 			// this.Except = () => new Except();
 			// this.Auth = () => new Auth();
-			this.AdvertV2 = () => new Advert();
-			// this.Hardware = () => new Hardware();
 			// this.APISystem = () => new APISystem();
 		}
 	}
