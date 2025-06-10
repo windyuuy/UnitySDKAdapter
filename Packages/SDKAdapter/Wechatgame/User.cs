@@ -6,8 +6,6 @@ namespace WechatGDK
 {
     public class User : GDK.UserBase
     {
-        public GDK.IModuleMap api { get; set; }
-
         public override bool checkIsUserBind(long userId)
         {
             throw new System.NotImplementedException();

@@ -17,7 +17,7 @@ namespace DevelopGDK
 			this.Support = () => new Support();
 			// this.Except = () => new Except();
 			// this.Auth = () => new Auth();
-			// this.APISystem = () => new APISystem();
+			this.SystemAPI = () => new SystemAPI();
 		}
 	}
 }

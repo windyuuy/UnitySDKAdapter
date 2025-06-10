@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace GDK
@@ -11,8 +12,16 @@ namespace GDK
         public string version;
     }
 
-    public struct AppInfo
+    public class AppInfo
     {
+        /**
+		 * sdk的相关配置
+		 */
+        public AppSdkConfig[] sdkConfigs;
+        /**
+		 * 全局参数，往往存放一些自定义参数
+		 */
+        public Dictionary<string, object> parameters;
     }
 
 

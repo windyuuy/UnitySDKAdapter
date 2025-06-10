@@ -2,7 +2,8 @@
     "name": "SDKAdapter.Common",
     "rootNamespace": "",
     "references": [
-        "GUID:753eef0037ca4ae4aa54056bfb9e4dd0"
+        "GUID:753eef0037ca4ae4aa54056bfb9e4dd0",
+        "GUID:2ad8be1357a00fe40aa378204df22159"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

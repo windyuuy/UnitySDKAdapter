@@ -25,7 +25,7 @@ namespace GDK
         /// <summary>
         /// 系统管理
         /// </summary>
-        // public IAPISystem apiSystem{get;set;}
+        public ISystemAPI SystemAPI{get;set;}
         /// <summary>
         /// 分享
         /// </summary>
@@ -98,5 +98,6 @@ namespace GDK
         public IAdvertV2 AdvertV2 { get; set; }
         public IGameInfo GameInfo { get; set; }
         public ISupport Support { get; set; }
+        public ISystemAPI SystemAPI { get; set; }
     }
 }

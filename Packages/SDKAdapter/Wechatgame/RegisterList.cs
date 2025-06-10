@@ -20,7 +20,7 @@ namespace WechatGDK
 			// this.Auth = () => new Auth();
 			this.AdvertV2 = () => new Advert();
 			// this.Hardware = () => new Hardware();
-			// this.APISystem = () => new APISystem();
+			this.SystemAPI = () => new SystemAPI();
 		}
 	}
 }
