@@ -9,13 +9,13 @@ namespace GDK
 	public class Clipboard : IClipboard
 	{
 		public ClipboardData _data = null;
-		public virtual async Task<ClipboardData> getData()
+		public virtual async Task<ClipboardData> GetData()
 		{
 			// return { ...this._data }
 			// return {};
 			return this._data;
 		}
-		public virtual async Task setData(ClipboardData res)
+		public virtual async Task SetData(ClipboardData res)
 		{
 			// this._data = { ...res }
 			this._data = new()
@@ -37,16 +37,16 @@ namespace GDK
 	/// </remarks>
 	public class SystemAPIBase : ISystemAPI
 	{
-		public virtual void setFPS(int fps)
+		public virtual void GetFPS(int fps)
 		{
 			throw new System.Exception("Method not implemented.");
 		}
-		public virtual void onMemoryWarning(Action<IOnMemoryWarningResult> call)
+		public virtual void OnMemoryWarning(Action<IOnMemoryWarningResult> call)
 		{
 			throw new System.Exception("Method not implemented.");
 		}
 
-		public string sdkFrameworkVersion
+		public string SdkFrameworkVersion
 		{
 			get
 			{
@@ -67,27 +67,27 @@ namespace GDK
 				return -1;
 			}
 		}
-		double ISystemAPI.nativeVersion => nativeVersion;
+		double ISystemAPI.NativeVersion => nativeVersion;
 
-		public virtual IClipboard clipboard { get; set; } = new Clipboard();
+		public virtual IClipboard Clipboard { get; set; } = new Clipboard();
 
         public Logger devlog = new Logger();
-		public virtual async Task setEnableDebug(SetEnableDebugOptions res)
+		public virtual async Task SetEnableDebug(SetEnableDebugOptions res)
 		{
 			devlog.Info($"unsupoort action: setEnableDebug -> {res.enableDebug} ");
 		}
 
-		public virtual async Task<AppCallUpResult> navigateToApp(AppCallUpParams paras)
+		public virtual async Task<AppCallUpResult> NavigateToApp(AppCallUpParams paras)
 		{
 			devlog.Info("打开小程序成功");
 			return new AppCallUpResult();
 		}
-		public virtual async Task exitProgram()
+		public virtual async Task ExitProgram()
 		{
 			devlog.Info("正在退出");
 			UnityEngine.Application.Quit();
 		}
-		public virtual async Task updateProgramForce()
+		public virtual async Task UpdateProgramForce()
 		{
 			devlog.Info("没有更新");
 		}
@@ -97,19 +97,19 @@ namespace GDK
 			// TODO: 实现系统各种事件回调和api
 		}
 
-		public virtual void onShow(Action<object> callback)
+		public virtual void OnShow(Action<object> callback)
 		{
 			// TODO: 实现系统各种事件回调和api
 		}
-		public virtual void offShow(Action<object> callback)
+		public virtual void OffShow(Action<object> callback)
 		{
 			// TODO: 实现系统各种事件回调和api
 		}
-		public virtual void onHide(Action<object> callback)
+		public virtual void OnHide(Action<object> callback)
 		{
 			// TODO: 实现系统各种事件回调和api
 		}
-		public virtual void offHide(Action<object> callback)
+		public virtual void OffHide(Action<object> callback)
 		{
 			// TODO: 实现系统各种事件回调和api
 		}
@@ -118,12 +118,12 @@ namespace GDK
 		/// Gets the safe area of the screen and returns the result via callback.
 		/// </summary>
 		/// <param name="callback">The callback to receive the safe area result with left, right, top, and bottom values.</param>
-		public virtual void getSafeArea(Action<GetSafeAreaResult> callback)
+		public virtual void GetSafeArea(Action<GetSafeAreaResult> callback)
 		{
 			callback(new() { left = 0, right = 0, top = 0, bottom = 0 });
 		}
 
-		public virtual async Task<IChooseDialogResult> gotoAppSystemSettings(IChooseDialogParams paras)
+		public virtual async Task<IChooseDialogResult> GotoAppSystemSettings(IChooseDialogParams paras)
 		{
 			IChooseDialogResult result = new ChooseDialogResult()
 			{
@@ -132,7 +132,7 @@ namespace GDK
 			};
 			return result;
 		}
-		public virtual async Task<ICheckPermissionResult> checkAppSystemPermissions(ICheckPermissionParams paras)
+		public virtual async Task<ICheckPermissionResult> CheckAppSystemPermissions(ICheckPermissionParams paras)
 		{
 			ICheckPermissionResult result = new CheckPermissionResult()
 			{
@@ -142,21 +142,21 @@ namespace GDK
 			return result;
 		}
 
-		public virtual async Task<object> getSDKMetaInfo(IGetSDKMetaInfo paras)
+		public virtual async Task<object> GetSDKMetaInfo(IGetSDKMetaInfo paras)
 		{
 			return null;
 		}
 
 		public Dictionary<string, object> appInfo = new();
 
-		public virtual void initAppinfo(AppInfo info)
+		public virtual void InitAppinfo(AppInfo info)
 		{
 			if (info != null)
 			{
 				// 将所有sdk config中的key, 合并到自身同一个appInfo中
-				if (info.sdkConfigs != null)
+				if (info.SdkConfigs != null)
 				{
-					foreach (var sdkConfig in info.sdkConfigs)
+					foreach (var sdkConfig in info.SdkConfigs)
 					{
 						if (sdkConfig.parameters != null)
 						{
@@ -167,39 +167,39 @@ namespace GDK
 						}
 					}
 				}
-				if (info.parameters != null)
+				if (info.Parameters != null)
 				{
-					foreach (var (k, _) in info.parameters)
+					foreach (var (k, _) in info.Parameters)
 					{
-						this.appInfo[k] = info.parameters[k];
+						this.appInfo[k] = info.Parameters[k];
 					}
 				}
 			}
 		}
 
-		public virtual void setAppInfo(string key, string value)
+		public virtual void SetAppInfo(string key, string value)
 		{
 			this.appInfo[key] = value;
 		}
 
-		public virtual void setAppInfo(string key, double value)
+		public virtual void SetAppInfo(string key, double value)
 		{
 			this.appInfo[key] = value;
 		}
 
-		public virtual void setAppInfo(string key, bool value)
+		public virtual void SetAppInfo(string key, bool value)
 		{
 			this.appInfo[key] = value;
 		}
 
-		public object getAppInfo(string key)
+		public object GetAppInfo(string key)
 		{
 			return this.appInfo[key];
 		}
 
 		public virtual bool getAppInfoBoolean(string key, bool def = false)
 		{
-			var v = this.getAppInfo(key);
+			var v = this.GetAppInfo(key);
 			if (v is bool b)
 			{
 				return b;
@@ -215,9 +215,9 @@ namespace GDK
 
 		}
 
-		public double getAppInfodouble(string key, double def)
+		public double GetAppInfoDouble(string key, double def)
 		{
-			var v = this.getAppInfo(key);
+			var v = this.GetAppInfo(key);
 			if (v is double d)
 			{
 				return d;
@@ -232,9 +232,9 @@ namespace GDK
 			}
 		}
 
-		public string getAppInfoString(string key, string def)
+		public string GetAppInfoString(string key, string def)
 		{
-			var v = this.getAppInfo(key);
+			var v = this.GetAppInfo(key);
 			if (v == null)
 			{
 				return def;
@@ -253,42 +253,42 @@ namespace GDK
 
 		}
 
-		public virtual void setLoadingProgress(SetLoadingProgressOptions paras)
+		public virtual void SetLoadingProgress(SetLoadingProgressOptions paras)
 		{
 			throw new NotImplementedException();
 		}
 
-		public virtual void openURL(string url)
+		public virtual void OpenURL(string url)
 		{
 			throw new NotImplementedException();
 		}
 
-		public virtual void startYunkefu(string accessId, string name, string id, object customField, bool native)
+		public virtual void StartYunkefu(string accessId, string name, string id, object customField, bool native)
 		{
 			throw new NotImplementedException();
 		}
 
-		public virtual bool hasNativeAssistantCenter()
+		public virtual bool HasNativeAssistantCenter()
 		{
 			throw new NotImplementedException();
 		}
 
-		public virtual void showHackWeb(string url, double duration)
+		public virtual void ShowHackWeb(string url, double duration)
 		{
 			throw new NotImplementedException();
 		}
 
-		public virtual void setSDKLanguage(string lang)
+		public virtual void SetSDKLanguage(string lang)
 		{
 			throw new NotImplementedException();
 		}
 
-		public virtual bool getAppInfobool(string key, bool def)
+		public virtual bool GetAppInfoBool(string key, bool def)
 		{
 			throw new NotImplementedException();
 		}
 
-		public virtual void offMemoryWarning(Action<IOnMemoryWarningResult> call)
+		public virtual void OffMemoryWarning(Action<IOnMemoryWarningResult> call)
 		{
 			throw new NotImplementedException();
 		}

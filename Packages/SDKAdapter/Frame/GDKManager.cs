@@ -60,7 +60,7 @@ namespace GDK
             var api = new UserAPI(map);
             foreach (var addon in addonList)
             {
-                addon.api = map;
+                addon.Api = map;
             }
             return api;
         }

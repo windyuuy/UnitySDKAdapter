@@ -6,13 +6,13 @@ namespace GDK
 {
 	public abstract class AdvertV2Base : IAdvertV2
 	{
-		public IModuleMap api { get; set; }
+		public IModuleMap Api { get; set; }
 
-		public virtual void init()
+		public virtual void Init()
 		{
 		}
 
-		public virtual Task initWithConfig(GDKConfigV2 info)
+		public virtual Task InitWithConfig(GDKConfigV2 info)
 		{
 			return Task.CompletedTask;
 		}
@@ -23,16 +23,16 @@ namespace GDK
 		*/
 		public virtual async Task<IAdvertUnit> CreateAdvertUnit(AdCreateInfo createInfo)
 		{
-			if (createInfo.advertType == AdvertType.RewardedVideoAdvert)
+			if (createInfo.AdvertType == AdvertType.RewardedVideoAdvert)
 			{
-				if (this.isAdvertTypeSupported(AdvertType.RewardedVideoAdvert))
+				if (this.IsAdvertTypeSupported(AdvertType.RewardedVideoAdvert))
 				{
 					return await this.CreateRewardedVideoAd(createInfo);
 				}
 			}
-			throw new NotImplementedException($"invalid advert type: {createInfo.advertType}");
+			throw new NotImplementedException($"invalid advert type: {createInfo.AdvertType}");
 		}
-		public abstract bool isAdvertTypeSupported(string advertType);
+		public abstract bool IsAdvertTypeSupported(string advertType);
 
 		/**
 		 * 是个单例

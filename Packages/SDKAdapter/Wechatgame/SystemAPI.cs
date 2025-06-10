@@ -18,7 +18,7 @@ namespace WechatGDK
 	}
 	public class Clipboard : GDK.IClipboard
 	{
-		public Task<GDK.ClipboardData> getData()
+		public Task<GDK.ClipboardData> GetData()
 		{
 			var ts = new TaskCompletionSource<GDK.ClipboardData>();
 			WX.GetClipboardData(new()
@@ -34,7 +34,7 @@ namespace WechatGDK
 			});
 			return ts.Task;
 		}
-		public Task setData(GDK.ClipboardData res)
+		public Task SetData(GDK.ClipboardData res)
 		{
 			var ts = new TaskCompletionSource<bool>();
 			WX.SetClipboardData(new()
@@ -52,13 +52,13 @@ namespace WechatGDK
 
 	public class SystemAPI : GDK.SystemAPIBase
 	{
-		public override GDK.IClipboard clipboard { get; set; } = new Clipboard();
+		public override GDK.IClipboard Clipboard { get; set; } = new Clipboard();
 
 		public override void init()
 		{
 		}
 
-		public override Task setEnableDebug(GDK.SetEnableDebugOptions res)
+		public override Task SetEnableDebug(GDK.SetEnableDebugOptions res)
 		{
 			var ts = new TaskCompletionSource<bool>();
 			WX.SetEnableDebug(new()
@@ -73,7 +73,7 @@ namespace WechatGDK
 			return ts.Task;
 		}
 
-		public override Task<GDK.AppCallUpResult> navigateToApp(GDK.AppCallUpParams paras)
+		public override Task<GDK.AppCallUpResult> NavigateToApp(GDK.AppCallUpParams paras)
 		{
 			var ret = new TaskCompletionSource<GDK.AppCallUpResult>();
 			WX.NavigateToMiniProgram(new()
@@ -93,7 +93,7 @@ namespace WechatGDK
 			});
 			return ret.Task;
 		}
-		public override Task exitProgram()
+		public override Task ExitProgram()
 		{
 			var ret = new TaskCompletionSource<bool>();
 			WX.ExitMiniProgram(new()
@@ -106,7 +106,7 @@ namespace WechatGDK
 			});
 			return ret.Task;
 		}
-		public override Task updateProgramForce()
+		public override Task UpdateProgramForce()
 		{
 			var ret = new TaskCompletionSource<bool>();
 
@@ -175,24 +175,24 @@ namespace WechatGDK
 			return ret.Task;
 		}
 
-		public override void onShow(Action<object> callback)
+		public override void OnShow(Action<object> callback)
 		{
 			WX.OnShow(callback);
 		}
-		public override void offShow(Action<object> callback)
+		public override void OffShow(Action<object> callback)
 		{
 			WX.OffShow(callback);
 		}
-		public override void onHide(Action<object> callback)
+		public override void OnHide(Action<object> callback)
 		{
 			WX.OnHide(callback);
 		}
-		public override void offHide(Action<object> callback)
+		public override void OffHide(Action<object> callback)
 		{
 			WX.OffHide(callback);
 		}
 
-		public override void setFPS(int fps)
+		public override void GetFPS(int fps)
 		{
 			WX.SetPreferredFramesPerSecond(fps);
 		}
@@ -200,7 +200,7 @@ namespace WechatGDK
 
 		protected Action<GDK.IOnMemoryWarningResult> _onMemoryWarning0;
 		private Action<OnMemoryWarningListenerResult> _onMemoryWarning;
-		public override void onMemoryWarning(Action<GDK.IOnMemoryWarningResult> call)
+		public override void OnMemoryWarning(Action<GDK.IOnMemoryWarningResult> call)
 		{
 			_onMemoryWarning0 += call;
 			if (_onMemoryWarning != null)
@@ -215,7 +215,7 @@ namespace WechatGDK
 				WX.OnMemoryWarning(_onMemoryWarning);
 			}
 		}
-		public override void offMemoryWarning(Action<GDK.IOnMemoryWarningResult> call)
+		public override void OffMemoryWarning(Action<GDK.IOnMemoryWarningResult> call)
 		{
 			_onMemoryWarning0 -= call;
 			if (_onMemoryWarning0 == null)

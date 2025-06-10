@@ -21,9 +21,9 @@ namespace GDK
 
 	public abstract class GameInfoBase : IGameInfo
 	{
-		public IModuleMap api { get; set; }
+		public IModuleMap Api { get; set; }
 
-		public string mode
+		public string Mode
 		{
 			get
 			{
@@ -32,7 +32,7 @@ namespace GDK
 			}
 		}
 
-		public string appId
+		public string AppId
 		{
 			get
 			{
@@ -41,16 +41,16 @@ namespace GDK
 			}
 		}
 
-		public string gameVersion { get; set; } = "1.0.0";
+		public string GameVersion { get; set; } = "1.0.0";
 
-		public abstract void init();
+		public abstract void Init();
 
-		public async Task initWithConfig(GDKConfigV2 info)
+		public async Task InitWithConfig(GDKConfigV2 info)
 		{
 			info = info ?? new GDKConfigV2();
-			if (!string.IsNullOrEmpty(info.gameVersion))
+			if (!string.IsNullOrEmpty(info.GameVersion))
 			{
-				this.gameVersion = info.gameVersion;
+				this.GameVersion = info.GameVersion;
 			}
 			// this.api.initAppinfo(info.appInfo);
 

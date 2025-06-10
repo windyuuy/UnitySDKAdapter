@@ -6,27 +6,27 @@ namespace DevelopGDK
 {
     public class User : GDK.UserBase
     {
-		public override bool checkIsUserBind(long userId)
+		public override bool CheckIsUserBind(long userId)
 		{
 			return true;
         }
 
-        public override Task<GetFriendCloudStorageResult> getFriendCloudStorage(GetFriendCloudStorageReq obj)
+        public override Task<GetFriendCloudStorageResult> GetFriendCloudStorage(GetFriendCloudStorageReq obj)
         {
 			return Task.FromResult(new GetFriendCloudStorageResult());
         }
 
-        public override Task<LoginResult> login(LoginParams paras)
+        public override Task<LoginResult> Login(LoginParams paras)
         {
 			return Task.FromResult(new LoginResult());
         }
 
-		public override Task setUserCloudStorage(SetFriendCloudStorageReq obj)
+		public override Task SetUserCloudStorage(SetFriendCloudStorageReq obj)
 		{
 			return Task.CompletedTask;
         }
 
-        public override Task showBindDialog()
+        public override Task ShowBindDialog()
         {
 			return Task.CompletedTask;
         }
@@ -36,7 +36,7 @@ namespace DevelopGDK
 			return Task.CompletedTask;
         }
 
-        public override Task<UserDataUpdateResult> update()
+        public override Task<UserDataUpdateResult> Update()
         {
 			return Task.FromResult(new UserDataUpdateResult());
         }

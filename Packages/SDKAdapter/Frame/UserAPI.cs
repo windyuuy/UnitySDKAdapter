@@ -24,7 +24,7 @@ namespace GDK
         {
             GDKFrameWorkMetaInfo info = new GDKFrameWorkMetaInfo()
             {
-                version = "1.0.9",
+                Version = "1.0.9",
             };
             return info;
         }
@@ -34,7 +34,7 @@ namespace GDK
 		 * gdk的框架版本号
 		 **/
         public string gdkVersion =>
-             this.metaInfo.version;
+             this.metaInfo.Version;
 
         public void init()
         {
@@ -68,7 +68,7 @@ namespace GDK
                 var addon = field.GetValue(this._m) as IModule;
                 // if (addon.init)
                 {
-                    addon.init();
+                    addon.Init();
                 }
             }
         }
@@ -79,7 +79,7 @@ namespace GDK
 		 */
         internal async Task _initWithConfig(GDKConfigV2 info)
         {
-            await this._m.GameInfo.initWithConfig(info);
+            await this._m.GameInfo.InitWithConfig(info);
             var fields = this._m.GetType().GetProperties();
             foreach (var field in fields)
             {
@@ -91,7 +91,7 @@ namespace GDK
                 var retValue = field.GetValue(this._m);
                 if (retValue is IModule addon)
                 {
-                    await addon.initWithConfig(info);
+                    await addon.InitWithConfig(info);
                 }
             }
         }
@@ -116,10 +116,12 @@ namespace GDK
 
         /** 当前实际平台 */
         public string runtimePlatform { get; }
-        public IUserData userData =>
-             this._m.UserData;
-        public IAdvertV2 advertV2 =>
-             this._m.AdvertV2;
+        public IUserData UserData => this._m.UserData;
+        public IAdvertV2 AdvertV2 => this._m.AdvertV2;
+        public ISystemAPI SystemAPI => this._m.SystemAPI;
+        public IGameInfo GameInfo => this._m.GameInfo;
+        public IUser User => this._m.User;
+        public ISupport Support => this._m.Support;
 
         /** 批量导出接口 */
         // $batch_export() begin

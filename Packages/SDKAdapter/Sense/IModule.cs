@@ -9,7 +9,7 @@ namespace GDK
 	 */
     public class GDKFrameWorkMetaInfo
     {
-        public string version;
+        public string Version;
     }
 
     public class AppInfo
@@ -17,11 +17,11 @@ namespace GDK
         /**
 		 * sdk的相关配置
 		 */
-        public AppSdkConfig[] sdkConfigs;
+        public AppSdkConfig[] SdkConfigs;
         /**
 		 * 全局参数，往往存放一些自定义参数
 		 */
-        public Dictionary<string, object> parameters;
+        public Dictionary<string, object> Parameters;
     }
 
 
@@ -30,12 +30,12 @@ namespace GDK
         /**
 		 * 游戏参数列表
 		 */
-        public AppInfo appInfo;
+        public AppInfo AppInfo;
 
         /**
 		 * 游戏的版本号
 		 */
-        public string gameVersion;
+        public string GameVersion;
 
     }
 
@@ -44,11 +44,11 @@ namespace GDK
 	 */
     public interface IModule
     {
-        public IModuleMap api { get; set; }
-        public void init();
+        public IModuleMap Api { get; set; }
+        public void Init();
         /**
 		 * 模块传入配置初始化入口
 		 */
-        public Task initWithConfig(GDKConfigV2 info);
+        public Task InitWithConfig(GDKConfigV2 info);
     }
 }

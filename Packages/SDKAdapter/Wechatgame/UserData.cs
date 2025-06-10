@@ -23,13 +23,13 @@ namespace WechatGDK
         public override double isWhiteUser {get;set;}
         public override double isMaster {get;set;}
         public override double roomId {get;set;}
-        public override IModuleMap api {get;set;}
+        public override IModuleMap Api {get;set;}
 
-        public override void init()
+        public override void Init()
         {
         }
 
-        public override Task initWithConfig(GDKConfigV2 info)
+        public override Task InitWithConfig(GDKConfigV2 info)
         {
             return Task.CompletedTask;
         }

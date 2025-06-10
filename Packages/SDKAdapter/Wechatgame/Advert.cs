@@ -15,15 +15,15 @@ namespace WechatGDK
             AdUnit = adUnit;
         }
 
-        public bool isReady { get; internal set; }
+        public bool IsReady { get; internal set; }
 
-        public bool isAlive { get; internal set; }
+        public bool IsAlive { get; internal set; }
 
-        public void destroy()
+        public void Destroy()
         {
         }
 
-        public void hide()
+        public void Hide()
         {
         }
 
@@ -53,7 +53,7 @@ namespace WechatGDK
             return ts.Task;
         }
 
-        public void setStyle(AdUnitStyle style)
+        public void SetStyle(AdUnitStyle style)
         {
         }
 
@@ -76,8 +76,8 @@ namespace WechatGDK
                     ts.SetResult(new ShowAdUnitResult()
                     {
                         IsOk = true,
-                        couldReward = respClose.isEnded,
-                        isEnded = respClose.isEnded,
+                        CouldReward = respClose.isEnded,
+                        IsEnded = respClose.isEnded,
                         ErrMsg = respClose.errMsg,
                     });
                 }
@@ -113,17 +113,17 @@ namespace WechatGDK
     {
         public override Task<IRewardedVideoAd> CreateRewardedVideoAd(AdCreateInfo createInfo)
         {
-            UnityEngine.Debug.Log($"create rewarded video ad: {createInfo.placementId}");
+            UnityEngine.Debug.Log($"create rewarded video ad: {createInfo.PlacementId}");
             var adUnit = WX.CreateRewardedVideoAd(new()
             {
-                adUnitId = createInfo.placementId,
+                adUnitId = createInfo.PlacementId,
             });
-            UnityEngine.Debug.Log($"create rewarded video ad-ok: {createInfo.placementId}");
+            UnityEngine.Debug.Log($"create rewarded video ad-ok: {createInfo.PlacementId}");
             IRewardedVideoAd ad = new RewardedVideoAd(adUnit);
             return Task<IRewardedVideoAd>.FromResult(ad);
         }
 
-        public override bool isAdvertTypeSupported(string advertType)
+        public override bool IsAdvertTypeSupported(string advertType)
         {
             return true;
         }

@@ -43,8 +43,8 @@ namespace GDK
 	}
 	public interface IClipboard
 	{
-		public Task<ClipboardData> getData();
-		public Task setData(ClipboardData res);
+		public Task<ClipboardData> GetData();
+		public Task SetData(ClipboardData res);
 	}
 
 	public interface IChooseDialogParams
@@ -202,11 +202,11 @@ namespace GDK
 		/**
 		 * 跳转游戏
 		 */
-		public Task<AppCallUpResult> navigateToApp(AppCallUpParams paras);
+		public Task<AppCallUpResult> NavigateToApp(AppCallUpParams paras);
 		/**
 		 * 退出当前游戏
 		 */
-		public Task exitProgram();
+		public Task ExitProgram();
 
 		/**
 		 * 用法示例：
@@ -216,8 +216,8 @@ namespace GDK
 		 * })
 		 * ```
 		 */
-		public void onShow(Action<object> callback);
-		public void offShow(Action<object> callback);
+		public void OnShow(Action<object> callback);
+		public void OffShow(Action<object> callback);
 		/**
 		* 用法示例：
 		* ```typescript
@@ -226,140 +226,140 @@ namespace GDK
 		* })
 		* ```
 		*/
-		public void onHide(Action<object> callback);
-		public void offHide(Action<object> callback);
+		public void OnHide(Action<object> callback);
+		public void OffHide(Action<object> callback);
 
 		/**
 		 * 强制更新
 		 */
-		public Task updateProgramForce();
+		public Task UpdateProgramForce();
 		/**
 		 * 设置是否打开调试开关。此开关对正式版也能生效。
 		 */
-		public Task setEnableDebug(SetEnableDebugOptions res);
+		public Task SetEnableDebug(SetEnableDebugOptions res);
 
 		/**
 		 * - 设置帧率
 		 * 	- 可能和cocos的会冲突
 		 */
-		public void setFPS(int fps);
+		public void GetFPS(int fps);
 
 		/**
 		 * 剪切板
 		 */
-		public IClipboard clipboard { get; set; }
+		public IClipboard Clipboard { get; set; }
 
 		/**
 		 * 获取屏幕的安全区域，单位像素
 		 * @param callback 
 		 */
-		public void getSafeArea(Action<GetSafeAreaResult> callback);
+		public void GetSafeArea(Action<GetSafeAreaResult> callback);
 
 		// 设置加载进度
-		public void setLoadingProgress(SetLoadingProgressOptions paras);
+		public void SetLoadingProgress(SetLoadingProgressOptions paras);
 
 		/**
 		 * 网页跳转
 		 * @param url 
 		 */
-		public void openURL(string url);
+		public void OpenURL(string url);
 
 		/**
 		 * 开启云客服
 		 */
-		public void startYunkefu(string accessId, string name, string id, object customField, bool native);
+		public void StartYunkefu(string accessId, string name, string id, object customField, bool native);
 
 		/**
 		 * 
 		 * 是否存在原生客服中心
 		 */
-		public bool hasNativeAssistantCenter();
+		public bool HasNativeAssistantCenter();
 
 		/**
 		 * hack web
 		 * @param url 
 		 */
-		public void showHackWeb(string url, double duration);
+		public void ShowHackWeb(string url, double duration);
 
 		/**
 		 * set native sdk language
 		 * @param lang 
 		 */
-		public void setSDKLanguage(string lang);
+		public void SetSDKLanguage(string lang);
 		/**
 		 * 原生版本号，具体看C++
 		 */
-		public double nativeVersion { get; }
+		public double NativeVersion { get; }
 
 		/**
 		 * SDK框架版本
 		 */
-		public string sdkFrameworkVersion { get; }
+		public string SdkFrameworkVersion { get; }
 
 		/**
 		 * 跳转app设置界面
 		 * - 目前只支持 android
 		 */
-		Task<IChooseDialogResult> gotoAppSystemSettings(IChooseDialogParams paras);
+		Task<IChooseDialogResult> GotoAppSystemSettings(IChooseDialogParams paras);
 		/**
 		 * 检查是否已授予权限
 		 * - 目前只支持 android
 		 */
-		Task<ICheckPermissionResult> checkAppSystemPermissions(ICheckPermissionParams paras);
+		Task<ICheckPermissionResult> CheckAppSystemPermissions(ICheckPermissionParams paras);
 
 		/**
 		 * 通过key获取原生SDK版本信息
 		 * @param params 
 		 */
-		Task<object> getSDKMetaInfo(IGetSDKMetaInfo paras);
+		Task<object> GetSDKMetaInfo(IGetSDKMetaInfo paras);
 
 		/**
 		 * 初始化appinfo
 		 * 最终的参数优先从 优先从外层parameters加载，如果找不到则从sdk模块中加载。 
 		 */
-		public void initAppinfo(AppInfo appInfo);
+		public void InitAppinfo(AppInfo appInfo);
 
 		/**
 		 * 动态修改appInfo的值，仅在内存中生效，不会影响磁盘中的配置
 		 * @param key 
 		 * @param value 
 		 */
-		void setAppInfo(string key, string value);
-		void setAppInfo(string key, double value);
-		void setAppInfo(string key, bool value);
+		void SetAppInfo(string key, string value);
+		void SetAppInfo(string key, double value);
+		void SetAppInfo(string key, bool value);
 
 		/**
 		 * 获取应用AppInfo
 		 * @param key 
 		 */
-		public object getAppInfo(string key);
+		public object GetAppInfo(string key);
 
 		/**
 		 * 获取bool类型的数据，当遇到异常数据时，将返回默认值
 		 * @param key 
 		 * @param def 
 		 */
-		public bool getAppInfobool(string key, bool def);
+		public bool GetAppInfoBool(string key, bool def);
 
 		/**
 		  * 获取double类型的数据，当遇到异常数据时，将返回默认值
 		  * @param key 
 		  * @param def 
 		  */
-		public double getAppInfodouble(string key, double def);
+		public double GetAppInfoDouble(string key, double def);
 
 		/**
 		 * 获取String类型的数据，当遇到异常数据时，将返回默认值
 		 * @param key 
 		 * @param def 
 		 */
-		string getAppInfoString(string key, string def);
+		string GetAppInfoString(string key, string def);
 
 		/**
 		 * 监听内存不足告警事件。
 		 */
-		public void onMemoryWarning(Action<IOnMemoryWarningResult> call);
-		public void offMemoryWarning(Action<IOnMemoryWarningResult> call);
+		public void OnMemoryWarning(Action<IOnMemoryWarningResult> call);
+		public void OffMemoryWarning(Action<IOnMemoryWarningResult> call);
 	}
 
 }

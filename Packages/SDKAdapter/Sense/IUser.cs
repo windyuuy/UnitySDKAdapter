@@ -9,85 +9,85 @@ namespace GDK
     /** 登录请求结果 */
     public class LoginResult
     {
-        public string openId;
-        public string code;
-        public object extra;
+        public string OpenId;
+        public string Code;
+        public object Extra;
     }
 
     /** 登录请求参数 */
     public class LoginParams : ReqParams
     {
         // oppo 包名 pkgName
-        public string pkgName { get; }
+        public string PkgName { get; }
         /**
 		 * 是否禁止游客登陆
 		 */
-        public bool disableVisitor { get; } = false;
+        public bool DisableVisitor { get; } = false;
         /**
 		 * 是否静默登陆
 		 */
-        public bool silent { get; } = false;
+        public bool Silent { get; } = false;
 
         /**
 		 * 是否需要实名制
 		 */
-        public bool realName { get; }
+        public bool RealName { get; }
 
         /**
 		 * 是否允许自动登陆
 		 * * 如果当前未绑定任何第三方账号，则执行游客登陆
 		 * * 否则，执行第三方账号的自动登陆
 		 */
-        public bool autoLogin { get; } = true;
+        public bool AutoLogin { get; } = true;
         /**
 		* gamepind 登录token
 		*/
-        public string token { get; }
+        public string Token { get; }
 
     }
 
     public class ShowRealNameDialogResult
     {
-        public bool isVerified;
-        public double age;
-        public string name;
-        public string idCard;
-        public string birthday;
+        public bool IsVerified;
+        public double Age;
+        public string Name;
+        public string IdCard;
+        public string Birthday;
     }
 
     public class BindUserResult
     {
-        public bool success;
-        public object data;
+        public bool Success;
+        public object Data;
     }
 
     public class GetFriendCloudStorageReq
     {
 
-        public string[] keyList;
+        public string[] KeyList;
         /**
          * - 玩一玩和浏览器必须
          * - 格式形如（null开头）：
          * 	- [null, 'goldRank', 'seedRank', 'unlockRank', 'sceneRank',]
          **/
-        public string[] typeIndex;
+        public string[] TypeIndex;
     }
 
     public class SetFriendCloudStorageReq
     {
 
-        public string[] keyList;
+        public string[] KeyList;
         /**
          * - 玩一玩和浏览器必须
          * - 格式形如（null开头）：
          * 	- [null, 'goldRank', 'seedRank', 'unlockRank', 'sceneRank',]
          **/
-        public string[] typeIndex;
+        public string[] TypeIndex;
     }
 
     public class GetFriendCloudStorageResult
     {
-        public UserGameData[] data;
+        public UserGameData[] Data;
     }
 
     public class LoginSupportOptions
@@ -109,12 +109,12 @@ namespace GDK
     public interface IUser : IModule
     {
         /** 登录 */
-        public Task<LoginResult> login(LoginParams paras);
+        public Task<LoginResult> Login(LoginParams paras);
         /** 绑定回调 */
-        public void setBindCallback(Action<bool, object> callback);
+        public void SetBindCallback(Action<bool, object> callback);
 
         /** 绑定回调 */
-        public void setRebootCallback(Action callback);
+        public void SetRebootCallback(Action callback);
         /**
 		 * 显示用户中心
 		 * * APP平台支持
@@ -124,7 +124,7 @@ namespace GDK
         /**
 		 * 判断是否为本地实名制系统
 		 */
-        public bool isNativeRealNameSystem { get; }
+        public bool IsNativeRealNameSystem { get; }
 
         /**
 		 * 显示未成年人游戏描述信息
@@ -137,44 +137,44 @@ namespace GDK
 		 * * APP平台支持
 		 * @param force 是否强制
 		 */
-        public Task<ShowRealNameDialogResult> showRealNameDialog(long userID, bool force);
+        public Task<ShowRealNameDialogResult> ShowRealNameDialog(long userID, bool force);
 
         /**
 		 * 显示账号绑定
 		 * * APP平台支持
 		 */
-        public Task showBindDialog();
+        public Task ShowBindDialog();
 
-        public Task<BindUserResult> bindUser();
+        public Task<BindUserResult> BindUser();
 
         /** 检查登录态是否过期 */
-        public Task checkSession(ReqParams paras);
+        public Task CheckSession(ReqParams paras);
 
         /** 更新用户数据 */
         /// <summary>
         /// Updates the user data asynchronously and returns the result of the operation.
         /// </summary>
         /// <returns>A task that represents the asynchronous update operation. The task result contains the <see cref="UserDataUpdateResult"/>.</returns>
-        public Task<UserDataUpdateResult> update();
+        public Task<UserDataUpdateResult> Update();
 
         /**
 		 * 获取用户云端数据
 		 * - oppo未处理
 		 */
-        public Task<GetFriendCloudStorageResult> getFriendCloudStorage(GetFriendCloudStorageReq obj);
+        public Task<GetFriendCloudStorageResult> GetFriendCloudStorage(GetFriendCloudStorageReq obj);
         /**
          * 提交用户云端数据
          * - oppo未处理
          */
-        public Task setUserCloudStorage(SetFriendCloudStorageReq obj);
+        public Task SetUserCloudStorage(SetFriendCloudStorageReq obj);
         /**
          * 判断userId对应的用户是否绑定过社交账号
          * @param userId 登录时服务器返回的userId
          */
-        public bool checkIsUserBind(long userId);
+        public bool CheckIsUserBind(long userId);
 
-        public void setLoginSupport(LoginSupportOptions loginSupport);
+        public void SetLoginSupport(LoginSupportOptions loginSupport);
 
-        public void setAccountChangeListener(Action f);
+        public void SetAccountChangeListener(Action f);
     }
 }

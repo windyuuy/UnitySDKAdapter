@@ -13,15 +13,15 @@ namespace DevelopGDK
 			base.init();
 		}
 
-		public override void setFPS(int fps)
+		public override void GetFPS(int fps)
 		{
 			Application.targetFrameRate = fps;
 		}
 
-		public override void onMemoryWarning(Action<GDK.IOnMemoryWarningResult> call)
+		public override void OnMemoryWarning(Action<GDK.IOnMemoryWarningResult> call)
 		{
 		}
 
-		public override IClipboard clipboard { get; set; } = new Clipboard();
+		public override IClipboard Clipboard { get; set; } = new Clipboard();
 	}
 }

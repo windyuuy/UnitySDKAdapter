@@ -35,10 +35,10 @@ namespace GDK
 
 		public abstract double roomId { get; set; }
 
-		public abstract IModuleMap api { get; set; }
+		public abstract IModuleMap Api { get; set; }
 
-		public abstract void init();
+		public abstract void Init();
 
-		public abstract Task initWithConfig(GDKConfigV2 info);
+		public abstract Task InitWithConfig(GDKConfigV2 info);
 	}
 }

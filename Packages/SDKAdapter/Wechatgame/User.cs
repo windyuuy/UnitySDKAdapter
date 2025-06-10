@@ -6,27 +6,27 @@ namespace WechatGDK
 {
     public class User : GDK.UserBase
     {
-        public override bool checkIsUserBind(long userId)
+        public override bool CheckIsUserBind(long userId)
         {
             throw new System.NotImplementedException();
         }
 
-        public override Task<GetFriendCloudStorageResult> getFriendCloudStorage(GetFriendCloudStorageReq obj)
+        public override Task<GetFriendCloudStorageResult> GetFriendCloudStorage(GetFriendCloudStorageReq obj)
         {
             throw new System.NotImplementedException();
         }
 
-        public override Task<LoginResult> login(LoginParams paras)
+        public override Task<LoginResult> Login(LoginParams paras)
         {
             throw new System.NotImplementedException();
         }
 
-        public override Task setUserCloudStorage(SetFriendCloudStorageReq obj)
+        public override Task SetUserCloudStorage(SetFriendCloudStorageReq obj)
         {
             throw new System.NotImplementedException();
         }
 
-        public override Task showBindDialog()
+        public override Task ShowBindDialog()
         {
             throw new System.NotImplementedException();
         }
@@ -36,7 +36,7 @@ namespace WechatGDK
             throw new System.NotImplementedException();
         }
 
-        public override Task<UserDataUpdateResult> update()
+        public override Task<UserDataUpdateResult> Update()
         {
             throw new System.NotImplementedException();
         }

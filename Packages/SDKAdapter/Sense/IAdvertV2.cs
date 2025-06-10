@@ -36,35 +36,35 @@ namespace GDK
         public AdCreateInfo() { }
         public AdCreateInfo(AdCreateInfo info)
         {
-            this.advertType = info.advertType;
-            this.appId = info.appId;
-            this.placementId = info.placementId;
-            this.isDebug = info.isDebug;
+            this.AdvertType = info.AdvertType;
+            this.AppId = info.AppId;
+            this.PlacementId = info.PlacementId;
+            this.IsDebug = info.IsDebug;
         }
 
         /// <summary>
         /// AdvertType
         /// </summary>
-        public string advertType;
-        public string appId;
-        public string placementId;
-        public bool isDebug = false;
+        public string AdvertType;
+        public string AppId;
+        public string PlacementId;
+        public bool IsDebug = false;
     }
 
-    public class ShowAdUnitResult: BaseResponse
+    public class ShowAdUnitResult : BaseResponse
     {
-        public bool couldReward;
-        public bool isEnded;
+        public bool CouldReward;
+        public bool IsEnded;
     }
 
     public interface IShowAdUnitOpInfo
     {
-        public string scene { get; }
+        public string Scene { get; }
     }
 
     public class ShowAdUnitOpInfo : IShowAdUnitOpInfo
     {
-        public string scene { get; set; }
+        public string Scene { get; set; }
     }
 
     public class AdUnitStyle
@@ -85,11 +85,17 @@ namespace GDK
     {
         public Task<LoadAdUnitResult> Load();
         public Task<ShowAdUnitResult> Show(IShowAdUnitOpInfo opInfo);
-        public bool isReady { get; }
-        public bool isAlive { get; }
-        public void destroy();
-        public void setStyle(AdUnitStyle style);
-        public void hide();
+        /// <summary>
+        /// 已Load
+        /// </summary>
+        public bool IsReady { get; }
+        /// <summary>
+        /// 未Destroy
+        /// </summary>
+        public bool IsAlive { get; }
+        public void Destroy();
+        public void SetStyle(AdUnitStyle style);
+        public void Hide();
     }
 
     public interface IRewardedVideoAd : IAdvertUnit
@@ -115,6 +121,6 @@ namespace GDK
          * 是否支持该类型广告
          * @param advertType 广告类型
          */
-        public bool isAdvertTypeSupported(string advertType);
+        public bool IsAdvertTypeSupported(string advertType);
     }
 }
