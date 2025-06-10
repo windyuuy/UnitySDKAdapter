@@ -94,7 +94,7 @@ namespace GDK
             {
                 var plugin = this.getPlugin(k);
                 // 初始化插件内各个模块
-                plugin.init();
+                plugin.Init();
             }
         }
 

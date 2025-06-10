@@ -7,7 +7,7 @@ namespace GDK
     public class UserAPI
     {
         public static UserAPI Instance;
-        public Logger devlog = new Logger();
+        public Logger Devlog = new Logger();
         /**
 		 * 附件map
 		 */
@@ -28,29 +28,29 @@ namespace GDK
             };
             return info;
         }
-        protected readonly GDKFrameWorkMetaInfo metaInfo = getGDKMetaInfo();
+        protected readonly GDKFrameWorkMetaInfo MetaInfo = getGDKMetaInfo();
 
         /**
 		 * gdk的框架版本号
 		 **/
-        public string gdkVersion =>
-             this.metaInfo.Version;
+        public string GdkVersion =>
+             this.MetaInfo.Version;
 
-        public void init()
+        public void Init()
         {
-            devlog.Warn("redundant init for gdk, skipped");
+            Devlog.Warn("redundant init for gdk, skipped");
         }
 
-        protected bool beInitConfigOnce = false;
-        public async Task initConfig(GDKConfigV2 config)
+        protected bool BeInitConfigOnce = false;
+        public async Task InitConfig(GDKConfigV2 config)
         {
-            if (this.beInitConfigOnce)
+            if (this.BeInitConfigOnce)
             {
-                devlog.Warn("redundant initConfig for gdk, skipped");
+                Devlog.Warn("redundant initConfig for gdk, skipped");
             }
             else
             {
-                this.beInitConfigOnce = true;
+                this.BeInitConfigOnce = true;
                 await GDKManager.Instance.initWithGDKConfig(config);
             }
         }
@@ -96,7 +96,7 @@ namespace GDK
             }
         }
 
-        protected bool checkModuleAttr(
+        protected bool CheckModuleAttr(
               string moduleName,
               string attrName,
               string attrType = null
@@ -105,17 +105,17 @@ namespace GDK
             return true;
         }
 
-        public bool support(
+        public bool IsSupport(
              string moduleName,
              string attrName,
              string attrType = null
          )
         {
-            return this.checkModuleAttr(moduleName, attrName, attrType);
+            return this.CheckModuleAttr(moduleName, attrName, attrType);
         }
 
         /** 当前实际平台 */
-        public string runtimePlatform { get; }
+        public string RuntimePlatform { get; }
         public IUserData UserData => this._m.UserData;
         public IAdvertV2 AdvertV2 => this._m.AdvertV2;
         public ISystemAPI SystemAPI => this._m.SystemAPI;
@@ -132,11 +132,11 @@ namespace GDK
 		 * * qqplay 玩一玩
 		 * * app 原生APP
 		 **/
-        public string pluginName
+        public string PluginName
         {
             get
             {
-                if (!this.checkModuleAttr("metaInfo", "pluginName"))
+                if (!this.CheckModuleAttr("metaInfo", "pluginName"))
                 {
                     return null;
                 }
@@ -146,11 +146,11 @@ namespace GDK
         /**
 		 * 插件版本
 		 */
-        public string pluginVersion
+        public string PluginVersion
         {
             get
             {
-                if (!this.checkModuleAttr("metaInfo", "pluginVersion"))
+                if (!this.CheckModuleAttr("metaInfo", "pluginVersion"))
                 {
                     return null;
                 }
@@ -165,11 +165,11 @@ namespace GDK
 		 * * qqplay QQ玩一玩
 		 * * unknown 未知平台
 		 */
-        public string apiPlatform
+        public string ApiPlatform
         {
             get
             {
-                if (!this.checkModuleAttr("metaInfo", "apiPlatform"))
+                if (!this.CheckModuleAttr("metaInfo", "apiPlatform"))
                 {
                     return null;
                 }
@@ -177,11 +177,11 @@ namespace GDK
             }
         }
         /** 本地化api平台名 */
-        public string apiPlatformLocale
+        public string ApiPlatformLocale
         {
             get
             {
-                if (!this.checkModuleAttr("metaInfo", "apiPlatformLocale"))
+                if (!this.CheckModuleAttr("metaInfo", "apiPlatformLocale"))
                 {
                     return null;
                 }
@@ -189,11 +189,11 @@ namespace GDK
             }
         }
 
-        public string openId
+        public string OpenId
         {
             get
             {
-                if (!this.checkModuleAttr("userData", "openId"))
+                if (!this.CheckModuleAttr("userData", "openId"))
                 {
                     return null;
                 }
