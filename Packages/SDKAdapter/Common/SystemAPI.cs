@@ -147,7 +147,7 @@ namespace GDK
 			return null;
 		}
 
-		public Dictionary<string, object> appInfo = new();
+		public readonly Dictionary<string, object> AppInfo = new();
 
 		public virtual void InitAppinfo(AppInfo info)
 		{
@@ -162,7 +162,7 @@ namespace GDK
 						{
 							foreach (var (k, _) in sdkConfig.parameters)
 							{
-								this.appInfo[$"{sdkConfig.name}.{k}"] = sdkConfig.parameters[k];
+								this.AppInfo[$"{sdkConfig.name}.{k}"] = sdkConfig.parameters[k];
 							}
 						}
 					}
@@ -171,7 +171,7 @@ namespace GDK
 				{
 					foreach (var (k, _) in info.Parameters)
 					{
-						this.appInfo[k] = info.Parameters[k];
+						this.AppInfo[k] = info.Parameters[k];
 					}
 				}
 			}
@@ -179,22 +179,22 @@ namespace GDK
 
 		public virtual void SetAppInfo(string key, string value)
 		{
-			this.appInfo[key] = value;
+			this.AppInfo[key] = value;
 		}
 
 		public virtual void SetAppInfo(string key, double value)
 		{
-			this.appInfo[key] = value;
+			this.AppInfo[key] = value;
 		}
 
 		public virtual void SetAppInfo(string key, bool value)
 		{
-			this.appInfo[key] = value;
+			this.AppInfo[key] = value;
 		}
 
 		public object GetAppInfo(string key)
 		{
-			return this.appInfo[key];
+			return this.AppInfo.GetValueOrDefault(key);
 		}
 
 		public virtual bool getAppInfoBoolean(string key, bool def = false)
