@@ -64,6 +64,7 @@ namespace WechatGDK
             UnityEngine.Debug.Log($"show rewarded video ad");
             AdUnit.Show((resp) =>
             {
+                UnityEngine.Debug.Log($"show rewarded video ad-ok: {resp.errCode}, {resp.errMsg}");
                 void Finish()
                 {
                     AdUnit.OffClose(OnClose);
@@ -72,7 +73,7 @@ namespace WechatGDK
                 void OnClose(WXRewardedVideoAdOnCloseResponse respClose)
                 {
                     Finish();
-                    UnityEngine.Debug.Log($"show rewarded video ad-ok: {respClose.isEnded}, {respClose.errMsg}");
+                    UnityEngine.Debug.Log($"show rewarded video ad-closed: {respClose.isEnded}, {respClose.errMsg}");
                     ts.SetResult(new ShowAdUnitResult()
                     {
                         IsOk = true,
@@ -84,7 +85,7 @@ namespace WechatGDK
                 void OnError(WXADErrorResponse respError)
                 {
                     Finish();
-                    UnityEngine.Debug.Log($"show rewarded video ad-failed2: {resp.errCode}, {resp.errMsg}");
+                    UnityEngine.Debug.LogError($"show rewarded video ad-failed2: {resp.errCode}, {resp.errMsg}");
                     ts.SetResult(new ShowAdUnitResult()
                     {
                         IsOk = false,
@@ -96,7 +97,7 @@ namespace WechatGDK
                 AdUnit.OnError(OnError);
             }, (resp) =>
             {
-                UnityEngine.Debug.Log($"show rewarded video ad-failed: {resp.errCode}, {resp.errMsg}");
+                UnityEngine.Debug.LogError($"show rewarded video ad-failed: {resp.errCode}, {resp.errMsg}");
                 ts.SetResult(new ShowAdUnitResult()
                 {
                     IsOk = false,
