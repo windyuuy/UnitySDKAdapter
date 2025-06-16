@@ -36,6 +36,7 @@ namespace WechatGDK
             UnityEngine.Debug.Log($"load rewarded video ad: {PlacementId}");
             if (ShowTask != null)
             {
+                // 需要处理, 否则 show 不回调
                 UnityEngine.Debug.LogError($"load rewarded video ad-failed, already showing: {PlacementId}");
                 return Task.FromResult(new LoadAdUnitResult()
                 {
@@ -91,6 +92,7 @@ namespace WechatGDK
             UnityEngine.Debug.Log($"show rewarded video ad: {PlacementId}");
             if (ShowTask != null)
             {
+                // 需要处理, 否则 show 不回调
                 UnityEngine.Debug.LogError($"show rewarded video ad-failed, already showing: {PlacementId}");
                 return Task.FromResult(new ShowAdUnitResult()
                 {
