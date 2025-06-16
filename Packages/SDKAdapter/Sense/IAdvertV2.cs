@@ -53,8 +53,8 @@ namespace GDK
 
     public class ShowAdUnitResult : BaseResponse
     {
-        public bool CouldReward;
-        public bool IsEnded;
+        public bool CouldReward = false;
+        public bool IsEnded = false;
     }
 
     public interface IShowAdUnitOpInfo
