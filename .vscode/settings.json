@@ -51,5 +51,6 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "UnitySDKAdapter.sln"
+    "dotnet.defaultSolution": "UnitySDKAdapter.sln",
+    "dotnet.preferCSharpExtension": true
 }
