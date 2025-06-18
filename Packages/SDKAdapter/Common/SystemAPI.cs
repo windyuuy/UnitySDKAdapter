@@ -293,5 +293,9 @@ namespace GDK
 			throw new NotImplementedException();
 		}
 
-	}
+        public virtual Task<RestartMiniProgramResult> RestartMiniProgram(RestartMiniProgramOptions options)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

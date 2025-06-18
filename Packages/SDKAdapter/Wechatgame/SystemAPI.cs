@@ -3,6 +3,7 @@ using System;
 using System.Threading.Tasks;
 using WeChatWASM;
 using Lang.Loggers;
+using GDK;
 
 namespace WechatGDK
 {
@@ -224,6 +225,23 @@ namespace WechatGDK
 				_onMemoryWarning = null;
 			}
 		}
+
+		public override Task<RestartMiniProgramResult> RestartMiniProgram(RestartMiniProgramOptions options)
+		{
+			var ts = new TaskCompletionSource<RestartMiniProgramResult>();
+			WX.RestartMiniProgram(new WeChatWASM.RestartMiniProgramOption()
+			{
+				success = (resp) =>
+				{
+					ts.SetResult(new RestartMiniProgramResult()
+					{
+					});
+				},
+				fail = ts.GetErrorHandler(),
+			});
+			return ts.Task;
+		}
+
 	}
 
 }

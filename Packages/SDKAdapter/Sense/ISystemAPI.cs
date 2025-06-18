@@ -28,8 +28,8 @@ namespace GDK
 		 * - 默认值 release
 		 **/
 		public string envVersion { get; set; }
-		public bool? noRelaunchIfPathUnchanged{ get; set; }
-		public string shortLink{ get; set; }
+		public bool? noRelaunchIfPathUnchanged { get; set; }
+		public string shortLink { get; set; }
 	}
 
 	public class AppCallUpResult
@@ -167,7 +167,7 @@ namespace GDK
 		public MemoryWarningLevel level { get; }
 	}
 
-	public class OnMemoryWarningResult: IOnMemoryWarningResult
+	public class OnMemoryWarningResult : IOnMemoryWarningResult
 	{
 		/**
 		 * 内存告警等级，只有 Android 才有，对应系统宏定义
@@ -191,6 +191,18 @@ namespace GDK
 	public class SetLoadingProgressOptions
 	{
 		public double progress;
+	}
+
+	public class RestartMiniProgramOptions
+	{
+		/// <summary>
+		/// 打开的页面路径，path 中 ? 后面的部分会成为 query
+		/// </summary>
+		public string path;
+	}
+	public class RestartMiniProgramResult
+	{
+
 	}
 
 	/**
@@ -360,6 +372,8 @@ namespace GDK
 		 */
 		public void OnMemoryWarning(Action<IOnMemoryWarningResult> call);
 		public void OffMemoryWarning(Action<IOnMemoryWarningResult> call);
+
+		public Task<RestartMiniProgramResult> RestartMiniProgram(RestartMiniProgramOptions options);
 	}
 
 }
