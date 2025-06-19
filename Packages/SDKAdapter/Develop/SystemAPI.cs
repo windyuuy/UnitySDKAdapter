@@ -1,11 +1,11 @@
-
 using System;
+using System.Threading.Tasks;
 using GDK;
+using MonoExtLib.AsyncExt;
 using UnityEngine;
 
 namespace DevelopGDK
 {
-
 	public class SystemAPI : GDK.SystemAPIBase
 	{
 		public override void init()
@@ -23,5 +23,18 @@ namespace DevelopGDK
 		}
 
 		public override IClipboard Clipboard { get; set; } = new Clipboard();
+
+		public override async Task<RestartMiniProgramResult> RestartMiniProgram(RestartMiniProgramOptions options)
+		{
+			await UniAsyncUtils.JoinMainThread();
+
+		#if UNITY_EDITOR
+			UnityEditor.EditorApplication.ExitPlaymode();
+			// UnityEditor.EditorApplication.EnterPlaymode();
+		#else
+			Application.Quit();
+		#endif
+			return new RestartMiniProgramResult();
+		}
 	}
 }

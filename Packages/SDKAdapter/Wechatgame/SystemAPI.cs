@@ -229,10 +229,12 @@ namespace WechatGDK
 		public override Task<RestartMiniProgramResult> RestartMiniProgram(RestartMiniProgramOptions options)
 		{
 			var ts = new TaskCompletionSource<RestartMiniProgramResult>();
+			UnityEngine.Debug.Log("WX.RestartMiniProgram");
 			WX.RestartMiniProgram(new WeChatWASM.RestartMiniProgramOption()
 			{
 				success = (resp) =>
 				{
+					UnityEngine.Debug.Log("WX.RestartMiniProgram-done");
 					ts.SetResult(new RestartMiniProgramResult()
 					{
 					});
