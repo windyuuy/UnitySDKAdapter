@@ -1,0 +1,9 @@
+{
+  "name": "windy.platformadapter.core",
+  "displayName": "PlatformAdapter",
+  "version": "1.0.0",
+  "unity": "2019.4",
+  "description": "Unity Platform Adapter",
+  "dependencies": {
+  }
+}

@@ -1,0 +1,18 @@
+{
+    "name": "PlatformAdapter.FairyGUI",
+    "rootNamespace": "",
+    "references": [
+        "GUID:8c8f9d96103e94a7da84b012fd7e9f13",
+        "GUID:5efd170ecd8084500bed5692932fe14e",
+        "GUID:25260e5e2c15f52489476e36a4991a5f"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
