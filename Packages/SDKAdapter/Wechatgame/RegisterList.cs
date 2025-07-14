@@ -13,7 +13,7 @@ namespace WechatGDK
 			// this.SystemInfo = () => new SystemInfo();
 			this.UserData = () => new UserData();
 			// this.Customer = () => new Customer();
-			// this.Widgets = () => new Widgets();
+			this.Widgets = () => new Widgets();
 			// this.SubContext = () => new SubContext();
 			this.Support = () => new Support();
 			// this.Except = () => new Except();
