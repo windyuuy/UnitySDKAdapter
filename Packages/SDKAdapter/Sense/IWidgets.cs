@@ -56,7 +56,7 @@ namespace GDK
 		public string title;
 		public bool? mask;
 	}
-	public interface ShowToastOptions
+	public class ShowToastOptions
 	{
 
 		/**
