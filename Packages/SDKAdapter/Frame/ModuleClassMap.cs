@@ -17,7 +17,7 @@ namespace GDK
         public Func<ISystemAPI> SystemAPI = () => new SystemAPIBase();
         public Func<IUserData> UserData;
         // public Func<ICustomer> Customer;
-        // public Func<IWidgets> Widgets;
+        public Func<IWidgets> Widgets;
         // public Func<ISubContext> SubContext;
         public Func<ISupport> Support;
         // public Func<IExcept> Except;

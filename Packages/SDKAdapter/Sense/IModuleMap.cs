@@ -51,7 +51,7 @@ namespace GDK
         /// <summary>
         /// 基本UI组件
         /// </summary>
-        // public IWidgets widgets{get;set;}
+        public IWidgets Widgets{get;set;}
         /// <summary>
         /// 子域、排行榜相关
         /// </summary>
@@ -96,6 +96,7 @@ namespace GDK
         public IUserData UserData { get; set; }
         public IUser User { get; set; }
         public IAdvertV2 AdvertV2 { get; set; }
+        public IWidgets Widgets { get; set; }
         public IGameInfo GameInfo { get; set; }
         public ISupport Support { get; set; }
         public ISystemAPI SystemAPI { get; set; }

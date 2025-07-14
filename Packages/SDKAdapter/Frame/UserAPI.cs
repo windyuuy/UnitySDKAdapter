@@ -118,6 +118,7 @@ namespace GDK
         public string RuntimePlatform { get; }
         public IUserData UserData => this._m.UserData;
         public IAdvertV2 AdvertV2 => this._m.AdvertV2;
+        public IWidgets Widgets => this._m.Widgets;
         public ISystemAPI SystemAPI => this._m.SystemAPI;
         public IGameInfo GameInfo => this._m.GameInfo;
         public IUser User => this._m.User;
