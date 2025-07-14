@@ -73,6 +73,7 @@ namespace WechatGDK
 			}
 			else
 			{
+				devlog.Log($"WX.InitSDK has been inited");
 				ts.SetResult(0);
 			}
 			return ts.Task;
