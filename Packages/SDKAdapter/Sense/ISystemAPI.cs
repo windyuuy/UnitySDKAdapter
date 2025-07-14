@@ -208,9 +208,8 @@ namespace GDK
 	/**
 	 * 支持各种系统调用、系统事件侦听
 	 */
-	public interface ISystemAPI
+	public interface ISystemAPI: IModule
 	{
-		public void init();
 		/**
 		 * 跳转游戏
 		 */

@@ -55,9 +55,29 @@ namespace WechatGDK
 	{
 		public override GDK.IClipboard Clipboard { get; set; } = new Clipboard();
 
-		public override void init()
+		public override void Init()
 		{
 		}
+
+		public override Task InitWithConfig(GDKConfigV2 info)
+		{
+			devlog.Log("WX.InitSDK");
+			var ts = new TaskCompletionSource<int>();
+			if (!WXSDKManagerHandler.InitSDKPrompt())
+			{
+				WX.InitSDK((code) =>
+				{
+					devlog.Log($"WX.InitSDK return code: {code}");
+					ts.SetResult(code);
+				});
+			}
+			else
+			{
+				ts.SetResult(0);
+			}
+			return ts.Task;
+		}
+
 
 		public override Task SetEnableDebug(GDK.SetEnableDebugOptions res)
 		{

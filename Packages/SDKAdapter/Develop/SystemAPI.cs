@@ -8,9 +8,9 @@ namespace DevelopGDK
 {
 	public class SystemAPI : GDK.SystemAPIBase
 	{
-		public override void init()
+		public override void Init()
 		{
-			base.init();
+			base.Init();
 		}
 
 		public override void GetFPS(int fps)

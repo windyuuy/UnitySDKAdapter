@@ -53,7 +53,7 @@ namespace GDK
 				return "-1.0";
 			}
 		}
-		public virtual void init()
+		public virtual void Init()
 		{
 			this._initEvents();
 
@@ -70,6 +70,8 @@ namespace GDK
 		double ISystemAPI.NativeVersion => nativeVersion;
 
 		public virtual IClipboard Clipboard { get; set; } = new Clipboard();
+        public IModuleMap Api { get; set; }
+
 
         public Logger devlog = new Logger();
 		public virtual async Task SetEnableDebug(SetEnableDebugOptions res)
@@ -297,5 +299,11 @@ namespace GDK
         {
             throw new NotImplementedException();
         }
+
+		public virtual Task InitWithConfig(GDKConfigV2 info)
+		{
+			return Task.CompletedTask;
+		}
+
     }
 }
