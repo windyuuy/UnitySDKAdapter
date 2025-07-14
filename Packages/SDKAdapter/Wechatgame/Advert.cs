@@ -7,7 +7,7 @@ using WeChatWASM;
 
 namespace WechatGDK
 {
-    public class RewardedVideoAd : GDK.IRewardedVideoAd
+    public class RewardedVideoAd : GDK.IRewardedVideoAd, IDisposable
     {
         protected WXRewardedVideoAd AdUnit;
         public string PlacementId { get; private set; }
@@ -29,6 +29,9 @@ namespace WechatGDK
         public void Hide()
         {
         }
+
+        protected Action<WXRewardedVideoAdOnCloseResponse> OnCloseCallbacks;
+        protected Action<WXADErrorResponse> OnErrorCallbacks;
 
         protected Task<LoadAdUnitResult> LoadingTask;
         public Task<LoadAdUnitResult> Load()
@@ -154,26 +157,32 @@ namespace WechatGDK
 
             return ShowTask;
         }
+
+        public void Dispose()
+        {
+            this.Destroy();
+        }
+
     }
 
     public class Advert : GDK.AdvertV2Base
     {
-        protected static readonly Dictionary<string, IAdvertUnit> AdvertMap = new();
+        // protected static readonly Dictionary<string, IAdvertUnit> AdvertMap = new();
         public override Task<IRewardedVideoAd> CreateRewardedVideoAd(AdCreateInfo createInfo)
         {
             UnityEngine.Debug.Log($"create rewarded video ad: {createInfo.PlacementId}");
             var placementId = createInfo.PlacementId;
-            if (!(AdvertMap.TryGetValue(placementId, out var advert) && advert is IRewardedVideoAd rewardedVideoAd))
+            // if (!(AdvertMap.TryGetValue(placementId, out var advert) && advert is IRewardedVideoAd rewardedVideoAd))
+            // {
+            var adUnit = WX.CreateRewardedVideoAd(new()
             {
-                var adUnit = WX.CreateRewardedVideoAd(new()
-                {
-                    adUnitId = placementId,
-                });
-                rewardedVideoAd = new RewardedVideoAd(adUnit, placementId);
-                AdvertMap.Add(placementId, rewardedVideoAd);
-            }
+                adUnitId = placementId,
+            });
+            var rewardedVideoAd = new RewardedVideoAd(adUnit, placementId);
+            // AdvertMap.Add(placementId, rewardedVideoAd);
+            // }
             UnityEngine.Debug.Log($"create rewarded video ad-ok: {createInfo.PlacementId}");
-            return Task<IRewardedVideoAd>.FromResult(rewardedVideoAd);
+            return Task<IRewardedVideoAd>.FromResult(rewardedVideoAd as GDK.IRewardedVideoAd);
         }
 
         public override bool IsAdvertTypeSupported(string advertType)
