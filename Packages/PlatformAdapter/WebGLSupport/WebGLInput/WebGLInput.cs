@@ -9,8 +9,10 @@ using System;
 using AOT;
 using System.Runtime.InteropServices; // for DllImport
 using System.Collections;
-using FairyGUI;
 using UnityEngine.EventSystems;
+#if SUPPORT_FGUI
+using FairyGUI;
+#endif
 
 namespace WebGLSupport
 {
@@ -125,6 +127,7 @@ namespace WebGLSupport
 
         private IInputField Setup()
         {
+#if SUPPORT_FGUI
             var displayObjInfo = GetComponent<DisplayObjectInfo>();
             if (displayObjInfo)
             {
@@ -137,6 +140,7 @@ namespace WebGLSupport
                     return new WrappedFGUIInputField(displayObjInfo);
                 }
             }
+#endif
             if (GetComponent<InputField>()) return new WrappedInputField(GetComponent<InputField>());
 // #if TMP_WEBGL_SUPPORT
 //             if (GetComponent<TMPro.TMP_InputField>()) return new WrappedTMPInputField(GetComponent<TMPro.TMP_InputField>());

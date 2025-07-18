@@ -1,4 +1,5 @@
-﻿using FairyGUI;
+﻿#if SUPPORT_FGUI
+using FairyGUI;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using WebGLSupport.Detail;
@@ -174,3 +175,4 @@ namespace WebGLSupport
         }
     }
 }
+#endif
