@@ -10,7 +10,7 @@ namespace GDK
 	{
 		public override void ReportEvent<T>(string eventId, T data)
 		{
-			UnityEngine.Debug.Log($"eventId={eventId}, data={JsonUtility.ToJson(data)}");
+			UnityEngine.Debug.Log($"[埋点] eventId={eventId}, data={JsonUtility.ToJson(data)}");
 		}
 	}
 }
