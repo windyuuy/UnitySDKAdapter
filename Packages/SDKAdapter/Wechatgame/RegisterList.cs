@@ -19,6 +19,7 @@ namespace WechatGDK
 			// this.Except = () => new Except();
 			// this.Auth = () => new Auth();
 			this.AdvertV2 = () => new Advert();
+			this.DataAnalyze = () => new DataAnalyze();
 			// this.Hardware = () => new Hardware();
 			this.SystemAPI = () => new SystemAPI();
 		}

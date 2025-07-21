@@ -1,3 +1,5 @@
+using GDK;
+
 namespace DevelopGDK
 {
 	public class RegisterList : GDK.ModuleClassMap
@@ -5,6 +7,7 @@ namespace DevelopGDK
 		public RegisterList()
 		{
 			this.AdvertV2 = () => new Advert();
+			this.DataAnalyze = () => new DataAnalyze();
 			this.GameInfo = () => new GameInfo();
 			this.User = () => new User();
 			// this.Pay = () => new Pay();

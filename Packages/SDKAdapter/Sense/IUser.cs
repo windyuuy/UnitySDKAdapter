@@ -7,14 +7,19 @@ namespace GDK
     // public class LoginError extends ReqError { }
 
     /** 登录请求结果 */
+    [Serializable]
     public class LoginResult
     {
+        public bool IsOk;
         public string OpenId;
         public string Code;
+        public string Unionid;
+        public string ErrMsg;
         public object Extra;
     }
 
     /** 登录请求参数 */
+    [Serializable]
     public class LoginParams : ReqParams
     {
         // oppo 包名 pkgName
@@ -43,7 +48,8 @@ namespace GDK
 		* gamepind 登录token
 		*/
         public string Token { get; }
-
+        public string AppId { get; set; }
+        public string AppSecret { get; set; }
     }
 
     public class ShowRealNameDialogResult
