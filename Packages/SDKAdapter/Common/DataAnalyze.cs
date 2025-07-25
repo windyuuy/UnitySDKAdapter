@@ -18,6 +18,7 @@ namespace GDK
 			return Task.CompletedTask;
 		}
 
-		public abstract void ReportEvent<T>(string eventId, Dictionary<string, string> data);
+		public abstract void ReportEvent<T>(string eventId, T data);
+		public abstract void ReportEvent(string eventId, Dictionary<string, string> data);
 	}
 }
