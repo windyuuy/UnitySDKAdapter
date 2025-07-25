@@ -20,7 +20,7 @@ namespace GDK
 					dict[field.Name] = str;
 				}
 			}
-			WX.ReportEvent(eventId, data);
+			WX.ReportEvent(eventId, dict);
 		}
 		public override void ReportEvent(string eventId, Dictionary<string, string> data)
 		{
