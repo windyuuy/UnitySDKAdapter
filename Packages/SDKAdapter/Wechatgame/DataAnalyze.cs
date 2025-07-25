@@ -11,7 +11,7 @@ namespace GDK
 		public override void ReportEvent<T>(string eventId, T data)
 		{
 			var dict = new Dictionary<string, string>();
-			var fields = data.GetType().GetFields();
+			var fields = data.GetType().GetFields(System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public);
 			foreach (var field in fields)
 			{
 				var value = field.GetValue(data);
