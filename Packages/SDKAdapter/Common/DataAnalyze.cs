@@ -1,5 +1,6 @@
 
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace GDK
@@ -17,6 +18,6 @@ namespace GDK
 			return Task.CompletedTask;
 		}
 
-		public abstract void ReportEvent<T>(string eventId, T data);
-    }
+		public abstract void ReportEvent<T>(string eventId, Dictionary<string, string> data);
+	}
 }
