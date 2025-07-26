@@ -39,6 +39,7 @@ namespace GDK
         /// 原生广告V2
         /// </summary>
         public IAdvertV2 AdvertV2 { get; set; }
+        public IStorage Storage { get; set; }
         public IDataAnalyze DataAnalyze { get; set; }
 
         /// <summary>
@@ -97,6 +98,7 @@ namespace GDK
         public IUserData UserData { get; set; }
         public IUser User { get; set; }
         public IAdvertV2 AdvertV2 { get; set; }
+        public IStorage Storage { get; set; }
         public IDataAnalyze DataAnalyze { get; set; }
         public IWidgets Widgets { get; set; }
         public IGameInfo GameInfo { get; set; }

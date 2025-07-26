@@ -29,5 +29,6 @@ namespace GDK
         public Func<IDataAnalyze> DataAnalyze;
         // public Func<IHotUpdate> HotUpdate;
         // public Func<IAppPay> AppPay;
+        public Func<IStorage> Storage;
     }
 }

@@ -1,4 +1,5 @@
 using GDK;
+using Wechatgame;
 
 namespace WechatGDK
 {
@@ -22,6 +23,7 @@ namespace WechatGDK
 			this.DataAnalyze = () => new DataAnalyze();
 			// this.Hardware = () => new Hardware();
 			this.SystemAPI = () => new SystemAPI();
+			this.Storage = () => new Storage();
 		}
 	}
 }

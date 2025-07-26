@@ -1,3 +1,4 @@
+using Develop;
 using GDK;
 
 namespace DevelopGDK
@@ -21,6 +22,7 @@ namespace DevelopGDK
 			// this.Except = () => new Except();
 			// this.Auth = () => new Auth();
 			this.SystemAPI = () => new SystemAPI();
+			this.Storage = () => new Storage();
 		}
 	}
 }
