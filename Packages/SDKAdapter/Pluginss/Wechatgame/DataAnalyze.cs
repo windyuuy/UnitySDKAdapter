@@ -31,9 +31,12 @@ namespace GDK
 			WX.ReportEvent(eventId, dict);
 		}
 
-		public override void ReportEvent(string eventId, Dictionary<string, string> data)
+		public override void ReportEvent(string eventId, Dictionary<string, string> dict)
 		{
-			WX.ReportEvent(eventId, data);
+			var ss = string.Join(",", dict.Select((item) => $"{item.Key}=\"{item.Value}\""));
+			UnityEngine.Debug.Log($"[埋点] eventId={eventId}, data={ss}");
+
+			WX.ReportEvent(eventId, dict);
 		}
 	}
 }
