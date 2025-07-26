@@ -2,9 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using UnityEngine;
-using WeChatWASM;
 
 namespace GDK
 {
@@ -12,7 +9,7 @@ namespace GDK
 	{
 		public override void ReportEvent<T>(string eventId, T data)
 		{
-			UnityEngine.Debug.Log($"[埋点] eventId={eventId}, data={JsonUtility.ToJson(data)}");
+			UnityEngine.Debug.Log($"[埋点] eventId={eventId}, data={UnityEngine.JsonUtility.ToJson(data)}");
 		}
 		public override void ReportEvent(string eventId, Dictionary<string, string> data)
 		{

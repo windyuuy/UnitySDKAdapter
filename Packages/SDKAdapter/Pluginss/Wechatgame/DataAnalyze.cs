@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using WeChatWASM;
+using System.Linq;
 
 namespace GDK
 {
@@ -24,6 +24,9 @@ namespace GDK
 					dict[field.Name] = value.ToString();
 				}
 			}
+			
+			var ss = string.Join(",", dict.Select((key, value) => $"{key}=\"{value}\""));
+			UnityEngine.Debug.Log($"[埋点] eventId={eventId}, data={ss}");
 
 			WX.ReportEvent(eventId, dict);
 		}
