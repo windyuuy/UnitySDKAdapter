@@ -21,7 +21,7 @@ namespace GDK
 				}
 				else
 				{
-					dict[field.Name] = value.ToString();
+					dict[field.Name] = $"{value}";
 				}
 			}
 
