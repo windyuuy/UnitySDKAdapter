@@ -1,6 +1,6 @@
 namespace GDK
 {
-	public interface IStorage
+	public interface IStorage: IModule
 	{
 		// 更多关于存储的隔离策略和清理策略说明可以查看这里 https://developers.weixin.qq.com/minigame/dev/guide/base-ability/storage.html
 

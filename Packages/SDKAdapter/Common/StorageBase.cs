@@ -7,6 +7,17 @@ namespace GDK
 {
 	public class StorageBase : IStorage
 	{
+		public IModuleMap Api { get; set; }
+
+		public void Init()
+		{
+		}
+
+		public Task InitWithConfig(GDKConfigV2 info)
+		{
+			return Task.CompletedTask;
+		}
+
 		public virtual void SetInt(string key, int value)
 		{
 			UnityEngine.PlayerPrefs.SetInt(key, value);

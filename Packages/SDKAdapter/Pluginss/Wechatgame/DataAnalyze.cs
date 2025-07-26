@@ -24,8 +24,8 @@ namespace GDK
 					dict[field.Name] = value.ToString();
 				}
 			}
-			
-			var ss = string.Join(",", dict.Select((key, value) => $"{key}=\"{value}\""));
+
+			var ss = string.Join(",", dict.Select((item) => $"{item.Key}=\"{item.Value}\""));
 			UnityEngine.Debug.Log($"[埋点] eventId={eventId}, data={ss}");
 
 			WX.ReportEvent(eventId, dict);
