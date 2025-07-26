@@ -92,16 +92,19 @@ namespace WechatGDK
         protected Task<ShowAdUnitResult> ShowTask;
         public Task<ShowAdUnitResult> Show(IShowAdUnitOpInfo opInfo)
         {
-            UnityEngine.Debug.Log($"show rewarded video ad: {PlacementId}");
+            var placementId = PlacementId;
+            var adUnit = AdUnit;
+
+            UnityEngine.Debug.Log($"show rewarded video ad: {placementId}");
             if (ShowTask != null)
             {
                 // 需要处理, 否则 show 不回调
-                UnityEngine.Debug.LogError($"show rewarded video ad-failed, already showing: {PlacementId}");
+                UnityEngine.Debug.LogError($"show rewarded video ad-failed, already showing: {placementId}");
                 return Task.FromResult(new ShowAdUnitResult()
                 {
                     IsOk = false,
                     ErrCode = -1,
-                    ErrMsg = $"ShowFailed, Advert is already Showing: {PlacementId}, {opInfo.Scene}",
+                    ErrMsg = $"ShowFailed, Advert is already Showing: {placementId}, {opInfo.Scene}",
                 });
             }
             var ts = new TaskCompletionSource<ShowAdUnitResult>();
@@ -109,18 +112,25 @@ namespace WechatGDK
 
             IsReady = false;
             LoadingTask = null;
-            AdUnit.Show((resp) =>
+            adUnit.Show((resp) =>
             {
-                UnityEngine.Debug.Log($"show rewarded video ad-ok: {PlacementId}, {resp.errCode}, {resp.errMsg}");
+                UnityEngine.Debug.Log($"show rewarded video ad-ok: {placementId}, {resp.errCode}, {resp.errMsg}");
                 void Finish()
                 {
                     ShowTask = null;
-                    AdUnit.OffClose(OnClose);
-                    AdUnit.OffError(OnError);
+                    adUnit.OffClose(OnClose);
+                    adUnit.OffError(OnError);
                 }
                 void OnClose(WXRewardedVideoAdOnCloseResponse respClose)
                 {
-                    UnityEngine.Debug.Log($"show rewarded video ad-closed: {PlacementId}, {respClose.isEnded}, {respClose.errMsg}");
+                    WX.ReportEvent("e2004", new Dictionary<string, string>()
+                    {
+                        ["placement_id"] = placementId,
+                        ["instance_id"] = adUnit.instanceId,
+                        ["rewardable"] = $"{respClose.isEnded}",
+                        ["errmsg"] = respClose.errMsg,
+                    });
+                    UnityEngine.Debug.Log($"show rewarded video ad-closed: {placementId}, {adUnit.instanceId}, {respClose.isEnded}, {respClose.errMsg}");
                     Finish();
                     ts.SetResult(new ShowAdUnitResult()
                     {
@@ -132,7 +142,7 @@ namespace WechatGDK
                 }
                 void OnError(WXADErrorResponse respError)
                 {
-                    UnityEngine.Debug.LogError($"show rewarded video ad-failed2: {PlacementId}, {resp.errCode}, {resp.errMsg}");
+                    UnityEngine.Debug.LogError($"show rewarded video ad-failed2: {placementId}, {resp.errCode}, {resp.errMsg}");
                     Finish();
                     ts.SetResult(new ShowAdUnitResult()
                     {
@@ -141,11 +151,11 @@ namespace WechatGDK
                         ErrCode = respError.errCode,
                     });
                 }
-                AdUnit.OnClose(OnClose);
-                AdUnit.OnError(OnError);
+                adUnit.OnClose(OnClose);
+                adUnit.OnError(OnError);
             }, (resp) =>
             {
-                UnityEngine.Debug.LogError($"show rewarded video ad-failed: {PlacementId}, {resp.errCode}, {resp.errMsg}");
+                UnityEngine.Debug.LogError($"show rewarded video ad-failed: {placementId}, {resp.errCode}, {resp.errMsg}");
                 ShowTask = null;
                 ts.SetResult(new ShowAdUnitResult()
                 {
@@ -181,7 +191,12 @@ namespace WechatGDK
             var rewardedVideoAd = new RewardedVideoAd(adUnit, placementId);
             // AdvertMap.Add(placementId, rewardedVideoAd);
             // }
-            UnityEngine.Debug.Log($"create rewarded video ad-ok: {createInfo.PlacementId}");
+            UnityEngine.Debug.Log($"create rewarded video ad-ok: {placementId}, {adUnit.instanceId}");
+            WX.ReportEvent("e2003", new Dictionary<string, string>()
+            {
+                ["placement_id"] = placementId,
+                ["instance_id"] = adUnit.instanceId,
+            });
             return Task<IRewardedVideoAd>.FromResult(rewardedVideoAd as GDK.IRewardedVideoAd);
         }
 
