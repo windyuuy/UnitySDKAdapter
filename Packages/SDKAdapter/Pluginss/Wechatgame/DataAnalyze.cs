@@ -1,4 +1,3 @@
-
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -11,7 +10,8 @@ namespace GDK
 		public override void ReportEvent<T>(string eventId, T data)
 		{
 			var dict = new Dictionary<string, string>();
-			var fields = data.GetType().GetFields(System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public);
+			var fields = data.GetType()
+				.GetFields(System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public);
 			foreach (var field in fields)
 			{
 				var value = field.GetValue(data);
@@ -19,9 +19,15 @@ namespace GDK
 				{
 					dict[field.Name] = str;
 				}
+				else
+				{
+					dict[field.Name] = value.ToString();
+				}
 			}
+
 			WX.ReportEvent(eventId, dict);
 		}
+
 		public override void ReportEvent(string eventId, Dictionary<string, string> data)
 		{
 			WX.ReportEvent(eventId, data);
