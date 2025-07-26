@@ -26,7 +26,7 @@ namespace GDK
 			}
 
 			var ss = string.Join(",", dict.Select((item) => $"{item.Key}=\"{item.Value}\""));
-			UnityEngine.Debug.Log($"[埋点] eventId={eventId}, data={ss}");
+			UnityEngine.Debug.Log($"[埋点] eventId={eventId}, data={{{ss}}}");
 
 			WX.ReportEvent(eventId, dict);
 		}
@@ -34,7 +34,7 @@ namespace GDK
 		public override void ReportEvent(string eventId, Dictionary<string, string> dict)
 		{
 			var ss = string.Join(",", dict.Select((item) => $"{item.Key}=\"{item.Value}\""));
-			UnityEngine.Debug.Log($"[埋点] eventId={eventId}, data={ss}");
+			UnityEngine.Debug.Log($"[埋点] eventId={eventId}, data={{{ss}}}");
 
 			WX.ReportEvent(eventId, dict);
 		}
