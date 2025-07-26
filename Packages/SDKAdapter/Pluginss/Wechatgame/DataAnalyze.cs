@@ -31,7 +31,15 @@ namespace WechatGDK
 			// UnityEngine.Debug.Log($"[埋点] eventId={eventId}, data={{{ss}}}");
 			//
 			// WX.ReportEvent(eventId, dict);
-			WXAdapter.GDK_Wechatgame_ReportEvent(eventId, JsonUtility.ToJson(data));
+			try
+			{
+				WXAdapter.GDK_Wechatgame_ReportEvent(eventId, JsonUtility.ToJson(data));
+			}
+			catch (Exception exception)
+			{
+				UnityEngine.Debug.LogError("事件上报客户端崩溃:");
+				UnityEngine.Debug.LogException(exception);
+			}
 		}
 
 		public override void ReportEvent(string eventId, Dictionary<string, string> dict)
