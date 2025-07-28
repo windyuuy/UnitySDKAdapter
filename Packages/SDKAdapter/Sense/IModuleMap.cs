@@ -29,7 +29,7 @@ namespace GDK
         /// <summary>
         /// 分享
         /// </summary>
-        // public IShare share{get;set;}
+        public IShare Share{get;set;}
         /// <summary>
         /// 支付
         /// </summary>
@@ -97,6 +97,7 @@ namespace GDK
         public IMetaInfo MetaInfo { get; set; }
         public IUserData UserData { get; set; }
         public IUser User { get; set; }
+        public IShare Share { get; set; }
         public IAdvertV2 AdvertV2 { get; set; }
         public IStorage Storage { get; set; }
         public IDataAnalyze DataAnalyze { get; set; }

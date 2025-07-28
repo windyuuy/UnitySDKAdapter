@@ -1,5 +1,4 @@
 using GDK;
-using Wechatgame;
 
 namespace WechatGDK
 {

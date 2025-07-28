@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 using GDK;
 using WeChatWASM;
 
-namespace Wechatgame
+namespace WechatGDK
 {
 	public class Storage : IStorage
 	{

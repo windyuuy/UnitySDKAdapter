@@ -118,6 +118,7 @@ namespace GDK
         public string RuntimePlatform { get; }
         public IUserData UserData => this._m.UserData;
         public IAdvertV2 AdvertV2 => this._m.AdvertV2;
+        public IShare Share => this._m.Share;
         public IStorage Storage => this._m.Storage;
         public IDataAnalyze DataAnalyze => this._m.DataAnalyze;
         public IWidgets Widgets => this._m.Widgets;

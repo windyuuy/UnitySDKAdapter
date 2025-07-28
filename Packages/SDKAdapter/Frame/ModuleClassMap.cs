@@ -12,7 +12,7 @@ namespace GDK
         public Func<IGameInfo> GameInfo;
         public Func<IUser> User;
         // public Func<IPay> Pay;
-        // public Func<IShare> Share;   
+        public Func<IShare> Share;   
         // public Func<ISystemInfo> SystemInfo;
         public Func<ISystemAPI> SystemAPI = () => new SystemAPIBase();
         public Func<IUserData> UserData;
