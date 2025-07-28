@@ -1,5 +1,3 @@
-using Develop;
-using GDK;
 
 namespace DevelopGDK
 {
@@ -24,6 +22,7 @@ namespace DevelopGDK
 			// this.Auth = () => new Auth();
 			this.SystemAPI = () => new SystemAPI();
 			this.Storage = () => new Storage();
+			this.Hardware = () => new Hardware();
 		}
 	}
 }

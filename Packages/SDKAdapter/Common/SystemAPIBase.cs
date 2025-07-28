@@ -1,4 +1,3 @@
-
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -9,12 +8,14 @@ namespace GDK
 	public class Clipboard : IClipboard
 	{
 		public ClipboardData _data = null;
+
 		public virtual async Task<ClipboardData> GetData()
 		{
 			// return { ...this._data }
 			// return {};
 			return this._data;
 		}
+
 		public virtual async Task SetData(ClipboardData res)
 		{
 			// this._data = { ...res }
@@ -41,6 +42,7 @@ namespace GDK
 		{
 			throw new System.Exception("Method not implemented.");
 		}
+
 		public virtual void OnMemoryWarning(Action<IOnMemoryWarningResult> call)
 		{
 			throw new System.Exception("Method not implemented.");
@@ -48,11 +50,9 @@ namespace GDK
 
 		public string SdkFrameworkVersion
 		{
-			get
-			{
-				return "-1.0";
-			}
+			get { return "-1.0"; }
 		}
+
 		public virtual void Init()
 		{
 			this._initEvents();
@@ -62,18 +62,17 @@ namespace GDK
 
 		public int nativeVersion
 		{
-			get
-			{
-				return -1;
-			}
+			get { return -1; }
 		}
+
 		double ISystemAPI.NativeVersion => nativeVersion;
 
 		public virtual IClipboard Clipboard { get; set; } = new Clipboard();
-        public IModuleMap Api { get; set; }
+		public IModuleMap Api { get; set; }
 
 
-        public Logger devlog = new Logger();
+		public Logger devlog = new Logger();
+
 		public virtual async Task SetEnableDebug(SetEnableDebugOptions res)
 		{
 			devlog.Info($"unsupoort action: setEnableDebug -> {res.enableDebug} ");
@@ -84,11 +83,13 @@ namespace GDK
 			devlog.Info("打开小程序成功");
 			return new AppCallUpResult();
 		}
+
 		public virtual async Task ExitProgram()
 		{
 			devlog.Info("正在退出");
 			UnityEngine.Application.Quit();
 		}
+
 		public virtual async Task UpdateProgramForce()
 		{
 			devlog.Info("没有更新");
@@ -103,14 +104,17 @@ namespace GDK
 		{
 			// TODO: 实现系统各种事件回调和api
 		}
+
 		public virtual void OffShow(Action<object> callback)
 		{
 			// TODO: 实现系统各种事件回调和api
 		}
+
 		public virtual void OnHide(Action<object> callback)
 		{
 			// TODO: 实现系统各种事件回调和api
 		}
+
 		public virtual void OffHide(Action<object> callback)
 		{
 			// TODO: 实现系统各种事件回调和api
@@ -134,6 +138,7 @@ namespace GDK
 			};
 			return result;
 		}
+
 		public virtual async Task<ICheckPermissionResult> CheckAppSystemPermissions(ICheckPermissionParams paras)
 		{
 			ICheckPermissionResult result = new CheckPermissionResult()
@@ -169,6 +174,7 @@ namespace GDK
 						}
 					}
 				}
+
 				if (info.Parameters != null)
 				{
 					foreach (var (k, _) in info.Parameters)
@@ -214,7 +220,6 @@ namespace GDK
 			{
 				return def;
 			}
-
 		}
 
 		public double GetAppInfoDouble(string key, double def)
@@ -252,7 +257,6 @@ namespace GDK
 		 */
 		public virtual void appAutoRestart()
 		{
-
 		}
 
 		public virtual void SetLoadingProgress(SetLoadingProgressOptions paras)
@@ -295,15 +299,27 @@ namespace GDK
 			throw new NotImplementedException();
 		}
 
-        public virtual Task<RestartMiniProgramResult> RestartMiniProgram(RestartMiniProgramOptions options)
-        {
-            throw new NotImplementedException();
-        }
+		public virtual Task<RestartMiniProgramResult> RestartMiniProgram(RestartMiniProgramOptions options)
+		{
+			throw new NotImplementedException();
+		}
+
+		public virtual LaunchOptions GetLaunchOptionsSync()
+		{
+			return new LaunchOptions
+			{
+				Scene = 0,
+				Query = new Dictionary<string, string>(),
+				Path = "",
+				IsSticky = false,
+				ShareTicket = "",
+				ReferrerInfo = null,
+			};
+		}
 
 		public virtual Task InitWithConfig(GDKConfigV2 info)
 		{
 			return Task.CompletedTask;
 		}
-
-    }
+	}
 }

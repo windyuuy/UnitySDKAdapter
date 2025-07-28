@@ -23,6 +23,7 @@ namespace WechatGDK
 			// this.Hardware = () => new Hardware();
 			this.SystemAPI = () => new SystemAPI();
 			this.Storage = () => new Storage();
+			this.Hardware = () => new Hardware();
 		}
 	}
 }

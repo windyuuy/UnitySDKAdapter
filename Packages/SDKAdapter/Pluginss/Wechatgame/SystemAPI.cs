@@ -1,270 +1,291 @@
 #if SUPPORT_WECHATGAME
-using System;
-using System.Threading.Tasks;
-using WeChatWASM;
-using GDK;
+	using System;
+	using System.Threading.Tasks;
+	using WeChatWASM;
+	using GDK;
 
-namespace WechatGDK
-{
-	public static class DefaultErrorHandler
+	namespace WechatGDK
 	{
-		public static Action<GeneralCallbackResult> GetErrorHandler<T>(this TaskCompletionSource<T> ts)
+		public static class DefaultErrorHandler
 		{
-			return (GeneralCallbackResult resp2) =>
+			public static Action<GeneralCallbackResult> GetErrorHandler<T>(this TaskCompletionSource<T> ts)
 			{
-				ts.SetException(new Exception(resp2.errMsg));
-			};
+				return (GeneralCallbackResult resp2) => { ts.SetException(new Exception(resp2.errMsg)); };
+			}
 		}
-	}
-	public class Clipboard : GDK.IClipboard
-	{
-		public Task<GDK.ClipboardData> GetData()
+
+		public class Clipboard : GDK.IClipboard
 		{
-			var ts = new TaskCompletionSource<GDK.ClipboardData>();
-			WX.GetClipboardData(new()
+			public Task<GDK.ClipboardData> GetData()
 			{
-				success = (res) =>
+				var ts = new TaskCompletionSource<GDK.ClipboardData>();
+				WX.GetClipboardData(new()
 				{
-					ts.SetResult(new GDK.ClipboardData()
+					success = (res) =>
 					{
-						data = res.data,
-					});
-				},
-				fail = ts.GetErrorHandler(),
-			});
-			return ts.Task;
-		}
-		public Task SetData(GDK.ClipboardData res)
-		{
-			var ts = new TaskCompletionSource<bool>();
-			WX.SetClipboardData(new()
-			{
-				data = res.data,
-				success = (resp) =>
-				{
-					ts.SetResult(true);
-				},
-				fail = ts.GetErrorHandler(),
-			});
-			return ts.Task;
-		}
-	}
-
-	public class SystemAPI : GDK.SystemAPIBase
-	{
-		public override GDK.IClipboard Clipboard { get; set; } = new Clipboard();
-
-		public override void Init()
-		{
-		}
-
-		public override Task InitWithConfig(GDKConfigV2 info)
-		{
-			devlog.Log("WX.InitSDK");
-			var ts = new TaskCompletionSource<int>();
-			if (!WXSDKManagerHandler.InitSDKPrompt())
-			{
-				WX.InitSDK((code) =>
-				{
-					devlog.Log($"WX.InitSDK return code: {code}");
-					ts.SetResult(code);
+						ts.SetResult(new GDK.ClipboardData()
+						{
+							data = res.data,
+						});
+					},
+					fail = ts.GetErrorHandler(),
 				});
+				return ts.Task;
 			}
-			else
+
+			public Task SetData(GDK.ClipboardData res)
 			{
-				devlog.Log($"WX.InitSDK has been inited");
-				ts.SetResult(0);
+				var ts = new TaskCompletionSource<bool>();
+				WX.SetClipboardData(new()
+				{
+					data = res.data,
+					success = (resp) => { ts.SetResult(true); },
+					fail = ts.GetErrorHandler(),
+				});
+				return ts.Task;
 			}
-			return ts.Task;
 		}
 
-
-		public override Task SetEnableDebug(GDK.SetEnableDebugOptions res)
+		public class SystemAPI : GDK.SystemAPIBase
 		{
-			var ts = new TaskCompletionSource<bool>();
-			WX.SetEnableDebug(new()
-			{
-				enableDebug = res.enableDebug,
-				success = (resp) =>
-				{
-					ts.SetResult(true);
-				},
-				fail = ts.GetErrorHandler(),
-			});
-			return ts.Task;
-		}
+			public override GDK.IClipboard Clipboard { get; set; } = new Clipboard();
 
-		public override Task<GDK.AppCallUpResult> NavigateToApp(GDK.AppCallUpParams paras)
-		{
-			var ret = new TaskCompletionSource<GDK.AppCallUpResult>();
-			WX.NavigateToMiniProgram(new()
+			public override void Init()
 			{
-				appId = paras.appId,
-				envVersion = paras.envVersion,
-				extraData = paras.extraData,
-				path = paras.path,
-				success = (resp) =>
+			}
+
+			public override Task InitWithConfig(GDKConfigV2 info)
+			{
+				devlog.Log("WX.InitSDK");
+				var ts = new TaskCompletionSource<int>();
+				if (!WXSDKManagerHandler.InitSDKPrompt())
 				{
-					ret.SetResult(new GDK.AppCallUpResult()
+					WX.InitSDK((code) =>
 					{
-
+						devlog.Log($"WX.InitSDK return code: {code}");
+						ts.SetResult(code);
 					});
-				},
-				fail = ret.GetErrorHandler(),
-			});
-			return ret.Task;
-		}
-		public override Task ExitProgram()
-		{
-			var ret = new TaskCompletionSource<bool>();
-			WX.ExitMiniProgram(new()
-			{
-				success = (resp) =>
+				}
+				else
 				{
-					ret.SetResult(true);
-				},
-				fail = ret.GetErrorHandler(),
-			});
-			return ret.Task;
-		}
-		public override Task UpdateProgramForce()
-		{
-			var ret = new TaskCompletionSource<bool>();
+					devlog.Log($"WX.InitSDK has been inited");
+					ts.SetResult(0);
+				}
 
-			WX.ShowLoading(new() { title = "检查更新中...", mask = true });
-			var updateManager = WX.GetUpdateManager();
-			if (updateManager != null)
+				return ts.Task;
+			}
+
+
+			public override Task SetEnableDebug(GDK.SetEnableDebugOptions res)
 			{
-				updateManager.OnCheckForUpdate((hasUpdate) =>
+				var ts = new TaskCompletionSource<bool>();
+				WX.SetEnableDebug(new()
 				{
-					devlog.Info("检查更新开始:");
-					if (hasUpdate.hasUpdate)
+					enableDebug = res.enableDebug,
+					success = (resp) => { ts.SetResult(true); },
+					fail = ts.GetErrorHandler(),
+				});
+				return ts.Task;
+			}
+
+			public override Task<GDK.AppCallUpResult> NavigateToApp(GDK.AppCallUpParams paras)
+			{
+				var ret = new TaskCompletionSource<GDK.AppCallUpResult>();
+				WX.NavigateToMiniProgram(new()
+				{
+					appId = paras.appId,
+					envVersion = paras.envVersion,
+					extraData = paras.extraData,
+					path = paras.path,
+					success = (resp) =>
 					{
-						devlog.Info("有更新");
-						// SDKProxy.showLoading({title:"检查更新中...",mask:true})
-					}
-					else
+						ret.SetResult(new GDK.AppCallUpResult()
+						{
+						});
+					},
+					fail = ret.GetErrorHandler(),
+				});
+				return ret.Task;
+			}
+
+			public override Task ExitProgram()
+			{
+				var ret = new TaskCompletionSource<bool>();
+				WX.ExitMiniProgram(new()
+				{
+					success = (resp) => { ret.SetResult(true); },
+					fail = ret.GetErrorHandler(),
+				});
+				return ret.Task;
+			}
+
+			public override Task UpdateProgramForce()
+			{
+				var ret = new TaskCompletionSource<bool>();
+
+				WX.ShowLoading(new() { title = "检查更新中...", mask = true });
+				var updateManager = WX.GetUpdateManager();
+				if (updateManager != null)
+				{
+					updateManager.OnCheckForUpdate((hasUpdate) =>
 					{
-						devlog.Info("没有更新");
+						devlog.Info("检查更新开始:");
+						if (hasUpdate.hasUpdate)
+						{
+							devlog.Info("有更新");
+							// SDKProxy.showLoading({title:"检查更新中...",mask:true})
+						}
+						else
+						{
+							devlog.Info("没有更新");
+							WX.HideLoading(new() { });
+							ret.SetResult(true);
+						}
+					});
+
+					updateManager.OnUpdateReady((resp) =>
+					{
+						devlog.Info("更新完成");
 						WX.HideLoading(new() { });
-						ret.SetResult(true);
+						WX.ShowModal(new()
+						{
+							title = "提示",
+							content = "新版本已经下载完成！",
+							confirmText = "重启游戏",
+							cancelText = "重启游戏",
+							showCancel = false,
+							success = (res) =>
+							{
+								if (res.confirm)
+								{
+									WX.GetUpdateManager().ApplyUpdate();
+								}
+							}
+						});
+					});
+
+					updateManager.OnUpdateFailed((resp) =>
+					{
+						devlog.Info($"更新失败: {resp.errMsg}");
+						WX.HideLoading(new() { });
+						WX.ShowModal(new()
+						{
+							title = "提示",
+							content = "更新失败,请重启游戏",
+							confirmText = "重启游戏",
+							cancelText = "重启游戏",
+							showCancel = false,
+							success = (res) =>
+							{
+								if (res.confirm)
+								{
+									WX.GetUpdateManager().ApplyUpdate();
+								}
+							}
+						});
+					});
+				}
+
+				return ret.Task;
+			}
+
+			public override void OnShow(Action<object> callback)
+			{
+				WX.OnShow(callback);
+			}
+
+			public override void OffShow(Action<object> callback)
+			{
+				WX.OffShow(callback);
+			}
+
+			public override void OnHide(Action<object> callback)
+			{
+				WX.OnHide(callback);
+			}
+
+			public override void OffHide(Action<object> callback)
+			{
+				WX.OffHide(callback);
+			}
+
+			public override void GetFPS(int fps)
+			{
+				WX.SetPreferredFramesPerSecond(fps);
+			}
+
+
+			protected Action<GDK.IOnMemoryWarningResult> _onMemoryWarning0;
+			private Action<OnMemoryWarningListenerResult> _onMemoryWarning;
+
+			public override void OnMemoryWarning(Action<GDK.IOnMemoryWarningResult> call)
+			{
+				_onMemoryWarning0 += call;
+				if (_onMemoryWarning != null)
+				{
+					_onMemoryWarning = (resp) =>
+					{
+						_onMemoryWarning0?.Invoke(new GDK.OnMemoryWarningResult()
+						{
+							level = (GDK.MemoryWarningLevel)resp.level,
+						});
+					};
+					WX.OnMemoryWarning(_onMemoryWarning);
+				}
+			}
+
+			public override void OffMemoryWarning(Action<GDK.IOnMemoryWarningResult> call)
+			{
+				_onMemoryWarning0 -= call;
+				if (_onMemoryWarning0 == null)
+				{
+					WX.OffMemoryWarning(_onMemoryWarning);
+					_onMemoryWarning = null;
+				}
+			}
+
+			public override Task<RestartMiniProgramResult> RestartMiniProgram(RestartMiniProgramOptions options)
+			{
+				var ts = new TaskCompletionSource<RestartMiniProgramResult>();
+				UnityEngine.Debug.Log("WX.RestartMiniProgram");
+				WX.RestartMiniProgram(new WeChatWASM.RestartMiniProgramOption()
+				{
+					success = (resp) =>
+					{
+						UnityEngine.Debug.Log("WX.RestartMiniProgram-done");
+						ts.SetResult(new RestartMiniProgramResult()
+						{
+						});
+					},
+					fail = ts.GetErrorHandler(),
+				});
+				return ts.Task;
+			}
+
+			public override LaunchOptions GetLaunchOptionsSync()
+			{
+				var launchOptions = WX.GetLaunchOptionsSync();
+				var referrerInfo = launchOptions.referrerInfo;
+				var liveInfo = referrerInfo.gameLiveInfo;
+				return new LaunchOptions
+				{
+					Scene = launchOptions.scene,
+					Query = launchOptions.query,
+					Path = null,
+					IsSticky = false,
+					ShareTicket = launchOptions.shareTicket,
+					ReferrerInfo = new()
+					{
+						ExtraData = referrerInfo.extraData,
+						AppId = referrerInfo.appId,
+						GameLiveInfo = new()
+						{
+							StreamerOpenId = liveInfo.streamerOpenId,
+							FeedId = liveInfo.feedId,
+						},
 					}
-				});
-
-				updateManager.OnUpdateReady((resp) =>
-				{
-					devlog.Info("更新完成");
-					WX.HideLoading(new() { });
-					WX.ShowModal(new()
-					{
-						title = "提示",
-						content = "新版本已经下载完成！",
-						confirmText = "重启游戏",
-						cancelText = "重启游戏",
-						showCancel = false,
-						success = (res) =>
-						{
-							if (res.confirm)
-							{
-								WX.GetUpdateManager().ApplyUpdate();
-							}
-						}
-					});
-				});
-
-				updateManager.OnUpdateFailed((resp) =>
-				{
-					devlog.Info($"更新失败: {resp.errMsg}");
-					WX.HideLoading(new() { });
-					WX.ShowModal(new()
-					{
-						title = "提示",
-						content = "更新失败,请重启游戏",
-						confirmText = "重启游戏",
-						cancelText = "重启游戏",
-						showCancel = false,
-						success = (res) =>
-						{
-							if (res.confirm)
-							{
-								WX.GetUpdateManager().ApplyUpdate();
-							}
-						}
-					});
-				});
-			}
-			return ret.Task;
-		}
-
-		public override void OnShow(Action<object> callback)
-		{
-			WX.OnShow(callback);
-		}
-		public override void OffShow(Action<object> callback)
-		{
-			WX.OffShow(callback);
-		}
-		public override void OnHide(Action<object> callback)
-		{
-			WX.OnHide(callback);
-		}
-		public override void OffHide(Action<object> callback)
-		{
-			WX.OffHide(callback);
-		}
-
-		public override void GetFPS(int fps)
-		{
-			WX.SetPreferredFramesPerSecond(fps);
-		}
-
-
-		protected Action<GDK.IOnMemoryWarningResult> _onMemoryWarning0;
-		private Action<OnMemoryWarningListenerResult> _onMemoryWarning;
-		public override void OnMemoryWarning(Action<GDK.IOnMemoryWarningResult> call)
-		{
-			_onMemoryWarning0 += call;
-			if (_onMemoryWarning != null)
-			{
-				_onMemoryWarning = (resp) =>
-				{
-					_onMemoryWarning0?.Invoke(new GDK.OnMemoryWarningResult()
-					{
-						level = (GDK.MemoryWarningLevel)resp.level,
-					});
 				};
-				WX.OnMemoryWarning(_onMemoryWarning);
 			}
 		}
-		public override void OffMemoryWarning(Action<GDK.IOnMemoryWarningResult> call)
-		{
-			_onMemoryWarning0 -= call;
-			if (_onMemoryWarning0 == null)
-			{
-				WX.OffMemoryWarning(_onMemoryWarning);
-				_onMemoryWarning = null;
-			}
-		}
-
-		public override Task<RestartMiniProgramResult> RestartMiniProgram(RestartMiniProgramOptions options)
-		{
-			var ts = new TaskCompletionSource<RestartMiniProgramResult>();
-			UnityEngine.Debug.Log("WX.RestartMiniProgram");
-			WX.RestartMiniProgram(new WeChatWASM.RestartMiniProgramOption()
-			{
-				success = (resp) =>
-				{
-					UnityEngine.Debug.Log("WX.RestartMiniProgram-done");
-					ts.SetResult(new RestartMiniProgramResult()
-					{
-					});
-				},
-				fail = ts.GetErrorHandler(),
-			});
-			return ts.Task;
-		}
-
 	}
-
-}
 #endif

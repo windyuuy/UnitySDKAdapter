@@ -4,6 +4,6 @@ namespace GDK {
 	/**
 	 * 埋点统计
 	 */
-	public interface ILog {
+	public interface ITrackPoint {
 	}
 }

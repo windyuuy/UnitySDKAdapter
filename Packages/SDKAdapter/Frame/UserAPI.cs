@@ -133,6 +133,7 @@ namespace GDK
 		public IGameInfo GameInfo => this._m.GameInfo;
 		public IUser User => this._m.User;
 		public ISupport Support => this._m.Support;
+		public IHardware Hardware => this._m.Hardware;
 
 		/** 批量导出接口 */
 		// $batch_export() begin

@@ -2,7 +2,7 @@ using GDK;
 
 namespace DevelopGDK
 {
-	public class Storage: StorageBase
+	public class Hardware: HardwareBase
 	{
 		
 	}

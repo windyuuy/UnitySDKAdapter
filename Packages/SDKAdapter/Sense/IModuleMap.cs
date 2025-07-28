@@ -74,7 +74,7 @@ namespace GDK
         /// <summary>
         /// 硬件附加功能管理
         /// </summary>
-        // public IHardware hardware{get;set;}
+        public IHardware Hardware{get;set;}
         /// <summary>
         /// 原生统计日志
         /// </summary>
@@ -106,6 +106,7 @@ namespace GDK
         public IWidgets Widgets { get; set; }
         public IGameInfo GameInfo { get; set; }
         public ISupport Support { get; set; }
+        public IHardware Hardware { get; set; }
         public ISystemAPI SystemAPI { get; set; }
     }
 }
