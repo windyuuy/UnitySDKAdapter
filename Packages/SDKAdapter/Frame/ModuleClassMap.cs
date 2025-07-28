@@ -26,6 +26,7 @@ namespace GDK
         // public Func<ILog> Log = () => new LogBase();
         // public Func<ILocalPush> LocalPush;
         public Func<IAdvertV2> AdvertV2;
+        public Func<IFileSystem> FileSystem;
         public Func<IDataAnalyze> DataAnalyze;
         // public Func<IHotUpdate> HotUpdate;
         // public Func<IAppPay> AppPay;

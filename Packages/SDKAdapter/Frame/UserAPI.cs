@@ -3,165 +3,176 @@ using Lang.Loggers;
 
 namespace GDK
 {
-    // 自动生成，成员使用register函数注册
-    public class UserAPI
-    {
-        public static UserAPI Instance;
-        public Logger Devlog = new Logger();
-        /**
+	// 自动生成，成员使用register函数注册
+	public class UserAPI
+	{
+		public static UserAPI Instance;
+		public Logger Devlog = new Logger();
+
+		/**
 		 * 附件map
 		 */
-        private IModuleMap _m;
-        public UserAPI(IModuleMap moduleMap)
-        {
-            this._m = moduleMap;
-        }
+		private IModuleMap _m;
 
-        /**
-         * 获取GDK元信息
-         */
-        public static GDKFrameWorkMetaInfo getGDKMetaInfo()
-        {
-            GDKFrameWorkMetaInfo info = new GDKFrameWorkMetaInfo()
-            {
-                Version = "1.0.9",
-            };
-            return info;
-        }
-        protected readonly GDKFrameWorkMetaInfo MetaInfo = getGDKMetaInfo();
+		public UserAPI(IModuleMap moduleMap)
+		{
+			this._m = moduleMap;
+		}
 
-        /**
+		/**
+		 * 获取GDK元信息
+		 */
+		public static GDKFrameWorkMetaInfo getGDKMetaInfo()
+		{
+			GDKFrameWorkMetaInfo info = new GDKFrameWorkMetaInfo()
+			{
+				Version = "1.0.9",
+			};
+			return info;
+		}
+
+		protected readonly GDKFrameWorkMetaInfo MetaInfo = getGDKMetaInfo();
+
+		/**
 		 * gdk的框架版本号
 		 **/
-        public string GdkVersion =>
-             this.MetaInfo.Version;
+		public string GdkVersion =>
+			this.MetaInfo.Version;
 
-        public void Init()
-        {
-            Devlog.Warn("redundant init for gdk, skipped");
-        }
+		public void Init()
+		{
+			Devlog.Warn("redundant init for gdk, skipped");
+		}
 
-        protected bool BeInitConfigOnce = false;
-        public async Task InitConfig(GDKConfigV2 config)
-        {
-            if (this.BeInitConfigOnce)
-            {
-                Devlog.Warn("redundant initConfig for gdk, skipped");
-            }
-            else
-            {
-                this.BeInitConfigOnce = true;
-                await GDKManager.Instance.initWithGDKConfig(config);
-            }
-        }
+		protected bool BeInitConfigOnce = false;
 
-        /**
+		public async Task InitConfig(GDKConfigV2 config)
+		{
+			if (this.BeInitConfigOnce)
+			{
+				Devlog.Warn("redundant initConfig for gdk, skipped");
+			}
+			else
+			{
+				this.BeInitConfigOnce = true;
+				await GDKManager.Instance.initWithGDKConfig(config);
+			}
+		}
+
+		/**
 		 * 初始化插件内各个模块
 		 * @param info 外部传入的配置
 		 */
-        protected void _init()
-        {
-            var fields = this._m.GetType().GetFields();
-            foreach (var field in fields)
-            {
-                // 初始化广告等具体模块
-                var addon = field.GetValue(this._m) as IModule;
-                // if (addon.init)
-                {
-                    addon.Init();
-                }
-            }
-        }
+		protected void _init()
+		{
+			var fields = this._m.GetType().GetFields();
+			foreach (var field in fields)
+			{
+				// 初始化广告等具体模块
+				var addon = field.GetValue(this._m) as IModule;
+				// if (addon.init)
+				{
+					addon.Init();
+				}
+			}
+		}
 
-        /**
+		/**
 		 * 初始化插件内各个模块
 		 * @param info 外部传入的配置
 		 */
-        internal async Task _initWithConfig(GDKConfigV2 info)
-        {
-            await this._m.GameInfo.InitWithConfig(info);
-            var fields = this._m.GetType().GetProperties();
-            foreach (var field in fields)
-            {
-                if (field.Name == nameof(IGameInfo).Substring(1))
-                {
-                    continue;
-                }
-                // 初始化广告等具体模块
-                var retValue = field.GetValue(this._m);
-                if (retValue is IModule addon)
-                {
-                    await addon.InitWithConfig(info);
-                }
-            }
-        }
+		internal async Task _initWithConfig(GDKConfigV2 info)
+		{
+			await this._m.GameInfo.InitWithConfig(info);
+			var fields = this._m.GetType().GetProperties();
+			foreach (var field in fields)
+			{
+				if (field.Name == nameof(IGameInfo).Substring(1))
+				{
+					continue;
+				}
 
-        protected bool CheckModuleAttr(
-              string moduleName,
-              string attrName,
-              string attrType = null
-        )
-        {
-            return true;
-        }
+				// 初始化广告等具体模块
+				var retValue = field.GetValue(this._m);
+				if (retValue is IModule addon)
+				{
+					await addon.InitWithConfig(info);
+				}
+			}
+		}
 
-        public bool IsSupport(
-             string moduleName,
-             string attrName,
-             string attrType = null
-         )
-        {
-            return this.CheckModuleAttr(moduleName, attrName, attrType);
-        }
+		protected bool CheckModuleAttr(
+			string moduleName,
+			string attrName,
+			string attrType = null
+		)
+		{
+			return true;
+		}
 
-        /** 当前实际平台 */
-        public string RuntimePlatform { get; }
-        public IUserData UserData => this._m.UserData;
-        public IAdvertV2 AdvertV2 => this._m.AdvertV2;
-        public IShare Share => this._m.Share;
-        public IStorage Storage => this._m.Storage;
-        public IDataAnalyze DataAnalyze => this._m.DataAnalyze;
-        public IWidgets Widgets => this._m.Widgets;
-        public ISystemAPI SystemAPI => this._m.SystemAPI;
-        public IGameInfo GameInfo => this._m.GameInfo;
-        public IUser User => this._m.User;
-        public ISupport Support => this._m.Support;
+		public bool IsSupport(
+			string moduleName,
+			string attrName,
+			string attrType = null
+		)
+		{
+			return this.CheckModuleAttr(moduleName, attrName, attrType);
+		}
 
-        /** 批量导出接口 */
-        // $batch_export() begin
-        /**
+		/** 当前实际平台 */
+		public string RuntimePlatform { get; }
+
+		public IUserData UserData => this._m.UserData;
+		public IAdvertV2 AdvertV2 => this._m.AdvertV2;
+		public IFileSystem FileSystem => this._m.FileSystem;
+		public IShare Share => this._m.Share;
+		public IStorage Storage => this._m.Storage;
+		public IDataAnalyze DataAnalyze => this._m.DataAnalyze;
+		public IWidgets Widgets => this._m.Widgets;
+		public ISystemAPI SystemAPI => this._m.SystemAPI;
+		public IGameInfo GameInfo => this._m.GameInfo;
+		public IUser User => this._m.User;
+		public ISupport Support => this._m.Support;
+
+		/** 批量导出接口 */
+		// $batch_export() begin
+		/**
 		 * 插件名
 		 * * develop 网页开发测试
 		 * * wechat 微信
 		 * * qqplay 玩一玩
 		 * * app 原生APP
 		 **/
-        public string PluginName
-        {
-            get
-            {
-                if (!this.CheckModuleAttr("metaInfo", "pluginName"))
-                {
-                    return null;
-                }
-                return this._m.MetaInfo.pluginName;
-            }
-        }
-        /**
+		public string PluginName
+		{
+			get
+			{
+				if (!this.CheckModuleAttr("metaInfo", "pluginName"))
+				{
+					return null;
+				}
+
+				return this._m.MetaInfo.pluginName;
+			}
+		}
+
+		/**
 		 * 插件版本
 		 */
-        public string PluginVersion
-        {
-            get
-            {
-                if (!this.CheckModuleAttr("metaInfo", "pluginVersion"))
-                {
-                    return null;
-                }
-                return this._m.MetaInfo.pluginVersion;
-            }
-        }
-        /**
+		public string PluginVersion
+		{
+			get
+			{
+				if (!this.CheckModuleAttr("metaInfo", "pluginVersion"))
+				{
+					return null;
+				}
+
+				return this._m.MetaInfo.pluginVersion;
+			}
+		}
+
+		/**
 		 * api平台名称
 		 * * browser 浏览器
 		 * * native APP原生
@@ -169,41 +180,44 @@ namespace GDK
 		 * * qqplay QQ玩一玩
 		 * * unknown 未知平台
 		 */
-        public string ApiPlatform
-        {
-            get
-            {
-                if (!this.CheckModuleAttr("metaInfo", "apiPlatform"))
-                {
-                    return null;
-                }
-                return this._m.MetaInfo.apiPlatform;
-            }
-        }
-        /** 本地化api平台名 */
-        public string ApiPlatformLocale
-        {
-            get
-            {
-                if (!this.CheckModuleAttr("metaInfo", "apiPlatformLocale"))
-                {
-                    return null;
-                }
-                return this._m.MetaInfo.apiPlatformLocale;
-            }
-        }
+		public string ApiPlatform
+		{
+			get
+			{
+				if (!this.CheckModuleAttr("metaInfo", "apiPlatform"))
+				{
+					return null;
+				}
 
-        public string OpenId
-        {
-            get
-            {
-                if (!this.CheckModuleAttr("userData", "openId"))
-                {
-                    return null;
-                }
-                return this._m.UserData.openId;
-            }
-        }
+				return this._m.MetaInfo.apiPlatform;
+			}
+		}
 
-    }
+		/** 本地化api平台名 */
+		public string ApiPlatformLocale
+		{
+			get
+			{
+				if (!this.CheckModuleAttr("metaInfo", "apiPlatformLocale"))
+				{
+					return null;
+				}
+
+				return this._m.MetaInfo.apiPlatformLocale;
+			}
+		}
+
+		public string OpenId
+		{
+			get
+			{
+				if (!this.CheckModuleAttr("userData", "openId"))
+				{
+					return null;
+				}
+
+				return this._m.UserData.openId;
+			}
+		}
+	}
 }

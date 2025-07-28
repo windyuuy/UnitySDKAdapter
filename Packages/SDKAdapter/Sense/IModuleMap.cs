@@ -39,6 +39,7 @@ namespace GDK
         /// 原生广告V2
         /// </summary>
         public IAdvertV2 AdvertV2 { get; set; }
+        public IFileSystem FileSystem { get; set; }
         public IStorage Storage { get; set; }
         public IDataAnalyze DataAnalyze { get; set; }
 
@@ -99,6 +100,7 @@ namespace GDK
         public IUser User { get; set; }
         public IShare Share { get; set; }
         public IAdvertV2 AdvertV2 { get; set; }
+        public IFileSystem FileSystem { get; set; }
         public IStorage Storage { get; set; }
         public IDataAnalyze DataAnalyze { get; set; }
         public IWidgets Widgets { get; set; }
