@@ -8,7 +8,7 @@ namespace WechatGDK
 			this.GameInfo = () => new GameInfo();
 			this.User = () => new User();
 			// this.Pay = () => new Pay();
-			// this.Share = () => new Share();
+			this.Share = () => new Share();
 			// this.SystemInfo = () => new SystemInfo();
 			this.UserData = () => new UserData();
 			// this.Customer = () => new Customer();
@@ -18,6 +18,7 @@ namespace WechatGDK
 			// this.Except = () => new Except();
 			// this.Auth = () => new Auth();
 			this.AdvertV2 = () => new Advert();
+			this.FileSystem = () => new FileSystem();
 			this.DataAnalyze = () => new DataAnalyze();
 			// this.Hardware = () => new Hardware();
 			this.SystemAPI = () => new SystemAPI();

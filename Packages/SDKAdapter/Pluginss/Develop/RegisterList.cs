@@ -8,11 +8,12 @@ namespace DevelopGDK
 		public RegisterList()
 		{
 			this.AdvertV2 = () => new Advert();
+			this.FileSystem = () => new FileSystem();
 			this.DataAnalyze = () => new DataAnalyze();
 			this.GameInfo = () => new GameInfo();
 			this.User = () => new User();
 			// this.Pay = () => new Pay();
-			// this.Share = () => new Share();
+			this.Share = () => new Share();
 			// this.SystemInfo = () => new SystemInfo();
 			this.UserData = () => new UserData();
 			// this.Customer = () => new Customer();
