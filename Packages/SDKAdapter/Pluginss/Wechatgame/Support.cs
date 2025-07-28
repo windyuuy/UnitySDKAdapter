@@ -1,4 +1,4 @@
-
+#if SUPPORT_WECHATGAME
 namespace WechatGDK
 {
 	public class Support : GDK.SupportBase
@@ -12,3 +12,4 @@ namespace WechatGDK
 		}
 	}
 }
+#endif

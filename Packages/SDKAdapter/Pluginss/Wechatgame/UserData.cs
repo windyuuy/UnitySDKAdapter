@@ -1,4 +1,4 @@
-
+#if SUPPORT_WECHATGAME
 using System.Threading.Tasks;
 using GDK;
 
@@ -35,3 +35,4 @@ namespace WechatGDK
         }
     }
 }
+#endif

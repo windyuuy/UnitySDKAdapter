@@ -1,7 +1,5 @@
+#if SUPPORT_WECHATGAME
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using WeChatWASM;
 
 namespace WechatGDK
@@ -97,3 +95,4 @@ namespace WechatGDK
 		}
 	}
 }
+#endif

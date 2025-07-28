@@ -1,3 +1,4 @@
+#if SUPPORT_WECHATGAME
 using System.Runtime.InteropServices;
 
 namespace WechatGDK
@@ -8,3 +9,4 @@ namespace WechatGDK
 		public static extern void GDK_Wechatgame_ReportEvent(string eventid, string data);
 	}
 }
+#endif

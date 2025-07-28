@@ -1,4 +1,5 @@
 
+#if SUPPORT_WECHATGAME
 using GDK;
 
 namespace WechatGDK
@@ -24,3 +25,4 @@ namespace WechatGDK
 		}
 	}
 }
+#endif

@@ -1,5 +1,4 @@
-using GDK;
-
+#if SUPPORT_WECHATGAME
 namespace WechatGDK
 {
 	public class RegisterList : GDK.ModuleClassMap
@@ -26,3 +25,4 @@ namespace WechatGDK
 		}
 	}
 }
+#endif

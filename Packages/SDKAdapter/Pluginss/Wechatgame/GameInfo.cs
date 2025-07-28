@@ -1,4 +1,4 @@
-
+#if SUPPORT_WECHATGAME
 namespace WechatGDK
 {
 
@@ -9,3 +9,4 @@ namespace WechatGDK
         }
     }
 }
+#endif
