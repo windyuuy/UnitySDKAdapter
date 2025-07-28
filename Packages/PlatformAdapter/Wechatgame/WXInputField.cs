@@ -1,7 +1,9 @@
 using System;
 using UnityEngine;
 using System.Collections;
+#if UNITY_WEBGL && SUPPORT_WECHATGAME && !UNITY_EDITOR
 using WeChatWASM;
+#endif
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
@@ -46,6 +48,7 @@ namespace UnityEngine.WXExt
 #endif
         }
 
+#if UNITY_WEBGL && SUPPORT_WECHATGAME && !UNITY_EDITOR
         public void OnInput(OnKeyboardInputListenerResult v)
         {
             Debug.Log("onInput");
@@ -114,5 +117,6 @@ namespace UnityEngine.WXExt
                 _isShowKeyboard = false;
             }
         }
+#endif
     }
 }
