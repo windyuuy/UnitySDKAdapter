@@ -13,9 +13,9 @@ namespace UnityEngine.WXExt
     /// fix UGUI
     /// </summary>
     public class WXInputField : MonoBehaviour
-#if UNITY_WEBGL && SUPPORT_WECHATGAME && !UNITY_EDITOR
+// #if UNITY_WEBGL && SUPPORT_WECHATGAME && !UNITY_EDITOR
         , IPointerClickHandler, IPointerExitHandler
-#endif
+// #endif
     {
         public InputField input;
 
