@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.IO.Compression;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -54,6 +55,11 @@ namespace GDK
 			{
 				return Directory.CreateDirectory(dirPath).FullName;
 			}
+		}
+
+		public string[] ReaddirSync(string dirPath)
+		{
+			return Directory.GetFiles(dirPath, "**/*");
 		}
 
 		public async void ReadFileBytes(ReadFileBytesParam option)
@@ -138,7 +144,7 @@ namespace GDK
 
 		public byte[] ReadFileBytesSync(string filePath, long? position = null, long? length = null)
 		{
-			var file = File.OpenRead(filePath);
+			using var file = File.OpenRead(filePath);
 
 			int readPos;
 			if (position == null)
@@ -224,7 +230,7 @@ namespace GDK
 
 		private static readonly UTF8Encoding UTF8WithoutBom = new UTF8Encoding(false);
 
-		public async void WriteFileString(WriteFileStringParam param)
+		public async void WriteFileText(WriteFileTextParam param)
 		{
 			try
 			{
@@ -247,7 +253,7 @@ namespace GDK
 			}
 		}
 
-		public bool WriteFileStringSync(string filePath, string data, string encoding = "utf8")
+		public bool WriteFileTextSync(string filePath, string data, string encoding = "utf8")
 		{
 			File.WriteAllText(filePath, data, UTF8WithoutBom);
 			return true;
@@ -257,6 +263,41 @@ namespace GDK
 		{
 			File.WriteAllBytes(filePath, data);
 			return true;
+		}
+
+		public virtual void CloseSync(CloseSyncOptions paras)
+		{
+			throw new NotImplementedException();
+		}
+
+		public virtual string OpenSync(OpenSyncOptions paras)
+		{
+			throw new NotImplementedException();
+		}
+
+		public void WriteSync(WriteSyncOption paras)
+		{
+			throw new NotImplementedException();
+		}
+
+		public byte[] ReadCompressedFileSync(ReadCompressedFileSyncOption options)
+		{
+			using var fileStream = File.OpenRead(options.filePath);
+			using var brotliStream =
+				new BrotliStream(fileStream, CompressionMode.Decompress);
+			var len = brotliStream.Length;
+			var buffer = new byte[len];
+			brotliStream.Read(buffer, 0, (int)len);
+			return buffer;
+		}
+
+		public string ReadCompressedFileTextSync(ReadCompressedFileSyncOption options)
+		{
+			using var fileStream = File.OpenRead(options.filePath);
+			using var reader = new StreamReader(
+				new BrotliStream(fileStream, CompressionMode.Decompress));
+			var text = reader.ReadToEnd();
+			return text;
 		}
 
 		public bool WriteFileBytesSync(string filePath, byte[] data, string encoding = "utf8")

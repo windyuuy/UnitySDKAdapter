@@ -33,6 +33,22 @@
 
 				return ts.Task;
 			}
+
+			private string _userDataPath;
+
+			public override string UserDataPath
+			{
+				get
+				{
+					if (_userDataPath != null)
+					{
+						return _userDataPath;
+					}
+
+					_userDataPath = TTAdapter.GDK_Bytedance_GetUserDataPath();
+					return _userDataPath;
+				}
+			}
 		}
 	}
 #endif

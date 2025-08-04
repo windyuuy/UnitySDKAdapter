@@ -103,6 +103,8 @@ namespace GDK
 		 * 游戏版本号
 		 **/
         public string GameVersion { get; }
+        
+        public string UserDataPath { get; }
     }
 
 }

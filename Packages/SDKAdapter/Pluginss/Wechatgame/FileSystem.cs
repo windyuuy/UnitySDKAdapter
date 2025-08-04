@@ -1,10 +1,14 @@
+#if SUPPORT_WECHATGAME
 using System.Threading.Tasks;
 using GDK;
+using Lang.Encoding;
 using Lang.Loggers;
 using WeChatWASM;
+using ReadCompressedFileSyncOption = WeChatWASM.ReadCompressedFileSyncOption;
 using ReadFileParam = WeChatWASM.ReadFileParam;
 using WriteFileParam = WeChatWASM.WriteFileParam;
 using WriteFileStringParam = WeChatWASM.WriteFileStringParam;
+using WriteSyncOption = WeChatWASM.WriteSyncOption;
 
 namespace WechatGDK
 {
@@ -56,6 +60,11 @@ namespace WechatGDK
 			return _fs.MkdirSync(dirPath, recursive);
 		}
 
+		public string[] ReaddirSync(string dirPath)
+		{
+			return _fs.ReaddirSync(dirPath);
+		}
+
 		public void ReadFileBytes(GDK.ReadFileBytesParam option)
 		{
 			_fs.ReadFile(new ReadFileParam
@@ -88,7 +97,7 @@ namespace WechatGDK
 
 		public void ReadFileAllText(ReadFileAllTextParam option)
 		{
-			ReadFileBytes(new ()
+			ReadFileBytes(new()
 			{
 				filePath = option.filePath,
 				encoding = option.encoding,
@@ -99,7 +108,7 @@ namespace WechatGDK
 
 		public void ReadFileAllBytes(ReadFileAllBytesParam option)
 		{
-			ReadFileBytes(new ()
+			ReadFileBytes(new()
 			{
 				filePath = option.filePath,
 				encoding = option.encoding,
@@ -208,7 +217,7 @@ namespace WechatGDK
 			});
 		}
 
-		public void WriteFileString(GDK.WriteFileStringParam param)
+		public void WriteFileText(GDK.WriteFileTextParam param)
 		{
 			_fs.WriteFile(new WriteFileStringParam
 			{
@@ -237,7 +246,7 @@ namespace WechatGDK
 		}
 
 		/// 同步写文件
-		public bool WriteFileStringSync(string filePath, string data, string encoding = "utf8")
+		public bool WriteFileTextSync(string filePath, string data, string encoding = "utf8")
 		{
 			var result = _fs.WriteFileSync(filePath, data, encoding);
 			var ok = result == "ok";
@@ -259,6 +268,51 @@ namespace WechatGDK
 			}
 
 			return ok;
+		}
+
+		public void CloseSync(CloseSyncOptions paras)
+		{
+			_fs.CloseSync(new()
+			{
+				fd = paras.fd,
+			});
+		}
+
+		public string OpenSync(OpenSyncOptions paras)
+		{
+			return _fs.OpenSync(new()
+			{
+				filePath = paras.filePath,
+				flag = paras.flag,
+			});
+		}
+
+		public void WriteSync(GDK.WriteSyncOption paras)
+		{
+			_fs.WriteSync(new WriteSyncOption
+			{
+				fd = paras.fd,
+				encoding = paras.encoding,
+				data = paras.data,
+				length = paras.length,
+				offset = paras.offset,
+				position = paras.position,
+			});
+		}
+
+		public byte[] ReadCompressedFileSync(GDK.ReadCompressedFileSyncOption options)
+		{
+			return _fs.ReadCompressedFileSync(new ReadCompressedFileSyncOption
+			{
+				compressionAlgorithm = options.compressionAlgorithm,
+				filePath = options.filePath,
+			});
+		}
+
+		public string ReadCompressedFileTextSync(GDK.ReadCompressedFileSyncOption options)
+		{
+			var text = EncodingExt.UTF8WithoutBom.GetString(ReadCompressedFileSync(options));
+			return text;
 		}
 
 		// public void GetLocalCachedPathForUrl()
@@ -293,3 +347,4 @@ namespace WechatGDK
 		}
 	}
 }
+#endif

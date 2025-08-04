@@ -1,8 +1,8 @@
+#if SUPPORT_WECHATGAME
 using System.Threading.Tasks;
 using GDK;
 using WeChatWASM;
 
-#if SUPPORT_WECHATGAME
 namespace WechatGDK
 {
 
@@ -33,7 +33,7 @@ namespace WechatGDK
             return ts.Task;
         }
 
-
+        public override string UserDataPath => WX.env.USER_DATA_PATH;
     }
 }
 #endif

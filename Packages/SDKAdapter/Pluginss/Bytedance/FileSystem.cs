@@ -1,422 +1,467 @@
 #if SUPPORT_BYTEDANCE
-using System.Threading.Tasks;
-using GDK;
-using Lang.Loggers;
-using TTSDK;
+	using System.Threading.Tasks;
+	using GDK;
+	using Lang.Encoding;
+	using TTSDK;
 
-namespace BytedanceGDK
-{
-	public class FileSystemManager : GDK.IFileSystemManager
+	namespace BytedanceGDK
 	{
-		public Logger devlog = new Logger();
-
-		private TTFileSystemManager _fs;
-
-		public FileSystemManager()
+		public class FileSystemManager : GDK.IFileSystemManager
 		{
-			_fs = TT.GetFileSystemManager();
-		}
+			private TTFileSystemManager _fs;
 
-		// public void Access(AccessParam param)
-		// {
-		// 	_fs.Access(param);
-		// }
-
-		public AccessSyncResult AccessSync(string path)
-		{
-			return new AccessSyncResult
+			public FileSystemManager()
 			{
-				Exist = _fs.AccessSync(path),
-			};
-		}
+				_fs = TT.GetFileSystemManager();
+			}
 
-		// public void GetSavedFileList()
-		// {
-		// 	throw new System.NotImplementedException();
-		// }
+			// public void Access(AccessParam param)
+			// {
+			// 	_fs.Access(param);
+			// }
 
-		// public void CopyFile()
-		// {
-		// 	throw new System.NotImplementedException();
-		// }
-
-		// public void CopyFileSync()
-		// {
-		// 	throw new System.NotImplementedException();
-		// }
-
-		// public void Mkdir()
-		// {
-		// 	throw new System.NotImplementedException();
-		// }
-
-		public string MkdirSync(string dirPath, bool recursive)
-		{
-			return _fs.MkdirSync(dirPath, recursive);
-		}
-
-		public void ReadFileBytes(GDK.ReadFileBytesParam option)
-		{
-			_fs.Open(new()
+			public AccessSyncResult AccessSync(string path)
 			{
-				success = (resp) =>
+				return new AccessSyncResult
 				{
-					var fd = resp.fd;
-					long readLen;
-					if (option.length == null)
-					{
-						readLen = _fs.FstatSync(new()
-						{
-							fd = fd,
-						}).size;
-					}
-					else
-					{
-						readLen = option.length.Value;
-					}
+					Exist = _fs.AccessSync(path),
+				};
+			}
 
-					var buffer = new byte[readLen];
-					try
-					{
-						_fs.Read(new()
-						{
-							success = (resp) =>
-							{
-								if (fd != null)
-								{
-									_fs.CloseSync(new CloseSyncParam
-									{
-										fd = fd,
-									});
-									fd = null;
-								}
+			// public void GetSavedFileList()
+			// {
+			// 	throw new System.NotImplementedException();
+			// }
 
-								option.success(new ReadFileResult()
-								{
-									binData = resp.arrayBuffer,
-									arrayBufferLength = resp.bytesRead,
-									errMsg = resp.errMsg,
-									errCode = 0,
-								});
-							},
-							fail = (resp) =>
-							{
-								if (fd != null)
-								{
-									_fs.CloseSync(new CloseSyncParam
-									{
-										fd = fd,
-									});
-									fd = null;
-								}
+			// public void CopyFile()
+			// {
+			// 	throw new System.NotImplementedException();
+			// }
 
-								option.fail(new ReadFileResult()
-								{
-									errMsg = resp.errMsg,
-									errCode = resp.errCode,
-								});
-							},
-							fd = fd,
-							arrayBuffer = buffer,
-							offset = 0,
-							length = (int)readLen,
-							position = (int)option.position,
-						});
-					}
-					finally
+			// public void CopyFileSync()
+			// {
+			// 	throw new System.NotImplementedException();
+			// }
+
+			// public void Mkdir()
+			// {
+			// 	throw new System.NotImplementedException();
+			// }
+
+			public string MkdirSync(string dirPath, bool recursive)
+			{
+				return _fs.MkdirSync(dirPath, recursive);
+			}
+
+			public string[] ReaddirSync(string dirPath)
+			{
+				return _fs.ReadDirSync(dirPath);
+			}
+
+			public void ReadFileBytes(GDK.ReadFileBytesParam option)
+			{
+				_fs.Open(new()
+				{
+					success = (resp) =>
 					{
-						if (fd != null)
+						var fd = resp.fd;
+						long readLen;
+						if (option.length == null)
 						{
-							_fs.CloseSync(new CloseSyncParam
+							readLen = _fs.FstatSync(new()
 							{
 								fd = fd,
-							});
-							fd = null;
+							}).size;
 						}
-					}
-				},
-				fail = (resp) =>
-				{
-					option.fail(new ReadFileResult()
-					{
-						errMsg = resp.errMsg,
-						errCode = resp.errCode,
-					});
-				},
-				filePath = option.filePath,
-				flag = "r",
-			});
-		}
+						else
+						{
+							readLen = option.length.Value;
+						}
 
-		public void ReadFileAllText(ReadFileAllTextParam option)
-		{
-			_fs.ReadFile(new TTSDK.ReadFileParam
-			{
-				success = (resp) =>
-				{
-					option.success(new ReadFileResult()
-					{
-						stringData = resp.stringData,
-						binData = resp.binData,
-						errMsg = resp.errMsg,
-						errCode = resp.errCode,
-					});
-				},
-				fail = (resp) =>
-				{
-					option.fail(new ReadFileResult()
-					{
-						errMsg = resp.errMsg,
-						errCode = resp.errCode,
-					});
-				},
-				filePath = option.filePath,
-				encoding = option.encoding,
-			});
-		}
+						var buffer = new byte[readLen];
+						try
+						{
+							_fs.Read(new()
+							{
+								success = (resp) =>
+								{
+									if (fd != null)
+									{
+										_fs.CloseSync(new CloseSyncParam
+										{
+											fd = fd,
+										});
+										fd = null;
+									}
 
-		public void ReadFileAllBytes(ReadFileAllBytesParam option)
-		{
-			_fs.ReadFile(new TTSDK.ReadFileParam
-			{
-				success = (resp) =>
-				{
-					option.success(new ReadFileResult()
-					{
-						stringData = resp.stringData,
-						binData = resp.binData,
-						errMsg = resp.errMsg,
-						errCode = resp.errCode,
-					});
-				},
-				fail = (resp) =>
-				{
-					option.fail(new ReadFileResult()
-					{
-						errMsg = resp.errMsg,
-						errCode = resp.errCode,
-					});
-				},
-				filePath = option.filePath,
-				encoding = option.encoding,
-			});
-		}
+									option.success(new ReadFileResult()
+									{
+										binData = resp.arrayBuffer,
+										arrayBufferLength = resp.bytesRead,
+										errMsg = resp.errMsg,
+										errCode = 0,
+									});
+								},
+								fail = (resp) =>
+								{
+									if (fd != null)
+									{
+										_fs.CloseSync(new CloseSyncParam
+										{
+											fd = fd,
+										});
+										fd = null;
+									}
 
-		public byte[] ReadFileBytesSync(string filePath, long? position = null, long? length = null)
-		{
-			var fd = _fs.OpenSync(new()
-			{
-				filePath = filePath,
-				flag = "r",
-			});
-			long readLen;
-			if (length == null)
-			{
-				readLen = _fs.FstatSync(new()
-				{
-					fd = fd,
-				}).size;
-			}
-			else
-			{
-				readLen = length.Value;
-			}
-
-			var buffer = new byte[readLen];
-			try
-			{
-				var result = _fs.ReadSync(new()
-				{
-					fd = fd,
-					arrayBuffer = buffer,
-					offset = 0,
-					length = (int)readLen,
-					position = (int?)position,
-				});
-				return result.arrayBuffer;
-			}
-			finally
-			{
-				_fs.CloseSync(new CloseSyncParam()
-				{
-					fd = fd,
+									option.fail(new ReadFileResult()
+									{
+										errMsg = resp.errMsg,
+										errCode = resp.errCode,
+									});
+								},
+								fd = fd,
+								arrayBuffer = buffer,
+								offset = 0,
+								length = (int)readLen,
+								position = (int)option.position,
+							});
+						}
+						finally
+						{
+							if (fd != null)
+							{
+								_fs.CloseSync(new CloseSyncParam
+								{
+									fd = fd,
+								});
+								fd = null;
+							}
+						}
+					},
+					fail = (resp) =>
+					{
+						option.fail(new ReadFileResult()
+						{
+							errMsg = resp.errMsg,
+							errCode = resp.errCode,
+						});
+					},
+					filePath = option.filePath,
+					flag = "r",
 				});
 			}
-		}
 
-		// public void Rename()
-		// {
-		// 	throw new System.NotImplementedException();
-		// }
-
-		public void RenameSync(string oldPath, string newPath)
-		{
-			_fs.RenameFileSync(oldPath, newPath);
-		}
-
-		public void Rmdir(GDK.RmdirParam param)
-		{
-			_fs.Rmdir(new()
+			public void ReadFileAllText(ReadFileAllTextParam option)
 			{
-				success = (resp) =>
+				_fs.ReadFile(new TTSDK.ReadFileParam
 				{
-					param.success(new BaseResponse()
+					success = (resp) =>
 					{
-						ErrCode = 0,
-						ErrMsg = "ok",
-						IsOk = true,
-					});
-				},
-				fail = (resp) =>
-				{
-					param.fail(new BaseResponse()
+						option.success(new ReadFileResult()
+						{
+							stringData = resp.stringData,
+							binData = resp.binData,
+							errMsg = resp.errMsg,
+							errCode = resp.errCode,
+						});
+					},
+					fail = (resp) =>
 					{
-						ErrCode = resp.errCode,
-						ErrMsg = resp.errMsg,
-						IsOk = false,
-					});
-				},
-				dirPath = param.dirPath,
-				recursive = param.recursive,
-			});
-		}
-
-		// public void RmdirSync()
-		// {
-		// 	throw new System.NotImplementedException();
-		// }
-
-		// public void Stat()
-		// {
-		// 	throw new System.NotImplementedException();
-		// }
-
-		// public void StatSync()
-		// {
-		// 	throw new System.NotImplementedException();
-		// }
-
-		// public void Unlink()
-		// {
-		// 	throw new System.NotImplementedException();
-		// }
-
-		public bool UnlinkSync(string filePath)
-		{
-			return _fs.UnlinkSync(filePath) == "unlink:ok";
-		}
-
-		/// 写文件
-		public void WriteFileBytes(GDK.WriteFileParam param)
-		{
-			_fs.WriteFile(new TTSDK.WriteFileParam()
-			{
-				success = (resp) =>
-				{
-					param.success(new BaseResponse
-					{
-						IsOk = true,
-						ErrCode = resp.errCode,
-						ErrMsg = resp.errMsg,
-					});
-				},
-				fail = (resp) =>
-				{
-					param.fail(new BaseResponse
-					{
-						IsOk = false,
-						ErrCode = resp.errCode,
-						ErrMsg = resp.errMsg,
-					});
-				},
-				filePath = param.filePath,
-				data = param.data,
-			});
-		}
-
-		public void WriteFileString(GDK.WriteFileStringParam param)
-		{
-			_fs.WriteFile(new TTSDK.WriteFileStringParam()
-			{
-				success = (resp) =>
-				{
-					param.success(new BaseResponse
-					{
-						IsOk = true,
-						ErrCode = resp.errCode,
-						ErrMsg = resp.errMsg,
-					});
-				},
-				fail = (resp) =>
-				{
-					param.fail(new BaseResponse
-					{
-						IsOk = false,
-						ErrCode = resp.errCode,
-						ErrMsg = resp.errMsg,
-					});
-				},
-				data = param.data,
-				filePath = param.filePath,
-				encoding = param.encoding
-			});
-		}
-
-		/// 同步写文件
-		public bool WriteFileStringSync(string filePath, string data, string encoding = "utf8")
-		{
-			var result = _fs.WriteFileSync(filePath, data, encoding);
-			var ok = result == "";
-			if (!ok)
-			{
-				devlog.Error(result);
+						option.fail(new ReadFileResult()
+						{
+							errMsg = resp.errMsg,
+							errCode = resp.errCode,
+						});
+					},
+					filePath = option.filePath,
+					encoding = option.encoding,
+				});
 			}
 
-			return ok;
-		}
-
-		public bool WriteFileBytesSync(string filePath, byte[] data)
-		{
-			var result = _fs.WriteFileSync(filePath, data);
-			var ok = result == "";
-			if (!ok)
+			public void ReadFileAllBytes(ReadFileAllBytesParam option)
 			{
-				devlog.Error(result);
+				_fs.ReadFile(new TTSDK.ReadFileParam
+				{
+					success = (resp) =>
+					{
+						option.success(new ReadFileResult()
+						{
+							stringData = resp.stringData,
+							binData = resp.binData,
+							errMsg = resp.errMsg,
+							errCode = resp.errCode,
+						});
+					},
+					fail = (resp) =>
+					{
+						option.fail(new ReadFileResult()
+						{
+							errMsg = resp.errMsg,
+							errCode = resp.errCode,
+						});
+					},
+					filePath = option.filePath,
+					encoding = option.encoding,
+				});
 			}
 
-			return ok;
+			public byte[] ReadFileBytesSync(string filePath, long? position = null, long? length = null)
+			{
+				var fd = _fs.OpenSync(new()
+				{
+					filePath = filePath,
+					flag = "r",
+				});
+				long readLen;
+				if (length == null)
+				{
+					readLen = _fs.FstatSync(new()
+					{
+						fd = fd,
+					}).size;
+				}
+				else
+				{
+					readLen = length.Value;
+				}
+
+				var buffer = new byte[readLen];
+				try
+				{
+					var result = _fs.ReadSync(new()
+					{
+						fd = fd,
+						arrayBuffer = buffer,
+						offset = 0,
+						length = (int)readLen,
+						position = (int?)position,
+					});
+					return result.arrayBuffer;
+				}
+				finally
+				{
+					_fs.CloseSync(new CloseSyncParam()
+					{
+						fd = fd,
+					});
+				}
+			}
+
+			// public void Rename()
+			// {
+			// 	throw new System.NotImplementedException();
+			// }
+
+			public void RenameSync(string oldPath, string newPath)
+			{
+				_fs.RenameFileSync(oldPath, newPath);
+			}
+
+			public void Rmdir(GDK.RmdirParam param)
+			{
+				_fs.Rmdir(new()
+				{
+					success = (resp) =>
+					{
+						param.success(new BaseResponse()
+						{
+							ErrCode = 0,
+							ErrMsg = "ok",
+							IsOk = true,
+						});
+					},
+					fail = (resp) =>
+					{
+						param.fail(new BaseResponse()
+						{
+							ErrCode = resp.errCode,
+							ErrMsg = resp.errMsg,
+							IsOk = false,
+						});
+					},
+					dirPath = param.dirPath,
+					recursive = param.recursive,
+				});
+			}
+
+			// public void RmdirSync()
+			// {
+			// 	throw new System.NotImplementedException();
+			// }
+
+			// public void Stat()
+			// {
+			// 	throw new System.NotImplementedException();
+			// }
+
+			// public void StatSync()
+			// {
+			// 	throw new System.NotImplementedException();
+			// }
+
+			// public void Unlink()
+			// {
+			// 	throw new System.NotImplementedException();
+			// }
+
+			public bool UnlinkSync(string filePath)
+			{
+				return _fs.UnlinkSync(filePath) == "unlink:ok";
+			}
+
+			/// 写文件
+			public void WriteFileBytes(GDK.WriteFileParam param)
+			{
+				_fs.WriteFile(new TTSDK.WriteFileParam()
+				{
+					success = (resp) =>
+					{
+						param.success(new BaseResponse
+						{
+							IsOk = true,
+							ErrCode = resp.errCode,
+							ErrMsg = resp.errMsg,
+						});
+					},
+					fail = (resp) =>
+					{
+						param.fail(new BaseResponse
+						{
+							IsOk = false,
+							ErrCode = resp.errCode,
+							ErrMsg = resp.errMsg,
+						});
+					},
+					filePath = param.filePath,
+					data = param.data,
+				});
+			}
+
+			public void WriteFileText(GDK.WriteFileTextParam param)
+			{
+				_fs.WriteFile(new TTSDK.WriteFileStringParam()
+				{
+					success = (resp) =>
+					{
+						param.success(new BaseResponse
+						{
+							IsOk = true,
+							ErrCode = resp.errCode,
+							ErrMsg = resp.errMsg,
+						});
+					},
+					fail = (resp) =>
+					{
+						param.fail(new BaseResponse
+						{
+							IsOk = false,
+							ErrCode = resp.errCode,
+							ErrMsg = resp.errMsg,
+						});
+					},
+					data = param.data,
+					filePath = param.filePath,
+					encoding = param.encoding
+				});
+			}
+
+			/// 同步写文件
+			public bool WriteFileTextSync(string filePath, string data, string encoding = "utf8")
+			{
+				var result = _fs.WriteFileSync(filePath, data, encoding);
+				var ok = result == "";
+				if (!ok)
+				{
+				}
+
+				return ok;
+			}
+
+			public bool WriteFileBytesSync(string filePath, byte[] data)
+			{
+				var result = _fs.WriteFileSync(filePath, data);
+				var ok = result == "";
+				if (!ok)
+				{
+				}
+
+				return ok;
+			}
+
+			// public void GetLocalCachedPathForUrl()
+			// {
+			// 	throw new System.NotImplementedException();
+			// }
+
+			// public void IsUrlCached()
+			// {
+			// 	throw new System.NotImplementedException();
+			// }
+
+			public void CloseSync(CloseSyncOptions paras)
+			{
+				_fs.CloseSync(new()
+				{
+					fd = paras.fd,
+				});
+			}
+
+			public string OpenSync(OpenSyncOptions paras)
+			{
+				return _fs.OpenSync(new()
+				{
+					filePath = paras.filePath,
+					flag = paras.flag,
+				});
+			}
+
+			public void WriteSync(WriteSyncOption paras)
+			{
+				_fs.WriteSync(new WriteBinSyncParam
+				{
+					fd = paras.fd,
+					data = paras.data,
+					offset = (int)paras.offset,
+					length = (int?)paras.length,
+					encoding = paras.encoding,
+				});
+			}
+
+			public byte[] ReadCompressedFileSync(ReadCompressedFileSyncOption options)
+			{
+				return _fs.ReadCompressedFileSync(new()
+				{
+					compressionAlgorithm = options.compressionAlgorithm,
+					filePath = options.filePath,
+				});
+			}
+
+			public string ReadCompressedFileTextSync(ReadCompressedFileSyncOption options)
+			{
+				var text = EncodingExt.UTF8WithoutBom.GetString(ReadCompressedFileSync(options));
+				return text;
+			}
 		}
 
-		// public void GetLocalCachedPathForUrl()
-		// {
-		// 	throw new System.NotImplementedException();
-		// }
+		public class FileSystem : IFileSystem
+		{
+			public IModuleMap Api { get; set; }
 
-		// public void IsUrlCached()
-		// {
-		// 	throw new System.NotImplementedException();
-		// }
+			public void Init()
+			{
+			}
+
+			public Task InitWithConfig(GDKConfigV2 info)
+			{
+				return Task.CompletedTask;
+			}
+
+			private readonly IFileSystemManager FileSystemManager = new FileSystemManager();
+
+			public IFileSystemManager GetFileSystemManager()
+			{
+				return FileSystemManager;
+			}
+		}
 	}
-
-	public class FileSystem : IFileSystem
-	{
-		public IModuleMap Api { get; set; }
-
-		public void Init()
-		{
-		}
-
-		public Task InitWithConfig(GDKConfigV2 info)
-		{
-			return Task.CompletedTask;
-		}
-
-		private readonly IFileSystemManager FileSystemManager = new FileSystemManager();
-
-		public IFileSystemManager GetFileSystemManager()
-		{
-			return FileSystemManager;
-		}
-	}
-}
 #endif
