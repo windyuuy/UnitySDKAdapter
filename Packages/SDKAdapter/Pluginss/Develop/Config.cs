@@ -16,7 +16,7 @@ namespace DevelopGDK
 		public static void Register()
 		{
 			// default config
-			GDKManager.Instance.registPluginConfig(new()
+			GDKManager.Instance.RegistPluginConfig(new()
 			{
 				name = "develop",
 				version = "1.0.4",
@@ -28,7 +28,7 @@ namespace DevelopGDK
 
 		public static void UseAsDefault()
 		{
-			GDKManager.Instance.setDefaultGdk("develop");
+			GDKManager.Instance.SetDefaultGdk("develop");
 		}
 	}
 }

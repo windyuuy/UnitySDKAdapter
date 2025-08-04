@@ -1,6 +1,7 @@
 
 using System;
 using System.Threading.Tasks;
+using Lang.Loggers;
 
 namespace GDK
 {
@@ -45,7 +46,7 @@ namespace GDK
 
 		public abstract void Init();
 
-		public async Task InitWithConfig(GDKConfigV2 info)
+		public virtual async Task InitWithConfig(GDKConfigV2 info)
 		{
 			info = info ?? new GDKConfigV2();
 			if (!string.IsNullOrEmpty(info.GameVersion))
@@ -58,5 +59,6 @@ namespace GDK
 			// CommonServer.httpClient = info.httpClient
 		}
 
+		public Logger devlog = new Logger();
 	}
 }

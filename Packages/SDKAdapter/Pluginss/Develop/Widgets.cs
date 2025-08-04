@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using GDK;
 
@@ -5,9 +6,52 @@ namespace DevelopGDK
 {
 	public class KeyBoard : GDK.IKeyBoard
 	{
-		public async Task hideKeyboard()
+		public Task ShowKeyboard(ShowKeyboardOptions options)
 		{
-			WidgetsBase.Devlog.Info("hideKeyboard");
+			WidgetsBase.Devlog.Info(nameof(ShowKeyboard));
+			return Task.CompletedTask;
+		}
+
+		public Task UpdateKeyboard(UpdateKeyboardOptions options)
+		{
+			WidgetsBase.Devlog.Info(nameof(UpdateKeyboard));
+			return Task.CompletedTask;
+		}
+
+		public Task HideKeyboard()
+		{
+			WidgetsBase.Devlog.Info(nameof(HideKeyboard));
+			return Task.CompletedTask;
+		}
+
+		public void OnKeyboardInputEvent(Action<OnKeyboardInputResult> callback)
+		{
+			WidgetsBase.Devlog.Info(nameof(OnKeyboardInputEvent));
+		}
+
+		public void OffKeyboardInputEvent(Action<OnKeyboardInputResult> callback)
+		{
+			WidgetsBase.Devlog.Info(nameof(OffKeyboardInputEvent));
+		}
+
+		public void OnKeyboardConfirm(Action<OnKeyboardConfirmResult> callback)
+		{
+			WidgetsBase.Devlog.Info(nameof(OnKeyboardConfirm));
+		}
+
+		public void OffKeyboardConfirm(Action<OnKeyboardConfirmResult> callback)
+		{
+			WidgetsBase.Devlog.Info(nameof(OffKeyboardConfirm));
+		}
+
+		public void OnKeyboardComplete(Action<OnKeyboardCompleteResult> callback)
+		{
+			WidgetsBase.Devlog.Info(nameof(OnKeyboardComplete));
+		}
+
+		public void OffKeyboardComplete(Action<OnKeyboardCompleteResult> callback)
+		{
+			WidgetsBase.Devlog.Info(nameof(OffKeyboardComplete));
 		}
 	}
 
@@ -15,13 +59,13 @@ namespace DevelopGDK
 	{
 		public override GDK.IKeyBoard keyboard { get; } = new KeyBoard();
 
-		public override Task showLoading(GDK.ShowLoadingParams obj)
+		public override Task ShowLoading(GDK.ShowLoadingParams obj)
 		{
 			Devlog.Info("showLoading");
 			return Task.CompletedTask;
 		}
 
-		public override Task hideLoading()
+		public override Task HideLoading()
 		{
 			Devlog.Info("hideLoading");
 			return Task.CompletedTask;
@@ -39,29 +83,11 @@ namespace DevelopGDK
 			return Task.CompletedTask;
 		}
 
-		public override Task<GDK.ShowConfirmResult> showConfirm(GDK.ShowConfirmOptions obj)
+		public override Task<GDK.ShowModalResult> ShowModal(GDK.ShowModalOptions obj)
 		{
-			var ts = new TaskCompletionSource<GDK.ShowConfirmResult>();
-			var r = new GDK.ShowConfirmResult();
-			r.confirm = true;
-			r.cancel = false;
-			ts.SetResult(r);
-			return ts.Task;
-		}
-
-		public override Task<GDK.ShowAlertResult> showAlert(GDK.ShowAlertOptions obj)
-		{
-			var ts = new TaskCompletionSource<GDK.ShowAlertResult>();
-			var r = new GDK.ShowAlertResult();
-			ts.SetResult(r);
-			return ts.Task;
-		}
-
-		public override Task<GDK.ShowPromptResult> showPrompt(GDK.ShowPromptOptions obj)
-		{
-			var ts = new TaskCompletionSource<GDK.ShowPromptResult>();
+			var ts = new TaskCompletionSource<GDK.ShowModalResult>();
 			var result = obj.title + ";" + obj.content;
-			var r = new GDK.ShowPromptResult();
+			var r = new GDK.ShowModalResult();
 			r.confirm = true;
 			r.cancel = false;
 			r.result = result;

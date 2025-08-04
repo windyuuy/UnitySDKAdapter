@@ -56,7 +56,7 @@ namespace GDK
 			}
 		}
 
-		public async void ReadFile(ReadFileParam option)
+		public async void ReadFileBytes(ReadFileBytesParam option)
 		{
 			try
 			{
@@ -91,7 +91,52 @@ namespace GDK
 			}
 		}
 
-		public byte[] ReadFileSync(string filePath, long? position = null, long? length = null)
+		public async void ReadFileAllText(ReadFileAllTextParam option)
+		{
+			try
+			{
+				var text = await File.ReadAllTextAsync(option.filePath, UTF8WithoutBom);
+				option.success(new ReadFileResult
+				{
+					stringData = text,
+					errMsg = null,
+					errCode = 0
+				});
+			}
+			catch (Exception exception)
+			{
+				option.fail(new ReadFileResult
+				{
+					errMsg = exception.ToString(),
+					errCode = -1,
+				});
+			}
+		}
+
+		public async void ReadFileAllBytes(ReadFileAllBytesParam option)
+		{
+			try
+			{
+				var data = await File.ReadAllBytesAsync(option.filePath);
+				option.success(new ReadFileResult
+				{
+					binData = data,
+					arrayBufferLength = data.Length,
+					errMsg = null,
+					errCode = 0
+				});
+			}
+			catch (Exception exception)
+			{
+				option.fail(new ReadFileResult
+				{
+					errMsg = exception.ToString(),
+					errCode = -1,
+				});
+			}
+		}
+
+		public byte[] ReadFileBytesSync(string filePath, long? position = null, long? length = null)
 		{
 			var file = File.OpenRead(filePath);
 
@@ -154,7 +199,7 @@ namespace GDK
 			return true;
 		}
 
-		public async void WriteFile(WriteFileParam param)
+		public async void WriteFileBytes(WriteFileParam param)
 		{
 			try
 			{
@@ -179,7 +224,7 @@ namespace GDK
 
 		private static readonly UTF8Encoding UTF8WithoutBom = new UTF8Encoding(false);
 
-		public async void WriteFile(WriteFileStringParam param)
+		public async void WriteFileString(WriteFileStringParam param)
 		{
 			try
 			{
@@ -202,13 +247,19 @@ namespace GDK
 			}
 		}
 
-		public bool WriteFileSync(string filePath, string data, string encoding = "utf8")
+		public bool WriteFileStringSync(string filePath, string data, string encoding = "utf8")
 		{
 			File.WriteAllText(filePath, data, UTF8WithoutBom);
 			return true;
 		}
 
-		public bool WriteFileSync(string filePath, byte[] data, string encoding = "utf8")
+		public bool WriteFileBytesSync(string filePath, byte[] data)
+		{
+			File.WriteAllBytes(filePath, data);
+			return true;
+		}
+
+		public bool WriteFileBytesSync(string filePath, byte[] data, string encoding = "utf8")
 		{
 			File.WriteAllBytes(filePath, data);
 			return true;

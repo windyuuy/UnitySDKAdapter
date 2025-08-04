@@ -36,6 +36,11 @@ namespace GDK
 
 		/// <summary>操作系统及版本</summary>
 		public string system;
+		
+		/// <summary>当前宿主名，如 Douyin</summary>
+		public string hostName;
+		/// <summary>当前宿主版本号，如 19.2.0</summary>
+		public string hostVersion;
 	}
 
 	public interface IHardware : IModule

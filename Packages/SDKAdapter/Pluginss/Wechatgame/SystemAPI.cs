@@ -54,28 +54,6 @@
 			{
 			}
 
-			public override Task InitWithConfig(GDKConfigV2 info)
-			{
-				devlog.Log("WX.InitSDK");
-				var ts = new TaskCompletionSource<int>();
-				if (!WXSDKManagerHandler.InitSDKPrompt())
-				{
-					WX.InitSDK((code) =>
-					{
-						devlog.Log($"WX.InitSDK return code: {code}");
-						ts.SetResult(code);
-					});
-				}
-				else
-				{
-					devlog.Log($"WX.InitSDK has been inited");
-					ts.SetResult(0);
-				}
-
-				return ts.Task;
-			}
-
-
 			public override Task SetEnableDebug(GDK.SetEnableDebugOptions res)
 			{
 				var ts = new TaskCompletionSource<bool>();
@@ -108,12 +86,18 @@
 				return ret.Task;
 			}
 
-			public override Task ExitProgram()
+			public override Task<ExitProgramResult> ExitProgram(ExitProgramOptions paras)
 			{
-				var ret = new TaskCompletionSource<bool>();
+				var ret = new TaskCompletionSource<ExitProgramResult>();
 				WX.ExitMiniProgram(new()
 				{
-					success = (resp) => { ret.SetResult(true); },
+					success = (resp) =>
+					{
+						ret.SetResult(new ExitProgramResult
+						{
+							IsOk = true,
+						});
+					},
 					fail = ret.GetErrorHandler(),
 				});
 				return ret.Task;
@@ -269,7 +253,7 @@
 				var liveInfo = referrerInfo.gameLiveInfo;
 				return new LaunchOptions
 				{
-					Scene = launchOptions.scene,
+					Scene = launchOptions.scene.ToString(),
 					Query = launchOptions.query,
 					Path = null,
 					IsSticky = false,

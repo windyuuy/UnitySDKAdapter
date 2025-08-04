@@ -1,10 +1,13 @@
 using System;
 using System.Threading.Tasks;
+using Lang.Loggers;
 
 namespace GDK
 {
 	public class ShareBase: IShare
 	{
+		public Logger devlog = new Logger();
+
 		public virtual IModuleMap Api { get; set; }
 		public virtual void Init()
 		{
@@ -16,7 +19,8 @@ namespace GDK
 			return Task.CompletedTask;
 		}
 
-		public virtual void OnShareAppMessage(ShareAppMessageParam defaultParam, Action<Action<ShareAppMessageParam>> action = null)
+		public virtual void OnShareAppMessage(GDK.ShareAppMessageParam defaultParam,
+			Func<GDK.ShareAppMessageParas, GDK.ShareAppMessageParam> action = null)
 		{
 			
 		}

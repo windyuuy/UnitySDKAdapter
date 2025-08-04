@@ -7,7 +7,7 @@ namespace GDK
 		public bool Exist;
 	}
 
-	public struct ReadFileParam
+	public struct ReadFileBytesParam
 	{
 		/// <summary>要读取的文件的路径 (本地路径)</summary>
 		public string filePath;
@@ -22,6 +22,30 @@ namespace GDK
 
 		/// <summary>指定文件的长度，如果不指定，则读到文件末尾。有效范围：[1, fileLength]。单位：byte</summary>
 		public long? length;
+
+		public Action<ReadFileResult> success;
+		public Action<ReadFileResult> fail;
+	}
+
+	public struct ReadFileAllTextParam
+	{
+		/// <summary>要读取的文件的路径 (本地路径)</summary>
+		public string filePath;
+
+		/// <summary>指定读取文件的字符编码，如果不传 encoding，则以 ArrayBuffer 格式读取文件的二进制内容</summary>
+		public string encoding;
+
+		public Action<ReadFileResult> success;
+		public Action<ReadFileResult> fail;
+	}
+
+	public struct ReadFileAllBytesParam
+	{
+		/// <summary>要读取的文件的路径 (本地路径)</summary>
+		public string filePath;
+
+		/// <summary>指定读取文件的字符编码，如果不传 encoding，则以 ArrayBuffer 格式读取文件的二进制内容</summary>
+		public string encoding;
 
 		public Action<ReadFileResult> success;
 		public Action<ReadFileResult> fail;
@@ -56,7 +80,6 @@ namespace GDK
 		/// <summary>要写入的二进制数据</summary>
 		public byte[] data;
 		/// <summary>指定写入文件的字符编码</summary>
-		public string encoding;
 		public Action<BaseResponse> success;
 		public Action<BaseResponse> fail;
 	}
@@ -92,9 +115,15 @@ namespace GDK
 		public string MkdirSync(string dirPath, bool recursive);
 
 		/// 读取本地文件内容
-		public void ReadFile(ReadFileParam option);
+		public void ReadFileBytes(ReadFileBytesParam option);
 
-		public byte[] ReadFileSync(string filePath, long? position = null, long? length = null);
+		/// 读取本地文件内容
+		public void ReadFileAllText(ReadFileAllTextParam option);
+
+		/// 读取本地文件内容
+		public void ReadFileAllBytes(ReadFileAllBytesParam option);
+
+		public byte[] ReadFileBytesSync(string filePath, long? position = null, long? length = null);
 
 		/// 重命名文件，可以把文件从 oldPath 移动到 newPath
 		// public void Rename();
@@ -116,14 +145,14 @@ namespace GDK
 		public bool UnlinkSync(string filePath);
 
 		/// 写文件
-		public void WriteFile(WriteFileParam param);
+		public void WriteFileBytes(WriteFileParam param);
 
-		public void WriteFile(WriteFileStringParam param);
+		public void WriteFileString(WriteFileStringParam param);
 
 		/// 同步写文件
-		public bool WriteFileSync(string filePath, string data, string encoding = "utf8");
+		public bool WriteFileStringSync(string filePath, string data, string encoding = "utf8");
 
-		public bool WriteFileSync(string filePath, byte[] data, string encoding = "utf8");
+		public bool WriteFileBytesSync(string filePath, byte[] data);
 		/// 根据 url 链接获取本地缓存文件路径（仅 WebGL 平台可用）
 		// public void GetLocalCachedPathForUrl();
 		/// 判断该 url 是否有本地缓存文件（仅 WebGL 平台可用）

@@ -39,6 +39,7 @@ namespace GDK
 
 	public class AppCallUpResult
 	{
+		public string ErrMsg;
 	}
 
 	public class ClipboardData
@@ -215,6 +216,7 @@ namespace GDK
 
 	public class RestartMiniProgramResult
 	{
+		public bool IsOk;
 	}
 
 	public class LaunchOptionsReferrerInfo
@@ -240,7 +242,7 @@ namespace GDK
 	public class LaunchOptions
 	{
 		/** 打开小游戏的场景值 */
-		public double Scene;
+		public string Scene;
 
 		/** 打开小游戏的启动参数 query */
 		public Dictionary<string, string> Query;
@@ -258,6 +260,16 @@ namespace GDK
 		public LaunchOptionsReferrerInfo ReferrerInfo;
 	}
 
+	public class ExitProgramOptions
+	{
+		public bool ShowDialog;
+	}
+
+	public class ExitProgramResult
+	{
+		public bool IsOk;
+	}
+
 	/**
 	 * 支持各种系统调用、系统事件侦听
 	 */
@@ -270,8 +282,9 @@ namespace GDK
 
 		/**
 		 * 退出当前游戏
+		 * <param name="paras"></param>
 		 */
-		public Task ExitProgram();
+		public Task<ExitProgramResult> ExitProgram(ExitProgramOptions paras);
 
 		/**
 		 * 用法示例：

@@ -55,7 +55,7 @@ namespace GDK
 			else
 			{
 				this.BeInitConfigOnce = true;
-				await GDKManager.Instance.initWithGDKConfig(config);
+				await GDKManager.Instance.InitWithGDKConfig(config);
 			}
 		}
 

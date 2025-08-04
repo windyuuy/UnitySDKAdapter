@@ -6,14 +6,15 @@ namespace WechatGDK
 {
 	public class Config
 	{
+		internal static string PlatformName = "bytedance";
 		public static void Register()
 		{
 			// default config
-			GDKManager.Instance.registPluginConfig(new PackConfig()
+			GDKManager.Instance.RegistPluginConfig(new PackConfig()
 			{
-				name = "wechat",
-				version = "1.0.5",
-				platform = "wechatgame",
+				name = PlatformName,
+				version = "1.0.0",
+				platform = PlatformName,
 				platformLocale = "微信",
 				register = () => new RegisterList(),
 			});
@@ -21,7 +22,7 @@ namespace WechatGDK
 
 		public static void UseAsDefault()
 		{
-			GDKManager.Instance.setDefaultGdk("wechat");
+			GDKManager.Instance.SetDefaultGdk(PlatformName);
 		}
 	}
 }

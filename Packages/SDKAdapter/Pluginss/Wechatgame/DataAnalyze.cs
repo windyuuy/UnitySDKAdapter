@@ -34,7 +34,7 @@ namespace WechatGDK
 			// WX.ReportEvent(eventId, dict);
 			try
 			{
-				WXAdapter.GDK_Wechatgame_ReportEvent(eventId, JsonUtility.ToJson(data));
+				WXAdapter.GDK_Bytedance_ReportEvent(eventId, JsonUtility.ToJson(data));
 			}
 			catch (Exception exception)
 			{

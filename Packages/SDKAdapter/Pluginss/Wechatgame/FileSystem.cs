@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using GDK;
+using Lang.Loggers;
 using WeChatWASM;
 using ReadFileParam = WeChatWASM.ReadFileParam;
 using WriteFileParam = WeChatWASM.WriteFileParam;
@@ -9,6 +10,7 @@ namespace WechatGDK
 {
 	public class FileSystemManager : GDK.IFileSystemManager
 	{
+		public Logger devlog = new Logger();
 		private WXFileSystemManager _fs;
 
 		public FileSystemManager()
@@ -54,7 +56,7 @@ namespace WechatGDK
 			return _fs.MkdirSync(dirPath, recursive);
 		}
 
-		public void ReadFile(GDK.ReadFileParam option)
+		public void ReadFileBytes(GDK.ReadFileBytesParam option)
 		{
 			_fs.ReadFile(new ReadFileParam
 			{
@@ -84,12 +86,34 @@ namespace WechatGDK
 			});
 		}
 
-		public string ReadFileSync(string filePath, string encoding, long? position = null, long? length = null)
+		public void ReadFileAllText(ReadFileAllTextParam option)
+		{
+			ReadFileBytes(new ()
+			{
+				filePath = option.filePath,
+				encoding = option.encoding,
+				success = option.success,
+				fail = option.fail
+			});
+		}
+
+		public void ReadFileAllBytes(ReadFileAllBytesParam option)
+		{
+			ReadFileBytes(new ()
+			{
+				filePath = option.filePath,
+				encoding = option.encoding,
+				success = option.success,
+				fail = option.fail
+			});
+		}
+
+		public string ReadFileStringSync(string filePath, string encoding, long? position = null, long? length = null)
 		{
 			return _fs.ReadFileSync(filePath, encoding, position, length);
 		}
 
-		public byte[] ReadFileSync(string filePath, long? position = null, long? length = null)
+		public byte[] ReadFileBytesSync(string filePath, long? position = null, long? length = null)
 		{
 			return _fs.ReadFileSync(filePath, position, length);
 		}
@@ -157,7 +181,7 @@ namespace WechatGDK
 		}
 
 		/// 写文件
-		public void WriteFile(GDK.WriteFileParam param)
+		public void WriteFileBytes(GDK.WriteFileParam param)
 		{
 			_fs.WriteFile(new WriteFileParam
 			{
@@ -181,11 +205,10 @@ namespace WechatGDK
 				},
 				filePath = param.filePath,
 				data = param.data,
-				encoding = param.encoding
 			});
 		}
 
-		public void WriteFile(GDK.WriteFileStringParam param)
+		public void WriteFileString(GDK.WriteFileStringParam param)
 		{
 			_fs.WriteFile(new WriteFileStringParam
 			{
@@ -214,14 +237,28 @@ namespace WechatGDK
 		}
 
 		/// 同步写文件
-		public bool WriteFileSync(string filePath, string data, string encoding = "utf8")
+		public bool WriteFileStringSync(string filePath, string data, string encoding = "utf8")
 		{
-			return _fs.WriteFileSync(filePath, data, encoding) == "ok";
+			var result = _fs.WriteFileSync(filePath, data, encoding);
+			var ok = result == "ok";
+			if (!ok)
+			{
+				devlog.Error(result);
+			}
+
+			return ok;
 		}
 
-		public bool WriteFileSync(string filePath, byte[] data, string encoding = "utf8")
+		public bool WriteFileBytesSync(string filePath, byte[] data)
 		{
-			return _fs.WriteFileSync(filePath, data, encoding) == "ok";
+			var result = _fs.WriteFileSync(filePath, data);
+			var ok = result == "ok";
+			if (!ok)
+			{
+				devlog.Error(result);
+			}
+
+			return ok;
 		}
 
 		// public void GetLocalCachedPathForUrl()

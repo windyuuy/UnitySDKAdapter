@@ -14,13 +14,13 @@ public class TestSDKAdapter : MonoBehaviour
 #endif
 
         var fakeUserApi = new FakeUserApi();
-        fakeUserApi.init();
+        fakeUserApi.Init();
 
 #if UNITY_EDITOR
         DevelopGDK.Config.UseAsDefault();
 #else
         WechatGDK.Config.UseAsDefault();
 #endif
-        await fakeUserApi.initConfig(new GDKConfigV2());
+        await fakeUserApi.InitConfig(new GDKConfigV2());
     }
 }

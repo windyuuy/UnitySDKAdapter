@@ -55,6 +55,7 @@ namespace GDK
     {
         public bool CouldReward = false;
         public bool IsEnded = false;
+        public int Count=1;
     }
 
     public interface IShowAdUnitOpInfo

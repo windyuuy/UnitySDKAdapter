@@ -84,10 +84,14 @@ namespace GDK
 			return new AppCallUpResult();
 		}
 
-		public virtual async Task ExitProgram()
+		public virtual async Task<ExitProgramResult> ExitProgram(ExitProgramOptions paras)
 		{
 			devlog.Info("正在退出");
 			UnityEngine.Application.Quit();
+			return new ExitProgramResult
+			{
+				IsOk = true
+			};
 		}
 
 		public virtual async Task UpdateProgramForce()
@@ -308,7 +312,7 @@ namespace GDK
 		{
 			return new LaunchOptions
 			{
-				Scene = 0,
+				Scene = "0",
 				Query = new Dictionary<string, string>(),
 				Path = "",
 				IsSticky = false,

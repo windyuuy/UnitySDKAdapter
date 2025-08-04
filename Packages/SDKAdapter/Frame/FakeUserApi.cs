@@ -7,11 +7,11 @@ namespace GDK
 	 */
     public class FakeUserApi
     {
-        public FakeUserApi init()
+        public FakeUserApi Init()
         {
-            GDKManager.Instance.instantiateGDKInstance();
-            GDKManager.Instance.init();
-            GDKManager.Instance.setDefaultGdk(GDKManager.Instance.defaultGDKName);
+            GDKManager.Instance.InstantiateGDKInstance();
+            GDKManager.Instance.Init();
+            GDKManager.Instance.SetDefaultGdk(GDKManager.Instance.DefaultGDKName);
             return this;
         }
 
@@ -19,13 +19,13 @@ namespace GDK
         {
             get
             {
-                return GDKManager.Instance.defaultGDKName;
+                return GDKManager.Instance.DefaultGDKName;
             }
         }
 
-        public async Task initConfig(GDKConfigV2 config)
+        public async Task InitConfig(GDKConfigV2 config)
         {
-            await GDKManager.Instance.initWithGDKConfig(config);
+            await GDKManager.Instance.InitWithGDKConfig(config);
         }
 
         public static FakeUserApi fakeGdk = new FakeUserApi();

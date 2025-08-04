@@ -91,10 +91,18 @@ namespace GDK
 		public object extra;
 	}
 
+	public class ShareAppMessageParas
+	{
+		public Action<ShareAppMessageParam> call;
+		
+		public string webViewUrl;
+		public string channel;
+	}
+
 	public interface IShare : IModule
 	{
 		public void OnShareAppMessage(ShareAppMessageParam defaultParam,
-			Action<Action<ShareAppMessageParam>> action = null);
+			Func<ShareAppMessageParas,ShareAppMessageParam> action = null);
 
 		public void OnShareTimeline(Action<Action<OnShareTimelineListenerResult>> callback);
 		public void OnAddToFavorites(Action<Action<OnAddToFavoritesListenerResult>> callback);

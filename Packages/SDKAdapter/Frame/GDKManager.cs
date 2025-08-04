@@ -11,25 +11,25 @@ namespace GDK
     {
         protected Dictionary<string, PackConfig> _configMap = new();
         protected Dictionary<string, UserAPI> _pluginMap = new();
-        public string defaultGDKName;
+        public string DefaultGDKName;
 
         /**
 		 * 注册GDK插件配置
 		 * @param name 插件名
 		 * @param config 插件配置
 		 */
-        public void registPluginConfig(PackConfig config)
+        public void RegistPluginConfig(PackConfig config)
         {
             var name = config.name;
             Debug.Assert(!this._configMap.ContainsKey(name), $"config name {name} exists already!");
             this._configMap[name] = config;
-            this.defaultGDKName = name;
+            this.DefaultGDKName = name;
         }
 
         /**
 		 * 通过配置模板生成插件
 		 */
-        protected UserAPI genGdk(PackConfig config)
+        protected UserAPI GenGdk(PackConfig config)
         {
             var temp = config.register();
             IModuleMap map = new ModuleMapDefault();
@@ -68,7 +68,7 @@ namespace GDK
         /**
 		 * 设置默认插件
 		 */
-        public void setDefaultGdk(string name)
+        public void SetDefaultGdk(string name)
         {
             if (this._pluginMap.TryGetValue(name, out var api))
             {
@@ -80,7 +80,7 @@ namespace GDK
             }
         }
 
-        public UserAPI getPlugin(string name)
+        public UserAPI GetPlugin(string name)
         {
             return this._pluginMap[name];
         }
@@ -88,11 +88,11 @@ namespace GDK
         /**
 		 * 初始化
 		 */
-        public void init()
+        public void Init()
         {
             foreach (var (k, v) in this._pluginMap)
             {
-                var plugin = this.getPlugin(k);
+                var plugin = this.GetPlugin(k);
                 // 初始化插件内各个模块
                 plugin.Init();
             }
@@ -101,11 +101,11 @@ namespace GDK
         /**
 		 * 传入配置并初始化
 		 */
-        public async Task initWithGDKConfig(GDKConfigV2 info)
+        public async Task InitWithGDKConfig(GDKConfigV2 info)
         {
             foreach (var (k, v) in this._pluginMap)
             {
-                var plugin = this.getPlugin(k);
+                var plugin = this.GetPlugin(k);
                 // 初始化插件内各个模块
                 await plugin._initWithConfig(info);
             }
@@ -114,12 +114,12 @@ namespace GDK
         /**
 		 * 创建插件对象，并注册
 		 */
-        public void instantiateGDKInstance()
+        public void InstantiateGDKInstance()
         {
             foreach (var (k, v) in this._configMap)
             {
                 var config = this._configMap[k];
-                var plugin = this.genGdk(config);
+                var plugin = this.GenGdk(config);
                 this._pluginMap[k] = plugin;
             }
         }
