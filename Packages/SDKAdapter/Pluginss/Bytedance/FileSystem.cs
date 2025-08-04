@@ -1,3 +1,4 @@
+#if SUPPORT_BYTEDANCE
 using System.Threading.Tasks;
 using GDK;
 using Lang.Loggers;
@@ -418,3 +419,4 @@ namespace BytedanceGDK
 		}
 	}
 }
+#endif

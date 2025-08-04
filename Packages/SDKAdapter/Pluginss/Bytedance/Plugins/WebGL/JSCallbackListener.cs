@@ -1,3 +1,4 @@
+#if SUPPORT_BYTEDANCE
 using System;
 using System.Collections.Generic;
 using AOT;
@@ -82,3 +83,4 @@ namespace BytedanceGDK
 		}
 	}
 }
+#endif
