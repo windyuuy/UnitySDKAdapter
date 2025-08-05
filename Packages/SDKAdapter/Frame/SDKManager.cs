@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using UnityEngine;
 
 namespace GDK
 {
@@ -31,8 +32,9 @@ namespace GDK
 			}
 
 			_initState = SDKManagerInitState.Initing;
-
+			Debug.Log("await OnInit");
 			await OnInit();
+			Debug.Log("await OnInit-done");
 			_initState = SDKManagerInitState.Inited;
 			return 0;
 		}

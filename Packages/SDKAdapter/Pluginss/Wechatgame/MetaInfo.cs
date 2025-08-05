@@ -1,6 +1,6 @@
 using GDK;
 
-namespace Pluginss.Wechatgame
+namespace WechatGDK
 {
 	public class MetaInfo : IMetaInfo
 	{

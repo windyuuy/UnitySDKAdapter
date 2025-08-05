@@ -39,7 +39,7 @@ namespace WechatGDK
 			catch (Exception exception)
 			{
 				DevLog.Instance.Error("事件上报客户端崩溃:");
-				UnityEngine.Debug.LogException(exception);
+				Debug.LogException(exception);
 			}
 		}
 

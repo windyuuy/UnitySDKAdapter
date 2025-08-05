@@ -1,11 +1,8 @@
 #if SUPPORT_BYTEDANCE
 	using System;
 	using System.Threading.Tasks;
-	using EngineAdapter.Diagnostics;
-	using WeChatWASM;
 	using GDK;
 	using TTSDK;
-	using GeneralCallbackResult = WeChatWASM.GeneralCallbackResult;
 
 	namespace BytedanceGDK
 	{

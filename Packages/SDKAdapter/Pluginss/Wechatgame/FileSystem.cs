@@ -1,5 +1,6 @@
 #if SUPPORT_WECHATGAME
-using System.Threading.Tasks;
+	using System;
+	using System.Threading.Tasks;
 using GDK;
 using Lang.Encoding;
 using Lang.Loggers;
@@ -312,6 +313,11 @@ namespace WechatGDK
 		{
 			var text = EncodingExt.UTF8WithoutBom.GetString(ReadCompressedFileSync(options));
 			return text;
+		}
+
+		public void CleanAllFileCache(Action<bool> callback)
+		{
+			WX.CleanAllFileCache(callback);
 		}
 
 		// public void GetLocalCachedPathForUrl()

@@ -605,17 +605,21 @@ namespace TTSDK
 #region 流式读写
             public void HandleFOpenCallback(string msg)
             {
-                Debug.Log($"HandleFOpenCallback - {msg}");
+                Debug.Log($"HandleFOpenCallback11 - {msg}");
                 var res = JsonUtility.FromJson<TTOpenResponse>(msg);
+                Debug.Log($"HandleFOpenCallback2 - {msg}");
                 var conf = s_openParams[res.callbackId];
+                Debug.Log($"HandleFOpenCallback3 - {msg}");
                 if (conf == null)
                 {
                     Debug.LogWarning($"HandleFOpenCallback - no callback for callbackId: {res.callbackId}");
                     return;
                 }
 
+                Debug.Log($"HandleFOpenCallback4 - {msg}");
                 s_openParams.Remove(res.callbackId);
 
+                Debug.Log($"HandleFOpenCallback5 - {msg}");
                 if (res.errCode == 0)
                 {
                     conf.success?.Invoke(res);
@@ -624,6 +628,7 @@ namespace TTSDK
                 {
                     conf.fail?.Invoke(res);
                 }
+                Debug.Log($"HandleFOpenCallback6 - {msg}");
             }
 
             public void HandleFWriteCallback(string msg)

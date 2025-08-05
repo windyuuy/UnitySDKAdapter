@@ -31,6 +31,7 @@ namespace GDK
 		 */
         protected UserAPI GenGdk(PackConfig config)
         {
+                Debug.Log($"GenGdk: {config.name}");
             var temp = config.register();
             IModuleMap map = new ModuleMapDefault();
             List<IModule> addonList = new();
@@ -38,6 +39,7 @@ namespace GDK
             foreach (var field in fields)
             {
                 var pname = field.Name;
+                Debug.Log($"add addon: {pname}");
                 var fValue = field.GetValue(temp);
                 var invoke = fValue.GetType().GetMethod("Invoke");
                 var retValue = invoke.Invoke(fValue, null);
@@ -47,6 +49,7 @@ namespace GDK
                 {
                     addonList.Add(addon);
                 }
+                Debug.Log($"add addon-done: {pname}");
             }
 
             {
@@ -62,6 +65,7 @@ namespace GDK
             {
                 addon.Api = map;
             }
+                Debug.Log($"GenGdk-done: {config.name}");
             return api;
         }
 
@@ -72,6 +76,7 @@ namespace GDK
         {
             if (this._pluginMap.TryGetValue(name, out var api))
             {
+                Debug.Log($"SetDefaultGdk: {name}");
                 UserAPI.Instance = api;
             }
             else
@@ -94,7 +99,7 @@ namespace GDK
             {
                 var plugin = this.GetPlugin(k);
                 // 初始化插件内各个模块
-                plugin.Init();
+                plugin._init();
             }
         }
 
@@ -103,12 +108,15 @@ namespace GDK
 		 */
         public async Task InitWithGDKConfig(GDKConfigV2 info)
         {
+		    Debug.Log("GDKManager::InitConfig");
             foreach (var (k, v) in this._pluginMap)
             {
                 var plugin = this.GetPlugin(k);
                 // 初始化插件内各个模块
+                Debug.Log("plugin._initWithConfig");
                 await plugin._initWithConfig(info);
             }
+		    Debug.Log("GDKManager::InitConfig-done");
         }
 
         /**

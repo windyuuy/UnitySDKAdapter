@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using WeChatWASM;
 
 namespace GDK
 {
@@ -251,6 +250,7 @@ namespace GDK
 		public void WriteSync(GDK.WriteSyncOption paras);
 		public byte[] ReadCompressedFileSync(ReadCompressedFileSyncOption options);
 		public string ReadCompressedFileTextSync(ReadCompressedFileSyncOption options);
+		public void CleanAllFileCache(Action<bool> callback);
 	}
 
 	public interface IFileSystem : IModule

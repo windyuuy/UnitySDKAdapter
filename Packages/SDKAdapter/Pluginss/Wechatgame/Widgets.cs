@@ -2,6 +2,7 @@
 	using System;
 	using System.Threading.Tasks;
 	using GDK;
+	using UnityEngine;
 	using WeChatWASM;
 
 	namespace WechatGDK
@@ -23,7 +24,7 @@
 				}
 				catch (Exception exception)
 				{
-					UnityEngine.Debug.LogException(exception);
+					Debug.LogException(exception);
 					throw GDK.ResultTemplatesExtractor.GDKResultTemplates.make<GDK.GDKErrorExtra>(code);
 				}
 			}
@@ -41,7 +42,7 @@
 				}
 				catch (Exception exception)
 				{
-					UnityEngine.Debug.LogException(exception);
+					Debug.LogException(exception);
 					throw GDK.ResultTemplatesExtractor.GDKResultTemplates.make(code, exception);
 				}
 			}
@@ -202,13 +203,28 @@
 				return WXReqHelper.wrapReq<HideLoadingOption>(WX.HideLoading, GDK.GDKErrorCode.API_HIDE_LOADING_FAILED);
 			}
 
-			public override Task showToast(GDK.ShowToastOptions obj2)
+			public override Task<ShowWidgetResult> ShowToast(GDK.ShowToastOptions obj2)
 			{
-				return WXReqHelper.wrapReq<ShowToastOption>(WX.ShowToast, new ShowToastOption()
+				var ts = new TaskCompletionSource<ShowWidgetResult>();
+				WX.ShowToast(new ShowToastOption
 				{
 					duration = obj2.duration,
+					icon = obj2.icon,
+					image = obj2.image,
+					mask = obj2.mask,
 					title = obj2.title,
-				}, GDK.GDKErrorCode.API_SHOW_TOAST_FAILED);
+
+					success = (resp) =>
+					{
+						ts.SetResult(new()
+						{
+							IsOk = true,
+							errMsg = resp.errMsg,
+						});
+					},
+					fail = (resp) => { ts.SetException(new GDK.GDKError(resp.errMsg)); },
+				});
+				return ts.Task;
 			}
 
 			public override Task hideToast()

@@ -3,6 +3,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 
 namespace GDK
 {
@@ -298,6 +299,16 @@ namespace GDK
 				new BrotliStream(fileStream, CompressionMode.Decompress));
 			var text = reader.ReadToEnd();
 			return text;
+		}
+
+		public void CleanAllFileCache(Action<bool> callback)
+		{
+			var persistentDataPath = Application.persistentDataPath;
+			if (Directory.Exists(persistentDataPath))
+			{
+				Directory.Delete(persistentDataPath, true);
+				Directory.CreateDirectory(persistentDataPath);
+			}
 		}
 
 		public bool WriteFileBytesSync(string filePath, byte[] data, string encoding = "utf8")

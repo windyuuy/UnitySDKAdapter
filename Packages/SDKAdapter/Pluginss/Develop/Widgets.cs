@@ -71,10 +71,13 @@ namespace DevelopGDK
 			return Task.CompletedTask;
 		}
 
-		public override Task showToast(GDK.ShowToastOptions obj)
+		public override Task<ShowWidgetResult> ShowToast(ShowToastOptions obj)
 		{
 			DevLog.Instance.Info("showToast");
-			return Task.CompletedTask;
+			return Task.FromResult(new ShowWidgetResult()
+			{
+				IsOk = true,
+			});
 		}
 
 		public override Task hideToast()

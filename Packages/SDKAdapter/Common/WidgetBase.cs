@@ -1,8 +1,6 @@
 
 using System;
 using System.Threading.Tasks;
-using Lang.Loggers;
-using WeChatWASM;
 
 namespace GDK
 {
@@ -55,7 +53,7 @@ namespace GDK
 		/** 隐藏 loading 提示框 */
 		public abstract Task HideLoading();
 		/** 显示消息提示框 */
-		public abstract Task showToast(ShowToastOptions obj);
+		public abstract Task<ShowWidgetResult> ShowToast(ShowToastOptions obj);
 		/** 隐藏消息提示框 */
 		public abstract Task hideToast();
 		/**

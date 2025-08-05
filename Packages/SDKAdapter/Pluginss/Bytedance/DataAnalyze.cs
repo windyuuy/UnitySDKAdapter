@@ -1,7 +1,6 @@
 #if SUPPORT_BYTEDANCE
 using System;
 using System.Collections.Generic;
-using WeChatWASM;
 using System.Linq;
 using GDK;
 using TTSDK;
@@ -40,7 +39,7 @@ namespace BytedanceGDK
 			catch (Exception exception)
 			{
 				DevLog.Instance.Error("事件上报客户端崩溃:");
-				UnityEngine.Debug.LogException(exception);
+				Debug.LogException(exception);
 			}
 		}
 

@@ -4,52 +4,9 @@
 	using GDK;
 	using TTSDK;
 	using UnityEngine;
-	using WeChatWASM;
-	using GeneralCallbackResult = WeChatWASM.GeneralCallbackResult;
 
 	namespace BytedanceGDK
 	{
-		public static class TTReqHelper
-		{
-			public static Task wrapReq<TC>(Action<TC> func, GDK.GDKErrorCode code)
-				where TC : ICallback<GeneralCallbackResult, GeneralCallbackResult, GeneralCallbackResult>, new()
-			{
-				try
-				{
-					var ts = new TaskCompletionSource<bool>();
-					func(new TC()
-					{
-						success = (resp) => { ts.SetResult(true); },
-						fail = (resp) => { ts.SetException(new GDK.GDKError(resp.errMsg)); },
-					});
-					return ts.Task;
-				}
-				catch (Exception exception)
-				{
-					UnityEngine.Debug.LogException(exception);
-					throw GDK.ResultTemplatesExtractor.GDKResultTemplates.make<GDK.GDKErrorExtra>(code);
-				}
-			}
-
-			public static Task wrapReq<TC>(Action<TC> func, TC req, GDK.GDKErrorCode code)
-				where TC : ICallback<GeneralCallbackResult, GeneralCallbackResult, GeneralCallbackResult>, new()
-			{
-				try
-				{
-					var ts = new TaskCompletionSource<bool>();
-					req.success = (resp) => { ts.SetResult(true); };
-					req.fail = (resp) => { ts.SetException(new GDK.GDKError(resp.errMsg)); };
-					func(req);
-					return ts.Task;
-				}
-				catch (Exception exception)
-				{
-					UnityEngine.Debug.LogException(exception);
-					throw GDK.ResultTemplatesExtractor.GDKResultTemplates.make(code, exception);
-				}
-			}
-		}
-
 		public class KeyBoard : GDK.KeyBoardBase<TTKeyboard.OnKeyboardInputEvent, TTKeyboard.OnKeyboardConfirmEvent,
 			TTKeyboard.OnKeyboardCompleteEvent>
 		{
@@ -209,7 +166,7 @@
 				return TTAdapter.SendRequestAsync<ShowWidgetResult>(TTAdapter.GDK_Bytedance_HideLoading);
 			}
 
-			public override Task showToast(GDK.ShowToastOptions obj2)
+			public override Task<ShowWidgetResult> ShowToast(ShowToastOptions obj2)
 			{
 				return TTAdapter.SendRequestAsync<ShowWidgetResult>(TTAdapter.GDK_Bytedance_ShowToast,
 					obj2);

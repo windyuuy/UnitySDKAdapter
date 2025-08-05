@@ -26,12 +26,12 @@ namespace BytedanceGDK
 					return _shared;
 				}
 
-				var gameObject = new GameObject("JsCallbackListener");
+				var gameObject = new GameObject("BytedanceGDK_JsCallbackListener");
 				GameObject.DontDestroyOnLoad(gameObject);
 				_shared = gameObject.AddComponent<JsCallbackListener>();
 				if (_shared == null)
 				{
-					DevLog.Instance.Error("cannot create JsCallbackListener");
+					DevLog.Instance.Error("cannot create BytedanceGDK_JsCallbackListener");
 				}
 
 				return _shared;

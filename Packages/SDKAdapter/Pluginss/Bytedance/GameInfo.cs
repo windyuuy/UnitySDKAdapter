@@ -1,56 +1,46 @@
 #if SUPPORT_BYTEDANCE
-	using System.Threading.Tasks;
-	using GDK;
-	using TTSDK;
-	using WeChatWASM;
+using System.Threading.Tasks;
+using GDK;
+using TTSDK;
 
-#if SUPPORT_BYTEDANCE
-	namespace BytedanceGDK
+namespace BytedanceGDK
+{
+	public class GameInfo : GDK.GameInfoBase
 	{
-		public class GameInfo : GDK.GameInfoBase
+		public override void Init()
 		{
-			public override void Init()
+		}
+
+		public override Task InitWithConfig(GDKConfigV2 info)
+		{
+			DevLog.Instance.Log("TT.InitSDK");
+			var ts = new TaskCompletionSource<int>();
+			TT.InitSDK((code, env) =>
 			{
-			}
+				DevLog.Instance.Log($"TT.InitSDK return code: {code}, {env?.GameAppId}, {env?.m_HostEnum}, {env?.m_LaunchFromEnum}");
+				ts.SetResult(code);
+			});
 
-			public override Task InitWithConfig(GDKConfigV2 info)
+			return ts.Task;
+		}
+
+		private string _userDataPath;
+
+		public override string UserDataPath
+		{
+			get
 			{
-				DevLog.Instance.Log("TT.InitSDK");
-				var ts = new TaskCompletionSource<int>();
-				if (!WXSDKManagerHandler.InitSDKPrompt())
+				if (_userDataPath != null)
 				{
-					TT.InitSDK((code, env) =>
-					{
-						DevLog.Instance.Log($"TT.InitSDK return code: {code}");
-						ts.SetResult(code);
-					});
-				}
-				else
-				{
-					DevLog.Instance.Log($"TT.InitSDK has been inited");
-					ts.SetResult(0);
-				}
-
-				return ts.Task;
-			}
-
-			private string _userDataPath;
-
-			public override string UserDataPath
-			{
-				get
-				{
-					if (_userDataPath != null)
-					{
-						return _userDataPath;
-					}
-
-					_userDataPath = TTAdapter.GDK_Bytedance_GetUserDataPath();
 					return _userDataPath;
 				}
+
+				_userDataPath = TTAdapter.GDK_Bytedance_GetUserDataPath();
+				DevLog.Instance.Log($"UserDataPath: {_userDataPath}");
+				return _userDataPath;
 			}
 		}
 	}
-#endif
+}
 
 #endif

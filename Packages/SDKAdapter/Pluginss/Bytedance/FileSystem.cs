@@ -1,17 +1,22 @@
 #if SUPPORT_BYTEDANCE
+	using System;
 	using System.Threading.Tasks;
 	using GDK;
 	using Lang.Encoding;
 	using TTSDK;
+	using UnityEngine;
+	using RmdirParam = TTSDK.RmdirParam;
 
 	namespace BytedanceGDK
 	{
 		public class FileSystemManager : GDK.IFileSystemManager
 		{
-			private TTFileSystemManager _fs;
+			private readonly TTFileSystemManager _fs;
+			public IModuleMap Api { get; }
 
-			public FileSystemManager()
+			public FileSystemManager(IModuleMap api)
 			{
+				Api = api;
 				_fs = TT.GetFileSystemManager();
 			}
 
@@ -123,11 +128,13 @@
 								arrayBuffer = buffer,
 								offset = 0,
 								length = (int)readLen,
-								position = (int)option.position,
+								position = (int?)option.position,
 							});
 						}
-						finally
+						catch (Exception exception)
 						{
+							Debug.LogError("_fs.Read-exception:");
+							Debug.LogException(exception);
 							if (fd != null)
 							{
 								_fs.CloseSync(new CloseSyncParam
@@ -441,6 +448,22 @@
 				var text = EncodingExt.UTF8WithoutBom.GetString(ReadCompressedFileSync(options));
 				return text;
 			}
+
+			public void CleanAllFileCache(Action<bool> callback)
+			{
+				var rootDir = Api.GameInfo.UserDataPath;
+				_fs.Rmdir(new RmdirParam()
+				{
+					dirPath = rootDir,
+					recursive = true,
+					success = (resp) => { callback?.Invoke(true); },
+					fail = (resp) =>
+					{
+						DevLog.Instance.Error($"CleanAllFileCache fail: {resp.errCode}, {resp.errMsg}");
+						callback?.Invoke(false);
+					},
+				});
+			}
 		}
 
 		public class FileSystem : IFileSystem
@@ -453,10 +476,11 @@
 
 			public Task InitWithConfig(GDKConfigV2 info)
 			{
+				FileSystemManager = new FileSystemManager(Api);
 				return Task.CompletedTask;
 			}
 
-			private readonly IFileSystemManager FileSystemManager = new FileSystemManager();
+			private IFileSystemManager FileSystemManager;
 
 			public IFileSystemManager GetFileSystemManager()
 			{

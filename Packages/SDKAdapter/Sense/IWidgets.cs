@@ -63,6 +63,7 @@ namespace GDK
 	[Serializable]
 	public class ShowWidgetResult
 	{
+		public bool IsOk;
 		/** 提示的内容 */
 		public string errMsg;
 	}
@@ -100,6 +101,9 @@ namespace GDK
 		/// 图标，取值范围包括success, loading, none, fail(1.36.0版本支持)
 		/// </summary>
 		public string icon;
+
+		public bool? mask;
+		public string image;
 	}
 
 	[Serializable]
@@ -254,7 +258,7 @@ namespace GDK
 		public Task HideLoading();
 
 		/** 显示消息提示框 */
-		public Task showToast(ShowToastOptions obj);
+		public Task<ShowWidgetResult> ShowToast(ShowToastOptions obj);
 
 		/** 隐藏消息提示框 */
 		public Task hideToast();

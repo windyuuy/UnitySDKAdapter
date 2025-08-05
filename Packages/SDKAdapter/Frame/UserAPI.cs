@@ -7,6 +7,7 @@ namespace GDK
 	public class UserAPI
 	{
 		public static UserAPI Instance;
+
 		/**
 		 * 附件map
 		 */
@@ -61,8 +62,9 @@ namespace GDK
 		 * 初始化插件内各个模块
 		 * @param info 外部传入的配置
 		 */
-		protected void _init()
+		internal void _init()
 		{
+			Debug.Log($"Plugin::_init: {this.PluginName}");
 			var fields = this._m.GetType().GetFields();
 			foreach (var field in fields)
 			{
@@ -70,9 +72,12 @@ namespace GDK
 				var addon = field.GetValue(this._m) as IModule;
 				// if (addon.init)
 				{
+					Debug.Log($"addon::Init {field.Name}");
 					addon.Init();
+					Debug.Log($"addon::Init-done {field.Name}");
 				}
 			}
+			Debug.Log($"Plugin::_init-done: {this.PluginName}");
 		}
 
 		/**

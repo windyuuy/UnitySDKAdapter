@@ -4,7 +4,6 @@
 	using System.Threading.Tasks;
 	using GDK;
 	using TTSDK;
-	using WeChatWASM;
 
 	namespace BytedanceGDK
 	{

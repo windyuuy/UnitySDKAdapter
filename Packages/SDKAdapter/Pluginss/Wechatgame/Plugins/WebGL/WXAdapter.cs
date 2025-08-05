@@ -9,7 +9,7 @@ namespace WechatGDK
 		public static extern void GDK_Wechatgame_ReportEvent(string eventid, string data);
 		
 		[DllImport("__Internal")]
-		private static extern void GDK_Wechatgame_Openlink(string openlink);
+		public static extern void GDK_Wechatgame_Openlink(string openlink);
 	}
 }
 #endif

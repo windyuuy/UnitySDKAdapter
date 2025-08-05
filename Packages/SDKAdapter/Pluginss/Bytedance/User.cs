@@ -7,7 +7,6 @@
 	using TTSDK;
 	using UnityEngine;
 	using UnityEngine.Networking;
-	using WeChatWASM;
 
 	namespace BytedanceGDK
 	{
@@ -42,80 +41,94 @@
 
 			public override Task<LoginResult> Login(LoginParams paras)
 			{
-				var ts = new TaskCompletionSource<LoginResult>();
-				TT.Login((code, acode, isLogin) =>
+				var sysInfo = TT.GetSystemInfo();
+				if (sysInfo.platform == "devtools")
+				{
+					TT.Login((code, acode, isLogin) => { Debug.Log("模拟器登录成功"); },
+						(errMsg) => { Debug.Log($"模拟器登录失败: {errMsg}"); });
+					return Task.FromResult(new LoginResult
 					{
-						DevLog.Instance.Log($"TT.Login-success: {code}, {acode}, {isLogin}");
-						var url =
-							$"https://minigame.zijieapi.com/mgplatform/api/apps/jscode2session?appid={paras.AppId}&code={code}&anonymous_code={acode}&secret={paras.AppSecret}";
-						DevLog.Instance.Log($"Code2Session: {url}");
-
-						IEnumerator Code2Session(string url)
+						IsOk = true,
+						OpenId = "simulateopenid",
+						Code = "0",
+					});
+				}
+				else
+				{
+					var ts = new TaskCompletionSource<LoginResult>();
+					TT.Login((code, acode, isLogin) =>
 						{
-							var uwr = UnityWebRequest.Get(url);
-							yield return uwr.SendWebRequest();
-							var text = uwr.downloadHandler.text;
-							DevLog.Instance.Log($"Code2Session-Resp: {uwr.responseCode}, {text}");
-							try
-							{
-								var resp = JsonUtility.FromJson<Code2SessionResp>(text);
+							DevLog.Instance.Log($"TT.Login-success: {code}, {acode}, {isLogin}");
+							var url =
+								$"https://minigame.zijieapi.com/mgplatform/api/apps/jscode2session?appid={paras.AppId}&code={code}&anonymous_code={acode}&secret={paras.AppSecret}";
+							DevLog.Instance.Log($"Code2Session: {url}");
 
-								ts.SetResult(new LoginResult()
-								{
-									IsOk = true,
-									Code = resp.errcode.ToString(),
-									OpenId = resp.openid,
-									Unionid = resp.unionid,
-									ErrMsg = resp.errmsg,
-								});
-							}
-							catch (Exception exception)
+							IEnumerator Code2Session(string url)
 							{
-								Debug.LogException(exception);
-								ts.SetResult(new LoginResult()
+								var uwr = UnityWebRequest.Get(url);
+								yield return uwr.SendWebRequest();
+								var text = uwr.downloadHandler.text;
+								DevLog.Instance.Log($"Code2Session-Resp: {uwr.responseCode}, {text}");
+								try
 								{
-									IsOk = false,
-									Code = code,
-									ErrMsg = "Code2Session-ParseJSON-failed",
-								});
-							}
-						}
+									var resp = JsonUtility.FromJson<Code2SessionResp>(text);
 
-						LoomMG.SharedLoom.StartCoroutine(Code2Session(url));
-					}, (errMsg) =>
-					{
-						DevLog.Instance.Error($"TT.Login-failed: {errMsg}");
-						ts.SetResult(new LoginResult()
+									ts.SetResult(new LoginResult()
+									{
+										IsOk = true,
+										Code = resp.errcode.ToString(),
+										OpenId = resp.openid,
+										Unionid = resp.unionid,
+										ErrMsg = resp.errmsg,
+									});
+								}
+								catch (Exception exception)
+								{
+									Debug.LogException(exception);
+									ts.SetResult(new LoginResult()
+									{
+										IsOk = false,
+										Code = code,
+										ErrMsg = "Code2Session-ParseJSON-failed",
+									});
+								}
+							}
+
+							LoomMG.SharedLoom.StartCoroutine(Code2Session(url));
+						}, (errMsg) =>
 						{
-							IsOk = false,
-							Code = "-1",
-							ErrMsg = errMsg,
-						});
-					},
-					true);
-			return ts.Task;
-		}
+							DevLog.Instance.Error($"TT.Login-failed: {errMsg}");
+							ts.SetResult(new LoginResult()
+							{
+								IsOk = false,
+								Code = "-1",
+								ErrMsg = errMsg,
+							});
+						},
+						true);
+					return ts.Task;
+				}
+			}
 
-		public override Task SetUserCloudStorage(SetFriendCloudStorageReq obj)
-		{
-			throw new System.NotImplementedException();
-		}
+			public override Task SetUserCloudStorage(SetFriendCloudStorageReq obj)
+			{
+				throw new System.NotImplementedException();
+			}
 
-		public override Task ShowBindDialog()
-		{
-			throw new System.NotImplementedException();
-		}
+			public override Task ShowBindDialog()
+			{
+				throw new System.NotImplementedException();
+			}
 
-		public override Task showUserCenter()
-		{
-			throw new System.NotImplementedException();
-		}
+			public override Task showUserCenter()
+			{
+				throw new System.NotImplementedException();
+			}
 
-		public override Task<UserDataUpdateResult> Update()
-		{
-			throw new System.NotImplementedException();
+			public override Task<UserDataUpdateResult> Update()
+			{
+				throw new System.NotImplementedException();
+			}
 		}
-	}
-
 	}
 #endif

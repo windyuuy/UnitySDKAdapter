@@ -1,7 +1,6 @@
 #if SUPPORT_BYTEDANCE
 using GDK;
 using TTSDK;
-using WeChatWASM;
 
 namespace BytedanceGDK
 {
