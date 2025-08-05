@@ -35,11 +35,11 @@
 
 			public Task<LoadAdUnitResult> Load()
 			{
-				UnityEngine.Debug.Log($"load rewarded video ad: {PlacementId}");
+				DevLog.Instance.Log($"load rewarded video ad: {PlacementId}");
 				if (ShowTask != null)
 				{
 					// 需要处理, 否则 show 不回调
-					UnityEngine.Debug.LogError($"load rewarded video ad-failed, already showing: {PlacementId}");
+					DevLog.Instance.Error($"load rewarded video ad-failed, already showing: {PlacementId}");
 					return Task.FromResult(new LoadAdUnitResult()
 					{
 						IsOk = false,
@@ -51,7 +51,7 @@
 				if (LoadingTask != null)
 				{
 					// 正在loading
-					UnityEngine.Debug.Log($"load rewarded video, already loading: {PlacementId}");
+					DevLog.Instance.Log($"load rewarded video, already loading: {PlacementId}");
 					return LoadingTask;
 				}
 
@@ -70,7 +70,7 @@
 				void OnLoad()
 				{
 					Finish();
-					UnityEngine.Debug.Log($"load rewarded video ad-ok: {PlacementId}");
+					DevLog.Instance.Log($"load rewarded video ad-ok: {PlacementId}");
 
 					IsReady = true;
 
@@ -82,7 +82,7 @@
 				void OnError(int code, string message)
 				{
 					Finish();
-					UnityEngine.Debug.LogError(
+					DevLog.Instance.Error(
 						$"load rewarded video ad-failed: {PlacementId}, {code}, {message}");
 
 					LoadingTask = null;
@@ -111,11 +111,11 @@
 				var placementId = PlacementId;
 				var adUnit = AdUnit;
 
-				UnityEngine.Debug.Log($"show rewarded video ad: {placementId}");
+				DevLog.Instance.Log($"show rewarded video ad: {placementId}");
 				if (ShowTask != null)
 				{
 					// 需要处理, 否则 show 不回调
-					UnityEngine.Debug.LogError($"show rewarded video ad-failed, already showing: {placementId}");
+					DevLog.Instance.Error($"show rewarded video ad-failed, already showing: {placementId}");
 					return Task.FromResult(new ShowAdUnitResult()
 					{
 						IsOk = false,
@@ -131,7 +131,7 @@
 				LoadingTask = null;
 				adUnit.Show();
 
-				UnityEngine.Debug.Log($"show rewarded video ad-ok: {placementId}");
+				DevLog.Instance.Log($"show rewarded video ad-ok: {placementId}");
 
 				void Finish()
 				{
@@ -150,7 +150,7 @@
 						["errmsg"] = "",
 						["count"]=count.ToString(),
 					});
-					UnityEngine.Debug.Log(
+					DevLog.Instance.Log(
 						$"show rewarded video ad-closed: {placementId}, {adUnit.GetHashCode().ToString()}, {isEnded}, count={count}");
 					Finish();
 					ts.SetResult(new ShowAdUnitResult()
@@ -165,7 +165,7 @@
 
 				void OnError(int code, string message)
 				{
-					UnityEngine.Debug.LogError(
+					DevLog.Instance.Error(
 						$"show rewarded video ad-failed2: {placementId}, {code}, {message}");
 					Finish();
 					ts.SetResult(new ShowAdUnitResult()
@@ -193,7 +193,7 @@
 			// protected static readonly Dictionary<string, IAdvertUnit> AdvertMap = new();
 			public override Task<IRewardedVideoAd> CreateRewardedVideoAd(AdCreateInfo createInfo)
 			{
-				UnityEngine.Debug.Log($"create rewarded video ad: {createInfo.PlacementId}");
+				DevLog.Instance.Log($"create rewarded video ad: {createInfo.PlacementId}");
 				var placementId = createInfo.PlacementId;
 				// if (!(AdvertMap.TryGetValue(placementId, out var advert) && advert is IRewardedVideoAd rewardedVideoAd))
 				// {
@@ -204,7 +204,7 @@
 				var rewardedVideoAd = new RewardedVideoAd(adUnit, placementId);
 				// AdvertMap.Add(placementId, rewardedVideoAd);
 				// }
-				UnityEngine.Debug.Log($"create rewarded video ad-ok: {placementId}, {adUnit.GetHashCode().ToString()}");
+				DevLog.Instance.Log($"create rewarded video ad-ok: {placementId}, {adUnit.GetHashCode().ToString()}");
 				TT.ReportAnalytics("e2003", new Dictionary<string, string>()
 				{
 					["placement_id"] = placementId,

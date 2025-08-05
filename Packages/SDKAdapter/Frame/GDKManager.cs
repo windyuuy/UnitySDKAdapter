@@ -76,7 +76,7 @@ namespace GDK
             }
             else
             {
-                Debug.LogError($"invalid api instance [{name}]");
+                DevLog.Instance.Error($"invalid api instance [{name}]");
             }
         }
 

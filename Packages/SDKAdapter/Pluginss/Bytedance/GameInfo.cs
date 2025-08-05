@@ -15,19 +15,19 @@
 
 			public override Task InitWithConfig(GDKConfigV2 info)
 			{
-				devlog.Log("TT.InitSDK");
+				DevLog.Instance.Log("TT.InitSDK");
 				var ts = new TaskCompletionSource<int>();
 				if (!WXSDKManagerHandler.InitSDKPrompt())
 				{
 					TT.InitSDK((code, env) =>
 					{
-						devlog.Log($"TT.InitSDK return code: {code}");
+						DevLog.Instance.Log($"TT.InitSDK return code: {code}");
 						ts.SetResult(code);
 					});
 				}
 				else
 				{
-					devlog.Log($"TT.InitSDK has been inited");
+					DevLog.Instance.Log($"TT.InitSDK has been inited");
 					ts.SetResult(0);
 				}
 

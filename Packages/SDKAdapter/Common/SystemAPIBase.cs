@@ -71,22 +71,20 @@ namespace GDK
 		public IModuleMap Api { get; set; }
 
 
-		public Logger devlog = new Logger();
-
 		public virtual async Task SetEnableDebug(SetEnableDebugOptions res)
 		{
-			devlog.Info($"unsupoort action: setEnableDebug -> {res.enableDebug} ");
+			DevLog.Instance.Info($"unsupoort action: setEnableDebug -> {res.enableDebug} ");
 		}
 
 		public virtual async Task<AppCallUpResult> NavigateToApp(AppCallUpParams paras)
 		{
-			devlog.Info("打开小程序成功");
+			DevLog.Instance.Info("打开小程序成功");
 			return new AppCallUpResult();
 		}
 
 		public virtual async Task<ExitProgramResult> ExitProgram(ExitProgramOptions paras)
 		{
-			devlog.Info("正在退出");
+			DevLog.Instance.Info("正在退出");
 			UnityEngine.Application.Quit();
 			return new ExitProgramResult
 			{
@@ -96,7 +94,7 @@ namespace GDK
 
 		public virtual async Task UpdateProgramForce()
 		{
-			devlog.Info("没有更新");
+			DevLog.Instance.Info("没有更新");
 		}
 
 		public virtual void _initEvents()
@@ -325,5 +323,12 @@ namespace GDK
 		{
 			return Task.CompletedTask;
 		}
-	}
+
+        public Task<OpenLinkResult> OpenLink(OpenLinkOptions options)
+        {
+            DevLog.Instance.Error($"{nameof(OpenLink)} not implemented");
+			return Task.FromResult(new OpenLinkResult());
+        }
+
+    }
 }

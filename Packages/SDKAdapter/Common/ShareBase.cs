@@ -6,8 +6,6 @@ namespace GDK
 {
 	public class ShareBase: IShare
 	{
-		public Logger devlog = new Logger();
-
 		public virtual IModuleMap Api { get; set; }
 		public virtual void Init()
 		{

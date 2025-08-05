@@ -75,7 +75,7 @@
 			#if UNITY_EDITOR
 				throw new NotImplementedException();
 			#else
-				devlog.Error($"{nameof(OnShareTimeline)} not support in ttsdk");
+				DevLog.Instance.Error($"{nameof(OnShareTimeline)} not support in ttsdk");
 			#endif
 			}
 
@@ -84,7 +84,7 @@
 			#if UNITY_EDITOR
 				throw new NotImplementedException();
 			#else
-				devlog.Error($"{nameof(OnAddToFavorites)} not support in ttsdk");
+				DevLog.Instance.Error($"{nameof(OnAddToFavorites)} not support in ttsdk");
 			#endif
 			}
 		}

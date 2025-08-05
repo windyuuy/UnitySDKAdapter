@@ -24,6 +24,7 @@ namespace BytedanceGDK
 			this.SystemAPI = () => new SystemAPI();
 			this.Storage = () => new Storage();
 			this.Hardware = () => new Hardware();
+			this.MetaInfo = () => new MetaInfo();
 		}
 	}
 }

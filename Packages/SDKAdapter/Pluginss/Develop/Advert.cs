@@ -41,7 +41,7 @@ namespace DevelopGDK
 			var isReady = new Random().NextDouble() >= LoadAdFailedProperbility;
 			if (!isReady)
 			{
-				UnityEngine.Debug.LogError($"模拟加载激励视频广告失败");
+				DevLog.Instance.Error($"模拟加载激励视频广告失败");
 			}
 			this.IsReady = isReady;
 			return Task.FromResult(new LoadAdUnitResult() { IsOk = isReady });
@@ -63,7 +63,7 @@ namespace DevelopGDK
 			var isEnded = new Random().NextDouble() >= ShowAdFailedProperbility;
 			if (!isEnded)
 			{
-				UnityEngine.Debug.LogError($"模拟展示激励视频广告失败");
+				DevLog.Instance.Error($"模拟展示激励视频广告失败");
 			}
 			return Task.FromResult(new ShowAdUnitResult() { IsOk = true, IsEnded = isEnded, CouldReward = isEnded, });
 		}

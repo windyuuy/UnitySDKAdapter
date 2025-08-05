@@ -30,7 +30,7 @@ namespace BytedanceGDK
 			// }
 			//
 			// var ss = string.Join(",", dict.Select((item) => $"{item.Key}=\"{item.Value}\""));
-			// UnityEngine.Debug.Log($"[埋点] eventId={eventId}, data={{{ss}}}");
+			// DevLog.Instance.Log($"[埋点] eventId={eventId}, data={{{ss}}}");
 			//
 			// TT.ReportEvent(eventId, dict);
 			try
@@ -39,7 +39,7 @@ namespace BytedanceGDK
 			}
 			catch (Exception exception)
 			{
-				UnityEngine.Debug.LogError("事件上报客户端崩溃:");
+				DevLog.Instance.Error("事件上报客户端崩溃:");
 				UnityEngine.Debug.LogException(exception);
 			}
 		}
@@ -47,7 +47,7 @@ namespace BytedanceGDK
 		public override void ReportEvent(string eventId, Dictionary<string, string> dict)
 		{
 			var ss = string.Join(",", dict.Select((item) => $"{item.Key}=\"{item.Value}\""));
-			UnityEngine.Debug.Log($"[埋点] eventId={eventId}, data={{{ss}}}");
+			DevLog.Instance.Log($"[埋点] eventId={eventId}, data={{{ss}}}");
 
 			TT.ReportAnalytics(eventId, dict);
 		}

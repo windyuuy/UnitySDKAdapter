@@ -14,19 +14,19 @@ namespace WechatGDK
 
         public override Task InitWithConfig(GDKConfigV2 info)
         {
-            devlog.Log("WX.InitSDK");
+            DevLog.Instance.Log("WX.InitSDK");
             var ts = new TaskCompletionSource<int>();
             if (!WXSDKManagerHandler.InitSDKPrompt())
             {
                 WX.InitSDK((code) =>
                 {
-                    devlog.Log($"WX.InitSDK return code: {code}");
+                    DevLog.Instance.Log($"WX.InitSDK return code: {code}");
                     ts.SetResult(code);
                 });
             }
             else
             {
-                devlog.Log($"WX.InitSDK has been inited");
+                DevLog.Instance.Log($"WX.InitSDK has been inited");
                 ts.SetResult(0);
             }
 

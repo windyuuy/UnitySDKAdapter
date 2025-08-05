@@ -21,12 +21,12 @@ namespace GDK
 
 		public virtual void ReportEvent<T>(string eventId, T data)
 		{
-			UnityEngine.Debug.Log($"[埋点] eventId={eventId}, data={UnityEngine.JsonUtility.ToJson(data)}");
+			DevLog.Instance.Log($"[埋点] eventId={eventId}, data={UnityEngine.JsonUtility.ToJson(data)}");
 		}
 		public virtual void ReportEvent(string eventId, Dictionary<string, string> data)
 		{
 			var ss = string.Join(",", data.Select((item) => $"{item.Key}=\"{item.Value}\""));
-			UnityEngine.Debug.Log($"[埋点] eventId={eventId}, data={ss}");
+			DevLog.Instance.Log($"[埋点] eventId={eventId}, data={ss}");
 		}
 	}
 }

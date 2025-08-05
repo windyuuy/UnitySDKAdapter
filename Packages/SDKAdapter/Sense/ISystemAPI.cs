@@ -270,6 +270,16 @@ namespace GDK
 		public bool IsOk;
 	}
 
+	public class OpenLinkOptions
+	{
+		public string Openlink;
+	}
+
+	public class OpenLinkResult
+	{
+		
+	}
+	
 	/**
 	 * 支持各种系统调用、系统事件侦听
 	 */
@@ -450,5 +460,7 @@ namespace GDK
 		public Task<RestartMiniProgramResult> RestartMiniProgram(RestartMiniProgramOptions options);
 
 		public LaunchOptions GetLaunchOptionsSync();
+
+		public Task<OpenLinkResult> OpenLink(OpenLinkOptions options);
 	}
 }

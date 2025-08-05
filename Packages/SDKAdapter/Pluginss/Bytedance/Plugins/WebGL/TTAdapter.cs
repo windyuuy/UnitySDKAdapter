@@ -29,6 +29,9 @@ namespace BytedanceGDK
 		[DllImport("__Internal")]
 		public static extern string GDK_Bytedance_GetUserDataPath();
 
+		[DllImport("__Internal")]
+		private static extern void GDK_Bytedance_Openlink(string openlink);
+
 		public static void SendRequest<TResp>(Action<long, string> call, object obj, Action<TResp> callback)
 		{
 			var sessionId = JsCallbackListener.Shared.ListenCallback<TResp>(callback);

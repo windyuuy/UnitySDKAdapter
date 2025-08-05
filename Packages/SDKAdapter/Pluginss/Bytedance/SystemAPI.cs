@@ -127,15 +127,15 @@
 				{
 					updateManager.OnCheckForUpdate((hasUpdate) =>
 					{
-						devlog.Info("检查更新开始:");
+						DevLog.Instance.Info("检查更新开始:");
 						if (hasUpdate.HasUpdate)
 						{
-							devlog.Info("有更新");
+							DevLog.Instance.Info("有更新");
 							// SDKProxy.showLoading({title:"检查更新中...",mask:true})
 						}
 						else
 						{
-							devlog.Info("没有更新");
+							DevLog.Instance.Info("没有更新");
 							Api.Widgets.HideLoading();
 							ret.SetResult(true);
 						}
@@ -143,7 +143,7 @@
 
 					updateManager.OnUpdateReady(() =>
 					{
-						devlog.Info("更新完成");
+						DevLog.Instance.Info("更新完成");
 						Api.Widgets.HideLoading();
 						Api.Widgets.ShowModal(new()
 						{
@@ -164,7 +164,7 @@
 
 					updateManager.OnUpdateFailed((resp) =>
 					{
-						devlog.Info($"更新失败: {resp.Err}");
+						DevLog.Instance.Info($"更新失败: {resp.Err}");
 						Api.Widgets.HideLoading();
 						Api.Widgets.ShowModal(new()
 						{
@@ -189,22 +189,22 @@
 
 			public override void OnShow(Action<object> callback)
 			{
-				devlog.Error($"TT.{nameof(OnShow)} not implemented");
+				DevLog.Instance.Error($"TT.{nameof(OnShow)} not implemented");
 			}
 
 			public override void OffShow(Action<object> callback)
 			{
-				devlog.Error($"TT.{nameof(OffShow)} not implemented");
+				DevLog.Instance.Error($"TT.{nameof(OffShow)} not implemented");
 			}
 
 			public override void OnHide(Action<object> callback)
 			{
-				devlog.Error($"TT.{nameof(OnHide)} not implemented");
+				DevLog.Instance.Error($"TT.{nameof(OnHide)} not implemented");
 			}
 
 			public override void OffHide(Action<object> callback)
 			{
-				devlog.Error($"TT.{nameof(OffHide)} not implemented");
+				DevLog.Instance.Error($"TT.{nameof(OffHide)} not implemented");
 			}
 
 			public override void GetFPS(int fps)
@@ -214,19 +214,19 @@
 
 			public override void OnMemoryWarning(Action<GDK.IOnMemoryWarningResult> call)
 			{
-				Debug.LogError($"{nameof(OnMemoryWarning)} not supported");
+				DevLog.Instance.Error($"{nameof(OnMemoryWarning)} not supported");
 			}
 
 			public override void OffMemoryWarning(Action<GDK.IOnMemoryWarningResult> call)
 			{
-				Debug.LogError($"{nameof(OffMemoryWarning)} not supported");
+				DevLog.Instance.Error($"{nameof(OffMemoryWarning)} not supported");
 			}
 
 			public override Task<RestartMiniProgramResult> RestartMiniProgram(RestartMiniProgramOptions options)
 			{
-				UnityEngine.Debug.Log("TT.RestartMiniProgram");
+				DevLog.Instance.Log("TT.RestartMiniProgram");
 				var ok = TT.RestartMiniProgramSync();
-				UnityEngine.Debug.Log("TT.RestartMiniProgram-done");
+				DevLog.Instance.Log("TT.RestartMiniProgram-done");
 				return Task.FromResult(new RestartMiniProgramResult()
 				{
 					IsOk = ok,

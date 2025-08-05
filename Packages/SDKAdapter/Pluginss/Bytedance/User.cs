@@ -45,17 +45,17 @@
 				var ts = new TaskCompletionSource<LoginResult>();
 				TT.Login((code, acode, isLogin) =>
 					{
-						UnityEngine.Debug.Log($"TT.Login-success: {code}, {acode}, {isLogin}");
+						DevLog.Instance.Log($"TT.Login-success: {code}, {acode}, {isLogin}");
 						var url =
 							$"https://minigame.zijieapi.com/mgplatform/api/apps/jscode2session?appid={paras.AppId}&code={code}&anonymous_code={acode}&secret={paras.AppSecret}";
-						UnityEngine.Debug.Log($"Code2Session: {url}");
+						DevLog.Instance.Log($"Code2Session: {url}");
 
 						IEnumerator Code2Session(string url)
 						{
 							var uwr = UnityWebRequest.Get(url);
 							yield return uwr.SendWebRequest();
 							var text = uwr.downloadHandler.text;
-							UnityEngine.Debug.Log($"Code2Session-Resp: {uwr.responseCode}, {text}");
+							DevLog.Instance.Log($"Code2Session-Resp: {uwr.responseCode}, {text}");
 							try
 							{
 								var resp = JsonUtility.FromJson<Code2SessionResp>(text);
@@ -84,7 +84,7 @@
 						LoomMG.SharedLoom.StartCoroutine(Code2Session(url));
 					}, (errMsg) =>
 					{
-						Debug.LogError($"TT.Login-failed: {errMsg}");
+						DevLog.Instance.Error($"TT.Login-failed: {errMsg}");
 						ts.SetResult(new LoginResult()
 						{
 							IsOk = false,

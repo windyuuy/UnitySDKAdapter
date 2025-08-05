@@ -29,16 +29,16 @@ namespace WechatGDK
 			// }
 			//
 			// var ss = string.Join(",", dict.Select((item) => $"{item.Key}=\"{item.Value}\""));
-			// UnityEngine.Debug.Log($"[埋点] eventId={eventId}, data={{{ss}}}");
+			// DevLog.Instance.Log($"[埋点] eventId={eventId}, data={{{ss}}}");
 			//
 			// WX.ReportEvent(eventId, dict);
 			try
 			{
-				WXAdapter.GDK_Bytedance_ReportEvent(eventId, JsonUtility.ToJson(data));
+				WXAdapter.GDK_Wechatgame_ReportEvent(eventId, JsonUtility.ToJson(data));
 			}
 			catch (Exception exception)
 			{
-				UnityEngine.Debug.LogError("事件上报客户端崩溃:");
+				DevLog.Instance.Error("事件上报客户端崩溃:");
 				UnityEngine.Debug.LogException(exception);
 			}
 		}
@@ -46,7 +46,7 @@ namespace WechatGDK
 		public override void ReportEvent(string eventId, Dictionary<string, string> dict)
 		{
 			var ss = string.Join(",", dict.Select((item) => $"{item.Key}=\"{item.Value}\""));
-			UnityEngine.Debug.Log($"[埋点] eventId={eventId}, data={{{ss}}}");
+			DevLog.Instance.Log($"[埋点] eventId={eventId}, data={{{ss}}}");
 
 			WX.ReportEvent(eventId, dict);
 		}

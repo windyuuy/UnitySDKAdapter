@@ -113,15 +113,15 @@
 				{
 					updateManager.OnCheckForUpdate((hasUpdate) =>
 					{
-						devlog.Info("检查更新开始:");
+						DevLog.Instance.Info("检查更新开始:");
 						if (hasUpdate.hasUpdate)
 						{
-							devlog.Info("有更新");
+							DevLog.Instance.Info("有更新");
 							// SDKProxy.showLoading({title:"检查更新中...",mask:true})
 						}
 						else
 						{
-							devlog.Info("没有更新");
+							DevLog.Instance.Info("没有更新");
 							WX.HideLoading(new() { });
 							ret.SetResult(true);
 						}
@@ -129,7 +129,7 @@
 
 					updateManager.OnUpdateReady((resp) =>
 					{
-						devlog.Info("更新完成");
+						DevLog.Instance.Info("更新完成");
 						WX.HideLoading(new() { });
 						WX.ShowModal(new()
 						{
@@ -150,7 +150,7 @@
 
 					updateManager.OnUpdateFailed((resp) =>
 					{
-						devlog.Info($"更新失败: {resp.errMsg}");
+						DevLog.Instance.Info($"更新失败: {resp.errMsg}");
 						WX.HideLoading(new() { });
 						WX.ShowModal(new()
 						{
@@ -231,12 +231,12 @@
 			public override Task<RestartMiniProgramResult> RestartMiniProgram(RestartMiniProgramOptions options)
 			{
 				var ts = new TaskCompletionSource<RestartMiniProgramResult>();
-				UnityEngine.Debug.Log("WX.RestartMiniProgram");
+				DevLog.Instance.Log("WX.RestartMiniProgram");
 				WX.RestartMiniProgram(new WeChatWASM.RestartMiniProgramOption()
 				{
 					success = (resp) =>
 					{
-						UnityEngine.Debug.Log("WX.RestartMiniProgram-done");
+						DevLog.Instance.Log("WX.RestartMiniProgram-done");
 						ts.SetResult(new RestartMiniProgramResult()
 						{
 						});
@@ -269,6 +269,11 @@
 						},
 					}
 				};
+			}
+
+			public Task<OpenLinkResult> OpenLink(OpenLinkOptions options){
+				WXAdapter.GDK_Wechatgame_Openlink(options.Openlink);
+				return Task.FromResult(new OpenLinkResult());
 			}
 		}
 	}

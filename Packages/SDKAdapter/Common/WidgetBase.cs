@@ -39,14 +39,12 @@ namespace GDK
 
 	public abstract class WidgetsBase : GDK.IWidgets
 	{
-		// const devlog = new lang.libs.Log({ tags: ["DEVELOP"] })
-		public static Logger Devlog = new Logger();
 		/**
 		 * 显示启动画面
 		 */
 		public void showLaunchingView()
 		{
-			Devlog.Info("showLaunchingView simulation not implemented.");
+			DevLog.Instance.Info("showLaunchingView simulation not implemented.");
 		}
 
 		/** 系统键盘对象 */

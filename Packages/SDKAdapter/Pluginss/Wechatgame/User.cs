@@ -39,15 +39,15 @@ namespace WechatGDK
             {
                 success = (resp1) =>
                 {
-                    UnityEngine.Debug.Log($"WX.Login-success: {resp1.code}");
+                    DevLog.Instance.Log($"WX.Login-success: {resp1.code}");
                     var url = $"https://api.weixin.qq.com/sns/jscode2session?appid={paras.AppId}&secret={paras.AppSecret}&js_code={resp1.code}&grant_type=authorization_code";
-                    UnityEngine.Debug.Log($"Code2Session: {url}");
+                    DevLog.Instance.Log($"Code2Session: {url}");
                     IEnumerator Code2Session(string url)
                     {
                         var uwr = UnityWebRequest.Get(url);
                         yield return uwr.SendWebRequest();
                         var text = uwr.downloadHandler.text;
-                        UnityEngine.Debug.Log($"Code2Session-Resp: {uwr.responseCode}, {text}");
+                        DevLog.Instance.Log($"Code2Session-Resp: {uwr.responseCode}, {text}");
                         try
                         {
                             var resp = JsonUtility.FromJson<Code2SessionResp>(text);
@@ -76,7 +76,7 @@ namespace WechatGDK
                 },
                 fail = (resp) =>
                 {
-                    Debug.LogError($"WX.Login-failed: {resp.errno}, {resp.errMsg}");
+                    DevLog.Instance.Error($"WX.Login-failed: {resp.errno}, {resp.errMsg}");
                     ts.SetResult(new LoginResult()
                     {
                         IsOk = false,

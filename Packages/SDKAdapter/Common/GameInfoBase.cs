@@ -57,7 +57,5 @@ namespace GDK
 			// CommonServer.getServerTime = info.getServerTime
 			// CommonServer.httpClient = info.httpClient
 		}
-
-		public Logger devlog = new Logger();
 	}
 }

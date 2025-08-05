@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using AOT;
 using UnityEngine;
+using GDK;
 
 namespace BytedanceGDK
 {
@@ -30,7 +31,7 @@ namespace BytedanceGDK
 				_shared = gameObject.AddComponent<JsCallbackListener>();
 				if (_shared == null)
 				{
-					Debug.LogError("cannot create JsCallbackListener");
+					DevLog.Instance.Error("cannot create JsCallbackListener");
 				}
 
 				return _shared;
@@ -49,7 +50,7 @@ namespace BytedanceGDK
 		public long ListenCallback<T>(Action<T> callback)
 		{
 			var sessionId = GetCallIdAcc();
-			Debug.Log($"ListenCallback: {sessionId}");
+			DevLog.Instance.Log($"ListenCallback: {sessionId}");
 			CallbackMap.Add(sessionId, (jsonStr) =>
 			{
 				try
@@ -70,15 +71,15 @@ namespace BytedanceGDK
 		{
 			var info = JsonUtility.FromJson<CallbackInfo>(jsonValue);
 			var sessionId = info.sessionId;
-			Debug.Log($"ReceiveCallback: {sessionId}, {jsonValue}");
+			DevLog.Instance.Log($"ReceiveCallback: {sessionId}, {jsonValue}");
 			if (CallbackMap.Remove(sessionId, out var callback))
 			{
-				Debug.Log($"ReceiveCallback-ToCall: {sessionId}, {jsonValue}");
+				DevLog.Instance.Log($"ReceiveCallback-ToCall: {sessionId}, {jsonValue}");
 				callback?.Invoke(jsonValue);
 			}
 			else
 			{
-				Debug.LogError($"CallId not Registed: {sessionId}, {jsonValue}");
+				DevLog.Instance.Error($"CallId not Registed: {sessionId}, {jsonValue}");
 			}
 		}
 	}

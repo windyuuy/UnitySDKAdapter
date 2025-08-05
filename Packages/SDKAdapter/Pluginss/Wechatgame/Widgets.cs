@@ -237,7 +237,7 @@
 					},
 					fail = (resp) =>
 					{
-						UnityEngine.Debug.LogError(resp.errMsg);
+						DevLog.Instance.Error(resp.errMsg);
 						var result = new GDK.ShowModalResult
 						{
 							errMsg = resp.errMsg,

@@ -14,7 +14,6 @@ namespace WechatGDK
 {
 	public class FileSystemManager : GDK.IFileSystemManager
 	{
-		public Logger devlog = new Logger();
 		private WXFileSystemManager _fs;
 
 		public FileSystemManager()
@@ -252,7 +251,7 @@ namespace WechatGDK
 			var ok = result == "ok";
 			if (!ok)
 			{
-				devlog.Error(result);
+				DevLog.Instance.Error(result);
 			}
 
 			return ok;
@@ -264,7 +263,7 @@ namespace WechatGDK
 			var ok = result == "ok";
 			if (!ok)
 			{
-				devlog.Error(result);
+				DevLog.Instance.Error(result);
 			}
 
 			return ok;

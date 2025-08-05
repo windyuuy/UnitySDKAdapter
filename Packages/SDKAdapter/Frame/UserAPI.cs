@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using Lang.Loggers;
+using UnityEngine;
 
 namespace GDK
 {
@@ -7,8 +7,6 @@ namespace GDK
 	public class UserAPI
 	{
 		public static UserAPI Instance;
-		public Logger Devlog = new Logger();
-
 		/**
 		 * 附件map
 		 */
@@ -41,7 +39,7 @@ namespace GDK
 
 		public void Init()
 		{
-			Devlog.Warn("redundant init for gdk, skipped");
+			DevLog.Instance.Warn("redundant init for gdk, skipped");
 		}
 
 		protected bool BeInitConfigOnce = false;
@@ -50,7 +48,7 @@ namespace GDK
 		{
 			if (this.BeInitConfigOnce)
 			{
-				Devlog.Warn("redundant initConfig for gdk, skipped");
+				DevLog.Instance.Warn("redundant initConfig for gdk, skipped");
 			}
 			else
 			{
@@ -83,6 +81,7 @@ namespace GDK
 		 */
 		internal async Task _initWithConfig(GDKConfigV2 info)
 		{
+			DevLog.Instance.Log($"Init Plugin: {this.PluginName}");
 			await this._m.GameInfo.InitWithConfig(info);
 			var fields = this._m.GetType().GetProperties();
 			foreach (var field in fields)

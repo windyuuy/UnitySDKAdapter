@@ -8,50 +8,50 @@ namespace DevelopGDK
 	{
 		public Task ShowKeyboard(ShowKeyboardOptions options)
 		{
-			WidgetsBase.Devlog.Info(nameof(ShowKeyboard));
+			DevLog.Instance.Info(nameof(ShowKeyboard));
 			return Task.CompletedTask;
 		}
 
 		public Task UpdateKeyboard(UpdateKeyboardOptions options)
 		{
-			WidgetsBase.Devlog.Info(nameof(UpdateKeyboard));
+			DevLog.Instance.Info(nameof(UpdateKeyboard));
 			return Task.CompletedTask;
 		}
 
 		public Task HideKeyboard()
 		{
-			WidgetsBase.Devlog.Info(nameof(HideKeyboard));
+			DevLog.Instance.Info(nameof(HideKeyboard));
 			return Task.CompletedTask;
 		}
 
 		public void OnKeyboardInputEvent(Action<OnKeyboardInputResult> callback)
 		{
-			WidgetsBase.Devlog.Info(nameof(OnKeyboardInputEvent));
+			DevLog.Instance.Info(nameof(OnKeyboardInputEvent));
 		}
 
 		public void OffKeyboardInputEvent(Action<OnKeyboardInputResult> callback)
 		{
-			WidgetsBase.Devlog.Info(nameof(OffKeyboardInputEvent));
+			DevLog.Instance.Info(nameof(OffKeyboardInputEvent));
 		}
 
 		public void OnKeyboardConfirm(Action<OnKeyboardConfirmResult> callback)
 		{
-			WidgetsBase.Devlog.Info(nameof(OnKeyboardConfirm));
+			DevLog.Instance.Info(nameof(OnKeyboardConfirm));
 		}
 
 		public void OffKeyboardConfirm(Action<OnKeyboardConfirmResult> callback)
 		{
-			WidgetsBase.Devlog.Info(nameof(OffKeyboardConfirm));
+			DevLog.Instance.Info(nameof(OffKeyboardConfirm));
 		}
 
 		public void OnKeyboardComplete(Action<OnKeyboardCompleteResult> callback)
 		{
-			WidgetsBase.Devlog.Info(nameof(OnKeyboardComplete));
+			DevLog.Instance.Info(nameof(OnKeyboardComplete));
 		}
 
 		public void OffKeyboardComplete(Action<OnKeyboardCompleteResult> callback)
 		{
-			WidgetsBase.Devlog.Info(nameof(OffKeyboardComplete));
+			DevLog.Instance.Info(nameof(OffKeyboardComplete));
 		}
 	}
 
@@ -61,25 +61,25 @@ namespace DevelopGDK
 
 		public override Task ShowLoading(GDK.ShowLoadingParams obj)
 		{
-			Devlog.Info("showLoading");
+			DevLog.Instance.Info("showLoading");
 			return Task.CompletedTask;
 		}
 
 		public override Task HideLoading()
 		{
-			Devlog.Info("hideLoading");
+			DevLog.Instance.Info("hideLoading");
 			return Task.CompletedTask;
 		}
 
 		public override Task showToast(GDK.ShowToastOptions obj)
 		{
-			Devlog.Info("showToast");
+			DevLog.Instance.Info("showToast");
 			return Task.CompletedTask;
 		}
 
 		public override Task hideToast()
 		{
-			Devlog.Info("hideToast");
+			DevLog.Instance.Info("hideToast");
 			return Task.CompletedTask;
 		}
 
