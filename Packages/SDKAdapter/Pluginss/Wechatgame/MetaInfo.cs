@@ -1,3 +1,4 @@
+#if SUPPORT_WECHATGAME
 using GDK;
 
 namespace WechatGDK
@@ -10,3 +11,4 @@ namespace WechatGDK
 		public string apiPlatformLocale { get; set; } = "微信小游戏";
 	}
 }
+#endif

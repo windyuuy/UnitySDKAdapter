@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 
 namespace DevelopGDK
 {
@@ -27,3 +28,4 @@ namespace DevelopGDK
 		}
 	}
 }
+#endif

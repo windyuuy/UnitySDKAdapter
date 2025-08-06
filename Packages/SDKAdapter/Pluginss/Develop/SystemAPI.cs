@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using System;
 using System.Threading.Tasks;
 using GDK;
@@ -38,3 +39,4 @@ namespace DevelopGDK
 		}
 	}
 }
+#endif

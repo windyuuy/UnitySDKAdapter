@@ -163,23 +163,24 @@
 
 			public override Task HideLoading()
 			{
-				return TTAdapter.SendRequestAsync<ShowWidgetResult>(TTAdapter.GDK_Bytedance_HideLoading);
+				return TTAdapter.SendJsRequestAsync<ShowWidgetResult>(TTAdapter.GDK_Bytedance_HideLoading);
 			}
 
 			public override Task<ShowWidgetResult> ShowToast(ShowToastOptions obj2)
 			{
-				return TTAdapter.SendRequestAsync<ShowWidgetResult>(TTAdapter.GDK_Bytedance_ShowToast,
+				return TTAdapter.SendJsRequestAsync<ShowToastOptions, ShowWidgetResult>(TTAdapter.GDK_Bytedance_ShowToast,
 					obj2);
 			}
 
 			public override Task hideToast()
 			{
-				return TTAdapter.SendRequestAsync<ShowWidgetResult>(TTAdapter.GDK_Bytedance_HideToast);
+				return TTAdapter.SendJsRequestAsync<ShowWidgetResult>(TTAdapter.GDK_Bytedance_HideToast);
 			}
 
 			public override Task<GDK.ShowModalResult> ShowModal(GDK.ShowModalOptions obj2)
 			{
-				return TTAdapter.SendRequestAsync<ShowModalResult>(TTAdapter.GDK_Bytedance_ShowModal, obj2);
+				return TTAdapter.SendJsRequestAsync<GDK.ShowModalOptions, ShowModalResult>(TTAdapter.GDK_Bytedance_ShowModal,
+					obj2);
 			}
 
 			public override Task hideLaunchingView()

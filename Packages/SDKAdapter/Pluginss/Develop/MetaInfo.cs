@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using GDK;
 
 namespace DevelopGDK
@@ -10,3 +11,4 @@ namespace DevelopGDK
 		public string apiPlatformLocale { get; set; } = "开发版";
 	}
 }
+#endif

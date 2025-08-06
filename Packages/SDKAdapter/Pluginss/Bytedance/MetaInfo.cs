@@ -1,3 +1,4 @@
+#if SUPPORT_BYTEDANCE
 using GDK;
 
 namespace BytedanceGDK
@@ -10,3 +11,4 @@ namespace BytedanceGDK
 		public string apiPlatformLocale { get; set; } = "抖音小游戏";
 	}
 }
+#endif

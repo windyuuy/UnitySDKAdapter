@@ -12,7 +12,7 @@ namespace BytedanceGDK
 		[Serializable]
 		internal class CallbackInfo
 		{
-			public long sessionId;
+			public int sessionId;
 		}
 
 		private static JsCallbackListener _shared;
@@ -38,16 +38,16 @@ namespace BytedanceGDK
 			}
 		}
 
-		private long _callIdAcc = 0;
+		private int _callIdAcc = 0;
 
-		public long GetCallIdAcc()
+		public int GetCallIdAcc()
 		{
 			return ++_callIdAcc;
 		}
 
-		protected readonly Dictionary<long, Action<string>> CallbackMap = new();
+		protected readonly Dictionary<int, Action<string>> CallbackMap = new();
 
-		public long ListenCallback<T>(Action<T> callback)
+		public int ListenCallback<T>(Action<T> callback)
 		{
 			var sessionId = GetCallIdAcc();
 			DevLog.Instance.Log($"ListenCallback: {sessionId}");
@@ -71,7 +71,7 @@ namespace BytedanceGDK
 		{
 			var info = JsonUtility.FromJson<CallbackInfo>(jsonValue);
 			var sessionId = info.sessionId;
-			DevLog.Instance.Log($"ReceiveCallback: {sessionId}, {jsonValue}");
+			DevLog.Instance.Log($"JsCallbackListener::ReceiveCallback: {sessionId}, {jsonValue}");
 			if (CallbackMap.Remove(sessionId, out var callback))
 			{
 				DevLog.Instance.Log($"ReceiveCallback-ToCall: {sessionId}, {jsonValue}");

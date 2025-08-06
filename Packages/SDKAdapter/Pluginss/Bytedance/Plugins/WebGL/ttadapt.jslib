@@ -19,24 +19,19 @@ mergeInto(LibraryManager.library, {
         title: options.title,
         success: function (errMsg) {
           var resultStr = JSON.stringify({
+            sessionId,
             errMsg: errMsg,
           })
-          var bufferSize = lengthBytesUTF8(resultStr) + 1;
-          var buffer = _malloc(bufferSize);
-          stringToUTF8(resultStr, buffer, bufferSize);
           console.log("BytedanceGDK_JsCallbackListener:", "GDK_Bytedance_ShowLoading", resultStr)
-          SendMessage('BytedanceGDK_JsCallbackListener', "ReceiveCallback", buffer);
+          SendMessage('BytedanceGDK_JsCallbackListener', "ReceiveCallback", resultStr);
         },
         fail: function (errMsg) {
           var resultStr = JSON.stringify({
             sessionId,
             errMsg: errMsg,
           })
-          var bufferSize = lengthBytesUTF8(resultStr) + 1;
-          var buffer = _malloc(bufferSize);
-          stringToUTF8(resultStr, buffer, bufferSize);
           console.log("BytedanceGDK_JsCallbackListener:", "GDK_Bytedance_ShowLoading", resultStr)
-          SendMessage('BytedanceGDK_JsCallbackListener', "ReceiveCallback", buffer);
+          SendMessage('BytedanceGDK_JsCallbackListener', "ReceiveCallback", resultStr);
         },
       })
     } catch (error) {
@@ -49,24 +44,19 @@ mergeInto(LibraryManager.library, {
       tt.hideLoading({
         success: function (errMsg) {
           var resultStr = JSON.stringify({
+            sessionId,
             errMsg: errMsg,
           })
-          var bufferSize = lengthBytesUTF8(resultStr) + 1;
-          var buffer = _malloc(bufferSize);
-          stringToUTF8(resultStr, buffer, bufferSize);
           console.log("BytedanceGDK_JsCallbackListener:", "GDK_Bytedance_HideLoading", resultStr)
-          SendMessage('BytedanceGDK_JsCallbackListener', "ReceiveCallback", buffer);
+          SendMessage('BytedanceGDK_JsCallbackListener', "ReceiveCallback", resultStr);
         },
         fail: function (errMsg) {
           var resultStr = JSON.stringify({
             sessionId,
             errMsg: errMsg,
           })
-          var bufferSize = lengthBytesUTF8(resultStr) + 1;
-          var buffer = _malloc(bufferSize);
-          stringToUTF8(resultStr, buffer, bufferSize);
           console.log("BytedanceGDK_JsCallbackListener:", "GDK_Bytedance_HideLoading", resultStr)
-          SendMessage('BytedanceGDK_JsCallbackListener', "ReceiveCallback", buffer);
+          SendMessage('BytedanceGDK_JsCallbackListener', "ReceiveCallback", resultStr);
         },
       })
     } catch (error) {
@@ -90,24 +80,19 @@ mergeInto(LibraryManager.library, {
         title: options.title,
         success: function (errMsg) {
           var resultStr = JSON.stringify({
+            sessionId,
             errMsg: errMsg,
           })
-          var bufferSize = lengthBytesUTF8(resultStr) + 1;
-          var buffer = _malloc(bufferSize);
-          stringToUTF8(resultStr, buffer, bufferSize);
           console.log("BytedanceGDK_JsCallbackListener:", "GDK_Bytedance_ShowModal", resultStr)
-          SendMessage('BytedanceGDK_JsCallbackListener', "ReceiveCallback", buffer);
+          SendMessage('BytedanceGDK_JsCallbackListener', "ReceiveCallback", resultStr);
         },
         fail: function (errMsg) {
           var resultStr = JSON.stringify({
             sessionId,
             errMsg: errMsg,
           })
-          var bufferSize = lengthBytesUTF8(resultStr) + 1;
-          var buffer = _malloc(bufferSize);
-          stringToUTF8(resultStr, buffer, bufferSize);
           console.log("BytedanceGDK_JsCallbackListener:", "GDK_Bytedance_ShowModal", resultStr)
-          SendMessage('BytedanceGDK_JsCallbackListener', "ReceiveCallback", buffer);
+          SendMessage('BytedanceGDK_JsCallbackListener', "ReceiveCallback", resultStr);
         },
       })
     } catch (error) {
@@ -125,24 +110,19 @@ mergeInto(LibraryManager.library, {
         icon: options.icon,
         success: function (errMsg) {
           var resultStr = JSON.stringify({
+            sessionId,
             errMsg: errMsg,
           })
-          var bufferSize = lengthBytesUTF8(resultStr) + 1;
-          var buffer = _malloc(bufferSize);
-          stringToUTF8(resultStr, buffer, bufferSize);
           console.log("BytedanceGDK_JsCallbackListener:", "GDK_Bytedance_ShowToast", resultStr)
-          SendMessage('BytedanceGDK_JsCallbackListener', "ReceiveCallback", buffer);
+          SendMessage('BytedanceGDK_JsCallbackListener', "ReceiveCallback", resultStr);
         },
         fail: function (errMsg) {
           var resultStr = JSON.stringify({
             sessionId,
             errMsg: errMsg,
           })
-          var bufferSize = lengthBytesUTF8(resultStr) + 1;
-          var buffer = _malloc(bufferSize);
-          stringToUTF8(resultStr, buffer, bufferSize);
           console.log("BytedanceGDK_JsCallbackListener:", "GDK_Bytedance_ShowToast", resultStr)
-          SendMessage('BytedanceGDK_JsCallbackListener', "ReceiveCallback", buffer);
+          SendMessage('BytedanceGDK_JsCallbackListener', "ReceiveCallback", resultStr);
         },
       })
     } catch (error) {
@@ -155,24 +135,19 @@ mergeInto(LibraryManager.library, {
       tt.hideToast({
         success: function (errMsg) {
           var resultStr = JSON.stringify({
+            sessionId,
             errMsg: errMsg,
           })
-          var bufferSize = lengthBytesUTF8(resultStr) + 1;
-          var buffer = _malloc(bufferSize);
-          stringToUTF8(resultStr, buffer, bufferSize);
           console.log("BytedanceGDK_JsCallbackListener:", "GDK_Bytedance_HideToast", resultStr)
-          SendMessage('BytedanceGDK_JsCallbackListener', "ReceiveCallback", buffer);
+          SendMessage('BytedanceGDK_JsCallbackListener', "ReceiveCallback", resultStr);
         },
         fail: function (errMsg) {
           var resultStr = JSON.stringify({
             sessionId,
             errMsg: errMsg,
           })
-          var bufferSize = lengthBytesUTF8(resultStr) + 1;
-          var buffer = _malloc(bufferSize);
-          stringToUTF8(resultStr, buffer, bufferSize);
           console.log("BytedanceGDK_JsCallbackListener:", "GDK_Bytedance_HideToast", resultStr)
-          SendMessage('BytedanceGDK_JsCallbackListener', "ReceiveCallback", buffer);
+          SendMessage('BytedanceGDK_JsCallbackListener', "ReceiveCallback", resultStr);
         },
       })
     } catch (error) {
