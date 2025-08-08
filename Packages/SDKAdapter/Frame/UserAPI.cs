@@ -65,18 +65,19 @@ namespace GDK
 		internal void _init()
 		{
 			Debug.Log($"Plugin::_init: {this.PluginName}");
-			var fields = this._m.GetType().GetFields();
-			foreach (var field in fields)
+			var properties = this._m.GetType().GetProperties();
+			foreach (var propertyInfo in properties)
 			{
 				// 初始化广告等具体模块
-				var addon = field.GetValue(this._m) as IModule;
-				// if (addon.init)
+				var addon = propertyInfo.GetValue(this._m);
+				if (addon is IModule imodule)
 				{
-					Debug.Log($"addon::Init {field.Name}");
-					addon.Init();
-					Debug.Log($"addon::Init-done {field.Name}");
+					Debug.Log($"addon::Init {propertyInfo.Name}");
+					imodule.Init();
+					Debug.Log($"addon::Init-done {propertyInfo.Name}");
 				}
 			}
+
 			Debug.Log($"Plugin::_init-done: {this.PluginName}");
 		}
 

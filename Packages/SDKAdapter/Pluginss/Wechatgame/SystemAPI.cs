@@ -173,14 +173,38 @@
 				return ret.Task;
 			}
 
-			public override void OnShow(Action<object> callback)
+			public EventProxy<OnShowResult, Action<OnShowListenerResult>> OnShowEvent = new(
+				callback =>
+				{
+					void OnShow(OnShowListenerResult resp)
+					{
+						callback(new OnShowResult
+						{
+							query = resp.query,
+							scene = resp.scene.ToString(),
+							refererInfo = new()
+							{
+								appId = resp.referrerInfo.appId,
+								extraData = resp.referrerInfo.extraData,
+							},
+							showFrom = 0,
+							launch_from = null,
+							location = null,
+						});
+					}
+
+					WX.OnShow(OnShow);
+					return OnShow;
+				}, cleanId => WX.OffShow(cleanId));
+
+			public override void OnShow(Action<OnShowResult> callback)
 			{
-				WX.OnShow(callback);
+				OnShowEvent.Add(callback);
 			}
 
-			public override void OffShow(Action<object> callback)
+			public override void OffShow(Action<OnShowResult> callback)
 			{
-				WX.OffShow(callback);
+				OnShowEvent.Remove(callback);
 			}
 
 			public override void OnHide(Action<object> callback)
@@ -193,7 +217,7 @@
 				WX.OffHide(callback);
 			}
 
-			public override void GetFPS(int fps)
+			public override void SetFPS(int fps)
 			{
 				WX.SetPreferredFramesPerSecond(fps);
 			}
@@ -271,9 +295,31 @@
 				};
 			}
 
-			public Task<OpenLinkResult> OpenLink(OpenLinkOptions options){
+			public Task<OpenLinkResult> OpenLink(OpenLinkOptions options)
+			{
 				WXAdapter.GDK_Wechatgame_Openlink(options.Openlink);
 				return Task.FromResult(new OpenLinkResult());
+			}
+
+			public override Task<NavigateToSceneResult> NavigateToScene(NavigateToSceneOptions paras)
+			{
+				return Task.FromResult(new NavigateToSceneResult
+				{
+					isOk = false,
+					errMsg = "",
+					errCode = -1,
+				});
+			}
+
+			public override Task<CheckSceneResult> CheckScene(CheckSceneOptions paras)
+			{
+				return Task.FromResult(new CheckSceneResult
+				{
+					isOk = false,
+					isExist = false,
+					errMsg = "",
+					errCode = -1,
+				});
 			}
 		}
 	}

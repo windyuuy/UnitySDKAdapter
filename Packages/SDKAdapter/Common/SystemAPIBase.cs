@@ -2,6 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Lang.Loggers;
+using MonoExtLib.AsyncExt;
+using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace GDK
 {
@@ -38,7 +41,7 @@ namespace GDK
 	/// </remarks>
 	public class SystemAPIBase : ISystemAPI
 	{
-		public virtual void GetFPS(int fps)
+		public virtual void SetFPS(int fps)
 		{
 			throw new System.Exception("Method not implemented.");
 		}
@@ -76,6 +79,26 @@ namespace GDK
 			DevLog.Instance.Info($"unsupoort action: setEnableDebug -> {res.enableDebug} ");
 		}
 
+		public virtual Task<NavigateToSceneResult> NavigateToScene(NavigateToSceneOptions paras)
+		{
+			return Task.FromResult(new NavigateToSceneResult()
+			{
+				isOk = true,
+				errCode = 0,
+				errMsg = "navigateToScene:ok",
+			});
+		}
+
+		public virtual Task<CheckSceneResult> CheckScene(CheckSceneOptions paras)
+		{
+			return Task.FromResult(new CheckSceneResult
+			{
+				isOk = true,
+				isExist = true,
+				errMsg = "checkScene:ok",
+			});
+		}
+
 		public virtual async Task<AppCallUpResult> NavigateToApp(AppCallUpParams paras)
 		{
 			DevLog.Instance.Info("打开小程序成功");
@@ -97,29 +120,51 @@ namespace GDK
 			DevLog.Instance.Info("没有更新");
 		}
 
-		public virtual void _initEvents()
+		public virtual async void _initEvents()
 		{
 			// TODO: 实现系统各种事件回调和api
+			Application.focusChanged += OnFocusChanged;
+			await UniAsyncUtils.WaitForEndOfFrame();
+			OnFocusChanged(true);
 		}
 
-		public virtual void OnShow(Action<object> callback)
+		private Action<OnShowResult> OnShowCall;
+		private Action<object> OnHideCall;
+
+		private void OnFocusChanged(bool obj)
 		{
-			// TODO: 实现系统各种事件回调和api
+			if (obj)
+			{
+				OnShowCall?.Invoke(new OnShowResult
+				{
+					location = Random.Range(0f, 1f) > 0.9f ? "sidebar_card" : "",
+					// location = "sidebar_card",
+				});
+			}
+			else
+			{
+				OnHideCall?.Invoke(null);
+			}
 		}
 
-		public virtual void OffShow(Action<object> callback)
+		public virtual void OnShow(Action<OnShowResult> callback)
 		{
-			// TODO: 实现系统各种事件回调和api
+			OnShowCall += callback;
+		}
+
+		public virtual void OffShow(Action<OnShowResult> callback)
+		{
+			OnShowCall -= callback;
 		}
 
 		public virtual void OnHide(Action<object> callback)
 		{
-			// TODO: 实现系统各种事件回调和api
+			OnHideCall += callback;
 		}
 
 		public virtual void OffHide(Action<object> callback)
 		{
-			// TODO: 实现系统各种事件回调和api
+			OnHideCall -= callback;
 		}
 
 		/// <summary>
@@ -324,11 +369,10 @@ namespace GDK
 			return Task.CompletedTask;
 		}
 
-        public Task<OpenLinkResult> OpenLink(OpenLinkOptions options)
-        {
-            DevLog.Instance.Error($"{nameof(OpenLink)} not implemented");
+		public Task<OpenLinkResult> OpenLink(OpenLinkOptions options)
+		{
+			DevLog.Instance.Error($"{nameof(OpenLink)} not implemented");
 			return Task.FromResult(new OpenLinkResult());
-        }
-
-    }
+		}
+	}
 }
