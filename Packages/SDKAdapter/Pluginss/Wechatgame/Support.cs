@@ -10,6 +10,8 @@ namespace WechatGDK
 			this.requireSubDomainRank = true;
 			this.requireAuthorize = true;
 		}
+
+		public override bool supportOpenLink => false;
 	}
 }
 #endif

@@ -12,5 +12,7 @@ namespace GDK
 		public bool supportBuiltinIdentityCertification { get; set; } = false;
 		public bool requireManagerAdLifecycle { get; set; } = false;
 		public bool isNativePlugin { get; set; } = false;
-	}
+
+		public virtual bool supportOpenLink => false;
+    }
 }
