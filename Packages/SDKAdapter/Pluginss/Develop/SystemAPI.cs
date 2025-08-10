@@ -14,7 +14,7 @@ namespace DevelopGDK
 			base.Init();
 		}
 
-		public override void GetFPS(int fps)
+		public override void SetFPS(int fps)
 		{
 			Application.targetFrameRate = fps;
 		}

@@ -277,14 +277,105 @@ namespace GDK
 
 	public class OpenLinkResult
 	{
-		
 	}
-	
+
+	[Serializable]
+	public class RefererInfo
+	{
+		/// <summary>来源小程序、公众号或 App 的 appId</summary>
+		public string appId;
+
+		/// <summary>来源小程序传过来的数据，scene=1037或1038时支持</summary>
+		public object extraData;
+	}
+
+	[Serializable]
+	public class OnShowResult
+	{
+		/// <summary>
+		/// 启动参数
+		/// </summary>
+		public object query;
+
+		/// <summary>
+		/// 启动场景值。（查看方式：1. 抖音开放平台-场景值；2.）抖音开发者工具中，普通编译 -> 添加编译模式 -> 进入场景）
+		/// </summary>
+		public string scene;
+
+		/// <summary>
+		/// 来源信息，从另一个小程序进入小程序时返回，否则返回空对象 {}
+		/// </summary>
+		public RefererInfo refererInfo;
+
+		/// <summary>
+		/// 唤起小游戏页面的来源方式
+		/// </summary>
+		public int showFrom;
+
+		/// <summary>
+		/// 启动场景字段
+		/// </summary>
+		/// <returns></returns>
+		public string launch_from;
+
+		/// <summary>
+		/// 启动场景字段
+		/// </summary>
+		public string location;
+
+		public bool IsFromSideBarCard => location == "sidebar_card";
+	}
+
+	public enum SceneEnum
+	{
+		SideBar = 0,
+	}
+	[Serializable]
+	public class CheckSceneOptions
+	{
+		public SceneEnum scene;
+	}
+
+	[Serializable]
+	public class CheckSceneResult
+	{
+		public bool isOk;
+		public bool isExist;
+		public string errMsg;
+		public int errCode;
+	}
+
+	public class NavigateToSceneOptions
+	{
+		public SceneEnum scene;
+	}
+
+	public class NavigateToSceneResult
+	{
+		public bool isOk;
+		public string errMsg;
+		public int errCode;
+	}
+
 	/**
 	 * 支持各种系统调用、系统事件侦听
 	 */
 	public interface ISystemAPI : IModule
 	{
+		/// <summary>
+		/// 调用该API可以跳转到某个小游戏入口场景，目前仅支持跳转「侧边栏」场景。
+		/// </summary>
+		/// <param name="paras"></param>
+		/// <returns></returns>
+		public Task<NavigateToSceneResult> NavigateToScene(NavigateToSceneOptions paras);
+
+		/// <summary>
+		/// 确认当前宿主版本是否支持跳转某个小游戏入口场景，目前仅支持「侧边栏」场景。
+		/// </summary>
+		/// <param name="paras"></param>
+		/// <returns></returns>
+		public Task<CheckSceneResult> CheckScene(CheckSceneOptions paras);
+
 		/**
 		 * 跳转游戏
 		 */
@@ -304,9 +395,9 @@ namespace GDK
 		 * })
 		 * ```
 		 */
-		public void OnShow(Action<object> callback);
+		public void OnShow(Action<OnShowResult> callback);
 
-		public void OffShow(Action<object> callback);
+		public void OffShow(Action<OnShowResult> callback);
 
 		/**
 		* 用法示例：
@@ -334,7 +425,7 @@ namespace GDK
 		 * - 设置帧率
 		 * 	- 可能和cocos的会冲突
 		 */
-		public void GetFPS(int fps);
+		public void SetFPS(int fps);
 
 		/**
 		 * 剪切板

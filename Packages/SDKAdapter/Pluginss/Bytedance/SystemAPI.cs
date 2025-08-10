@@ -1,8 +1,10 @@
 #if SUPPORT_BYTEDANCE
 	using System;
+	using System.Collections.Generic;
 	using System.Threading.Tasks;
 	using GDK;
 	using TTSDK;
+	using UnityEngine;
 
 	namespace BytedanceGDK
 	{
@@ -184,27 +186,82 @@
 				return ret.Task;
 			}
 
-			public override void OnShow(Action<object> callback)
+			public EventProxy<OnShowResult, TTAppLifeCycle.OnShowEventWithDict> OnShowEvent = new(
+				callback =>
+				{
+					void OnShow(Dictionary<string, object> resp)
+					{
+						// resp.TryGetValue("launch_from", out var launch_from0);
+						// var launch_from = launch_from0 as string;
+						// resp.TryGetValue("refererInfo", out var refererInfo0);
+						// var refererInfo = refererInfo0 as RefererInfo;
+						// resp.TryGetValue("query", out var query);
+						// resp.TryGetValue("showFrom", out var showFrom0);
+						// var showFrom = (int)showFrom0;
+						// resp.TryGetValue("scene", out var scene0);
+						// var scene = scene0 as string;
+						Debug.Log("OnShow1");
+						string location;
+						if (resp.TryGetValue("location", out var location0))
+						{
+							location = location0 as string ?? "none1";
+						}
+						else
+						{
+							location = "none2";
+						}
+
+						Debug.Log("OnShow2");
+
+						callback(new OnShowResult
+						{
+							query = null,
+							scene = null,
+							refererInfo = null,
+							showFrom = 0,
+							launch_from = null,
+							location = location,
+						});
+						Debug.Log("OnShow3");
+					}
+
+					TT.GetAppLifeCycle().OnShow += OnShow;
+					return OnShow;
+				}, cleanId => TT.GetAppLifeCycle().OnShow -= cleanId);
+
+			public EventProxy<object, TTAppLifeCycle.OnAppHideEvent> OnHideEvent = new(
+				callback =>
+				{
+					void OnHide()
+					{
+						callback(null);
+					}
+
+					TT.GetAppLifeCycle().OnHide += OnHide;
+					return OnHide;
+				}, cleanId => TT.GetAppLifeCycle().OnHide -= cleanId);
+
+			public override void OnShow(Action<OnShowResult> callback)
 			{
-				DevLog.Instance.Error($"TT.{nameof(OnShow)} not implemented");
+				OnShowEvent.Add(callback);
 			}
 
-			public override void OffShow(Action<object> callback)
+			public override void OffShow(Action<OnShowResult> callback)
 			{
-				DevLog.Instance.Error($"TT.{nameof(OffShow)} not implemented");
+				OnShowEvent.Remove(callback);
 			}
 
 			public override void OnHide(Action<object> callback)
 			{
-				DevLog.Instance.Error($"TT.{nameof(OnHide)} not implemented");
+				OnHideEvent.Add(callback);
 			}
 
 			public override void OffHide(Action<object> callback)
 			{
-				DevLog.Instance.Error($"TT.{nameof(OffHide)} not implemented");
+				OnHideEvent.Remove(callback);
 			}
 
-			public override void GetFPS(int fps)
+			public override void SetFPS(int fps)
 			{
 				TT.SetPreferredFramesPerSecond(fps);
 			}
@@ -248,6 +305,56 @@
 						GameLiveInfo = null,
 					}
 				};
+			}
+
+			public override Task<CheckSceneResult> CheckScene(CheckSceneOptions paras)
+			{
+				var ts = new TaskCompletionSource<CheckSceneResult>();
+				TT.CheckScene((TTSideBar.SceneEnum)paras.scene, (exist) =>
+				{
+					ts.SetResult(new CheckSceneResult
+					{
+						isOk = true,
+						isExist = exist,
+						errMsg = "checkScene:ok",
+						errCode = 0,
+					});
+				}, () => { }, (code, err) =>
+				{
+					ts.SetResult(new CheckSceneResult
+					{
+						isOk = false,
+						isExist = false,
+						errMsg = err,
+						errCode = code,
+					});
+				});
+				return ts.Task;
+			}
+
+			public override Task<NavigateToSceneResult> NavigateToScene(NavigateToSceneOptions paras)
+			{
+				var data = new TTSDK.UNBridgeLib.LitJson.JsonData();
+				data["scene"] = paras.scene.ToString().ToLower();
+				var ts = new TaskCompletionSource<NavigateToSceneResult>();
+				TT.NavigateToScene(data, () =>
+				{
+					ts.SetResult(new NavigateToSceneResult()
+					{
+						isOk = true,
+						errCode = 0,
+						errMsg = "navigateToScene:ok",
+					});
+				}, () => { }, (code, err) =>
+				{
+					ts.SetResult(new NavigateToSceneResult()
+					{
+						isOk = false,
+						errCode = code,
+						errMsg = err,
+					});
+				});
+				return ts.Task;
 			}
 		}
 	}
