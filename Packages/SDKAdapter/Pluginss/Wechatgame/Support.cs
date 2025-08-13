@@ -11,7 +11,7 @@ namespace WechatGDK
 			this.requireAuthorize = true;
 		}
 
-		public override bool supportOpenLink => false;
+		public override bool SupportOpenLink => true;
 	}
 }
 #endif

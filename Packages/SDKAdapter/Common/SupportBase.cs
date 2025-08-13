@@ -13,6 +13,7 @@ namespace GDK
 		public bool requireManagerAdLifecycle { get; set; } = false;
 		public bool isNativePlugin { get; set; } = false;
 
-		public virtual bool supportOpenLink => false;
-    }
+		public virtual bool SupportOpenLink => false;
+		public virtual bool SupportNavToSidebarReward => false;
+	}
 }

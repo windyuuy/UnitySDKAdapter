@@ -10,6 +10,8 @@ namespace BytedanceGDK
 			this.requireSubDomainRank = true;
 			this.requireAuthorize = true;
 		}
+
+		public override bool SupportNavToSidebarReward => true;
 	}
 }
 #endif

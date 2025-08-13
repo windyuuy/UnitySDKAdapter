@@ -43,7 +43,12 @@ namespace GDK
 		/// <summary>
 		/// 是否支持朋友圈
 		/// </summary>
-		public bool supportOpenLink { get; }
+		public bool SupportOpenLink { get; }
+		
+		/// <summary>
+		/// 支持跳转打开侧边栏领奖
+		/// </summary>
+		public bool SupportNavToSidebarReward { get; }
 
 	}
 }
