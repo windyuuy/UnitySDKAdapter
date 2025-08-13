@@ -1,47 +1,45 @@
-#if SUPPORT_BYTEDANCE
-	using System;
+using System;
 
-	namespace GDK
+namespace GDK
+{
+	public class EventProxy<T, TDelegate>
 	{
-		public class EventProxy<T, TDelegate>
+		private Func<Action<T>, TDelegate> AddCallbackHandler;
+		private Action<TDelegate> RemoveCallbackHandler;
+
+		private Action<T> Callback;
+		private TDelegate CleanId;
+
+		private void EmitCallback(T obj)
 		{
-			private Func<Action<T>, TDelegate> AddCallbackHandler;
-			private Action<TDelegate> RemoveCallbackHandler;
+			Callback?.Invoke(obj);
+		}
 
-			private Action<T> Callback;
-			private TDelegate CleanId;
+		public EventProxy(Func<Action<T>, TDelegate> addCallbackHandler,
+			Action<TDelegate> removeCallbackHandler)
+		{
+			AddCallbackHandler = addCallbackHandler;
+			RemoveCallbackHandler = removeCallbackHandler;
+		}
 
-			private void EmitCallback(T obj)
+		public void Add(Action<T> callback)
+		{
+			if (Callback == null)
 			{
-				Callback?.Invoke(obj);
+				CleanId = AddCallbackHandler(EmitCallback);
 			}
 
-			public EventProxy(Func<Action<T>, TDelegate> addCallbackHandler,
-				Action<TDelegate> removeCallbackHandler)
-			{
-				AddCallbackHandler = addCallbackHandler;
-				RemoveCallbackHandler = removeCallbackHandler;
-			}
+			Callback += callback;
+		}
 
-			public void Add(Action<T> callback)
+		public void Remove(Action<T> callback)
+		{
+			Callback -= callback;
+			if (Callback == null)
 			{
-				if (Callback == null)
-				{
-					CleanId = AddCallbackHandler(EmitCallback);
-				}
-
-				Callback += callback;
-			}
-
-			public void Remove(Action<T> callback)
-			{
-				Callback -= callback;
-				if (Callback == null)
-				{
-					RemoveCallbackHandler(CleanId);
-					CleanId = default;
-				}
+				RemoveCallbackHandler(CleanId);
+				CleanId = default;
 			}
 		}
 	}
-#endif
+}
