@@ -40,5 +40,10 @@ namespace GDK
 		 */
 		public bool isNativePlugin { get; set; }
 
+		/// <summary>
+		/// 是否支持朋友圈
+		/// </summary>
+		public bool supportOpenLink { get; }
+
 	}
 }
