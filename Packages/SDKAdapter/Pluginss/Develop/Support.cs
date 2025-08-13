@@ -1,16 +1,19 @@
 #if UNITY_EDITOR
 
-namespace DevelopGDK
-{
-	public class Support : GDK.SupportBase
+	namespace DevelopGDK
 	{
-		public Support()
+		public class Support : GDK.SupportBase
 		{
-			this.supportShare = true;
-			this.supportShareTickets = false;
-			this.requireSubDomainRank = false;
-			this.requireAuthorize = false;
+			public Support()
+			{
+				this.supportShare = true;
+				this.supportShareTickets = false;
+				this.requireSubDomainRank = false;
+				this.requireAuthorize = false;
+			}
+
+			public override bool SupportOpenLink => true;
+			public override bool SupportNavToSidebarReward => true;
 		}
 	}
-}
 #endif
