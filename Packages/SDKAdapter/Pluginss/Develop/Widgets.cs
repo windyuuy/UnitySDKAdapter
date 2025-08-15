@@ -1,4 +1,4 @@
-#if UNITY_EDITOR
+#if UNITY_EDITOR || true
 using System;
 using System.Threading.Tasks;
 using GDK;
