@@ -48,6 +48,7 @@ namespace WechatGDK
                         yield return uwr.SendWebRequest();
                         var text = uwr.downloadHandler.text;
                         DevLog.Instance.Log($"Code2Session-Resp: {uwr.responseCode}, {text}");
+                        uwr.Dispose();
                         try
                         {
                             var resp = JsonUtility.FromJson<Code2SessionResp>(text);

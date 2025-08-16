@@ -75,6 +75,11 @@ namespace MpegMedia.Vedio
             var uwr = UnityWebRequest.Get(Uri);
             uwr.timeout = 45;
             await uwr.SendWebRequest().GetTask();
+
+            void Clean()
+            {
+                uwr.Dispose();
+            }
             if (uwr.isDone && uwr.result == UnityWebRequest.Result.Success)
             {
                 if (Application.isEditor || Application.platform != RuntimePlatform.WebGLPlayer)
@@ -118,8 +123,13 @@ namespace MpegMedia.Vedio
                 }
 
                 IsDownloading = false;
+                Clean();
 
                 return IsDownloaded;
+            }
+            else
+            {
+                Clean();
             }
             return false;
 #endif
