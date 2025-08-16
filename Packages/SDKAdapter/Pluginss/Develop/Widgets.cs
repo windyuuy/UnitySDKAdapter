@@ -2,6 +2,7 @@
 using System;
 using System.Threading.Tasks;
 using GDK;
+using MonoExtLib.AsyncExt;
 
 namespace DevelopGDK
 {
@@ -87,7 +88,7 @@ namespace DevelopGDK
 			return Task.CompletedTask;
 		}
 
-		public override Task<GDK.ShowModalResult> ShowModal(GDK.ShowModalOptions obj)
+		public override async Task<GDK.ShowModalResult> ShowModal(GDK.ShowModalOptions obj)
 		{
 			var ts = new TaskCompletionSource<GDK.ShowModalResult>();
 			var result = obj.title + ";" + obj.content;
@@ -95,9 +96,10 @@ namespace DevelopGDK
 			r.confirm = true;
 			r.cancel = false;
 			r.result = result;
+			await UniAsyncUtils.WaitForSeconds(1f);
 			obj.callback?.Invoke(r);
 			ts.SetResult(r);
-			return ts.Task;
+			return await ts.Task;
 		}
 
 		public override Task hideLaunchingView()
