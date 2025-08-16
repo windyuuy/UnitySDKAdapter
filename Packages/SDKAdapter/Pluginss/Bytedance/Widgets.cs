@@ -177,10 +177,14 @@
 				return TTAdapter.SendJsRequestAsync<ShowWidgetResult>(TTAdapter.GDK_Bytedance_HideToast);
 			}
 
-			public override Task<GDK.ShowModalResult> ShowModal(GDK.ShowModalOptions obj2)
+			public override async Task<GDK.ShowModalResult> ShowModal(GDK.ShowModalOptions obj2)
 			{
-				return TTAdapter.SendJsRequestAsync<GDK.ShowModalOptions, ShowModalResult>(TTAdapter.GDK_Bytedance_ShowModal,
+				var result = await TTAdapter.SendJsRequestAsync<GDK.ShowModalOptions, ShowModalResult>(
+					TTAdapter.GDK_Bytedance_ShowModal,
 					obj2);
+				obj2.callback?.Invoke(result);
+
+				return result;
 			}
 
 			public override Task hideLaunchingView()

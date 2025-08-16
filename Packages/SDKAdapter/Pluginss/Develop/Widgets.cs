@@ -95,6 +95,7 @@ namespace DevelopGDK
 			r.confirm = true;
 			r.cancel = false;
 			r.result = result;
+			obj.callback?.Invoke(r);
 			ts.SetResult(r);
 			return ts.Task;
 		}
