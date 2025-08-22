@@ -95,7 +95,7 @@ namespace GDK
 		/**
 		 * 提示的延迟时间，单位毫秒，默认：1500, 最大为10000
 		 */
-		public double duration;
+		public double duration = 1500;
 
 		/// <summary>
 		/// 图标，取值范围包括success, loading, none, fail(1.36.0版本支持)
