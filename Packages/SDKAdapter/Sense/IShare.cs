@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace GDK
 {
-	public class ShareAppMessageParam
+	public class OnShareAppMessageParam
 	{
 		public string title;
 		public string imageUrl;
@@ -91,20 +92,60 @@ namespace GDK
 		public object extra;
 	}
 
-	public class ShareAppMessageParas
+	public class OnShareAppMessageParas
 	{
-		public Action<ShareAppMessageParam> call;
-		
+		public Action<OnShareAppMessageParam> call;
+
 		public string webViewUrl;
 		public string channel;
 	}
 
+	public class ShareAppMessageParas
+	{
+		public Action<OnShareAppMessageParam> call;
+
+		/// 否	转发标题，不传则默认使用当前小游戏的昵称。
+		public string title;
+
+		public string desc;
+
+		/// 否	转发显示图片的链接，可以是网络图片路径或本地图片文件路径或相对代码包根目录的图片文件路径。显示图片长宽比是 5:4
+		public string imageUrl;
+
+		/// 否	查询字符串，从这条转发消息进入后，可通过 wx.getLaunchOptionsSync() 或 wx.onShow() 获取启动参数中的 query。必须是 key1=val1&key2=val2 的格式。
+		public string query;
+
+		/// 否	审核通过的图片编号，详见 使用审核通过的转发图片	2.4.3
+		public string imageUrlId;
+
+		public string templateId;
+
+		/// true	否	是否转发到当前群。该参数只对从群工具栏打开的场景下生效，默认转发到当前群，填入false时可转发到其他会话。	2.12.2
+		public bool toCurrentGroup;
+
+		/// 否	独立分包路径。详见 小游戏独立分包指南	2.12.2
+		public string path;
+	}
+
+	public class ShowShareMenuParas
+	{
+		public bool withShareTicket;
+		public string[] menus;
+	}
+
+	public class ShowShareMenuResult: BaseResponse
+	{
+	}
+
 	public interface IShare : IModule
 	{
-		public void OnShareAppMessage(ShareAppMessageParam defaultParam,
-			Func<ShareAppMessageParas,ShareAppMessageParam> action = null);
+		public void OnShareAppMessage(OnShareAppMessageParam defaultParam,
+			Func<OnShareAppMessageParas, OnShareAppMessageParam> action = null);
 
 		public void OnShareTimeline(Action<Action<OnShareTimelineListenerResult>> callback);
 		public void OnAddToFavorites(Action<Action<OnAddToFavoritesListenerResult>> callback);
+
+		public void ShareAppMessage(ShareAppMessageParas paras);
+		public Task<ShowShareMenuResult> ShowShareMenu(ShowShareMenuParas paras);
 	}
 }

@@ -1,12 +1,24 @@
 #if SUPPORT_WECHATGAME
 	using System;
+	using System.Threading.Tasks;
+	using GDK;
 	using WeChatWASM;
+	using OnAddToFavoritesListenerResult = WeChatWASM.OnAddToFavoritesListenerResult;
+	using OnShareTimelineListenerResult = WeChatWASM.OnShareTimelineListenerResult;
 
 	namespace WechatGDK
 	{
+		public static class WXAsyncHelper
+		{
+			// public Task<TSuccess> GetTask<TSuccess, TFail, TComplete>(ICallback<TSuccess, TFail, TComplete> options)
+			// {
+			// 	var ts = new TaskCompletionSource<TSuccess>();
+			// }
+		}
+
 		public static class ShareUtils
 		{
-			public static WXShareAppMessageParam ToWXShareAppMessageParam(this GDK.ShareAppMessageParam paras)
+			public static WXShareAppMessageParam ToWXShareAppMessageParam(this GDK.OnShareAppMessageParam paras)
 			{
 				return new WXShareAppMessageParam
 				{
@@ -19,9 +31,9 @@
 				};
 			}
 
-			public static GDK.ShareAppMessageParam ToShareAppMessageParam(this WXShareAppMessageParam paras)
+			public static GDK.OnShareAppMessageParam ToShareAppMessageParam(this WXShareAppMessageParam paras)
 			{
-				return new GDK.ShareAppMessageParam
+				return new GDK.OnShareAppMessageParam
 				{
 					title = paras.title,
 					imageUrl = paras.imageUrl,
@@ -62,18 +74,15 @@
 
 		public class Share : GDK.ShareBase
 		{
-			public virtual void OnShareAppMessage(GDK.ShareAppMessageParam defaultParam,
-				Func<GDK.ShareAppMessageParas, GDK.ShareAppMessageParam> action = null)
+			public virtual void OnShareAppMessage(OnShareAppMessageParam defaultParam,
+				Func<OnShareAppMessageParas, OnShareAppMessageParam> action = null)
 			{
 				WX.OnShareAppMessage(defaultParam.ToWXShareAppMessageParam(),
 					(wxaction) =>
 					{
-						action?.Invoke(new GDK.ShareAppMessageParas
+						action?.Invoke(new GDK.OnShareAppMessageParas
 						{
-							call = (resp) =>
-							{
-								wxaction.Invoke(resp.ToWXShareAppMessageParam());
-							},
+							call = (resp) => { wxaction.Invoke(resp.ToWXShareAppMessageParam()); },
 							webViewUrl = null,
 							channel = null
 						});
@@ -100,6 +109,48 @@
 						wxaction.Invoke(userparas.ToWXOnAddToFavoritesListenerResult());
 					});
 				});
+			}
+
+			public override void ShareAppMessage(ShareAppMessageParas paras)
+			{
+				WX.ShareAppMessage(new ShareAppMessageOption
+				{
+					imageUrl = paras.imageUrl,
+					imageUrlId = paras.imageUrlId,
+					path = paras.path,
+					query = paras.query,
+					title = paras.title,
+					toCurrentGroup = paras.toCurrentGroup,
+				});
+			}
+
+			public override Task<ShowShareMenuResult> ShowShareMenu(ShowShareMenuParas paras)
+			{
+				var ts = new TaskCompletionSource<ShowShareMenuResult>();
+				WX.ShowShareMenu(new ShowShareMenuOption
+				{
+					success = (resp) =>
+					{
+						ts.SetResult(new ShowShareMenuResult
+						{
+							IsOk = true,
+							ErrCode = 0,
+							ErrMsg = "",
+						});
+					},
+					fail = (resp) =>
+					{
+						ts.SetResult(new ShowShareMenuResult
+						{
+							IsOk = false,
+							ErrCode = -1,
+							ErrMsg = resp.errMsg,
+						});
+					},
+					menus = paras.menus,
+					withShareTicket = paras.withShareTicket,
+				});
+				return ts.Task;
 			}
 		}
 	}
