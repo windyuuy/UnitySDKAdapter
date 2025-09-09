@@ -24,6 +24,30 @@ namespace GDK
         public void SetAccountChangeListener(Action f)
         {
         }
+
+        public virtual Task<GetUserInfoResult> GetUserInfo(GetUserInfoOptions options)
+        {
+            return Task.FromResult(new GetUserInfoResult
+            {
+                cloudID = null,
+                encryptedData = null,
+                iv = null,
+                rawData = null,
+                signature = null,
+                userInfo = new UserInfo
+                {
+                    avatarUrl = "",
+                    city = null,
+                    country = null,
+                    gender = 0,
+                    language = null,
+                    nickName = "用户名六个字",
+                    province = null,
+                },
+                ErrMsg = null
+            });
+        }
+
         public void Init()
         {
         }

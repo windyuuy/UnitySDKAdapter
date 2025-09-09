@@ -130,6 +130,57 @@
 			{
 				throw new System.NotImplementedException();
 			}
+
+			public override Task<GetUserInfoResult> GetUserInfo(GetUserInfoOptions options)
+			{
+				var ts = new TaskCompletionSource<GetUserInfoResult>();
+
+				void SuccessCallback(ref TTUserInfo resp)
+				{
+					ts.SetResult(new GetUserInfoResult
+					{
+						IsOk = true,
+						ErrCode = 0,
+						ErrMsg = "",
+						cloudID = resp.cloudId,
+						encryptedData = resp.encryptedData,
+						iv = resp.iv,
+						rawData = "",
+						signature = resp.signature,
+						userInfo = new UserInfo
+						{
+							avatarUrl = resp.avatarUrl,
+							city = resp.city,
+							country = resp.country,
+							gender = resp.gender,
+							language = resp.language,
+							nickName = resp.nickName,
+							province = resp.province,
+						}
+					});
+				}
+
+				TT.GetUserInfo(SuccessCallback, (resp) =>
+				{
+					ts.SetResult(new GetUserInfoResult
+					{
+						IsOk = false,
+						ErrCode = 0,
+						ErrMsg = resp,
+						userInfo = new()
+						{
+							avatarUrl = "",
+							city = null,
+							country = null,
+							gender = 0,
+							language = null,
+							nickName = "用户名六个字",
+							province = null,
+						},
+					});
+				});
+				return ts.Task;
+			}
 		}
 	}
 #endif

@@ -109,6 +109,53 @@ namespace WechatGDK
         {
             throw new System.NotImplementedException();
         }
+
+        public override Task<GetUserInfoResult> GetUserInfo(GetUserInfoOptions options)
+        {
+            var ts = new TaskCompletionSource<GetUserInfoResult>();
+            WX.GetUserInfo(new GetUserInfoOption
+            {
+                success = (resp) =>
+                {
+                    var respUserInfo = resp.userInfo;
+                    ts.SetResult(new GetUserInfoResult
+                    {
+                        ErrMsg = resp.errMsg,
+                        IsOk = true,
+                        ErrCode = 0,
+                        cloudID = resp.cloudID,
+                        encryptedData = resp.encryptedData,
+                        iv = resp.iv,
+                        rawData = resp.rawData,
+                        signature = resp.signature,
+                        userInfo = new()
+                        {
+                            avatarUrl = respUserInfo.avatarUrl,
+                            city = respUserInfo.city,
+                            country = respUserInfo.country,
+                            gender = respUserInfo.gender,
+                            language = respUserInfo.language,
+                            nickName = respUserInfo.nickName,
+                            province = respUserInfo.province,
+                        },
+
+                    });
+                },
+                fail = (resp) =>
+                {
+                    ts.SetResult(new GetUserInfoResult
+                    {
+                        IsOk = false,
+                        ErrCode = -1,
+                        ErrMsg = resp.errMsg,
+                    });
+                },
+                lang = options.lang,
+                withCredentials = options.withCredentials,
+            });
+
+            return ts.Task;
+        }
     }
 }
 #endif
