@@ -116,52 +116,58 @@
 			public override Task<GetUserInfoResult> GetUserInfo(GetUserInfoOptions options)
 			{
 				var ts = new TaskCompletionSource<GetUserInfoResult>();
+
+				void TryGetUserData()
+				{
+					// 已经授权，可以直接调用 getUserInfo 获取头像昵称
+					WX.GetUserInfo(new GetUserInfoOption
+					{
+						success = (resp) =>
+						{
+							var respUserInfo = resp.userInfo;
+							ts.SetResult(new GetUserInfoResult
+							{
+								ErrMsg = resp.errMsg,
+								IsOk = true,
+								ErrCode = 0,
+								cloudID = resp.cloudID,
+								encryptedData = resp.encryptedData,
+								iv = resp.iv,
+								rawData = resp.rawData,
+								signature = resp.signature,
+								userInfo = new()
+								{
+									avatarUrl = respUserInfo.avatarUrl,
+									city = respUserInfo.city,
+									country = respUserInfo.country,
+									gender = respUserInfo.gender,
+									language = respUserInfo.language,
+									nickName = respUserInfo.nickName,
+									province = respUserInfo.province,
+								},
+							});
+						},
+						fail = (resp) =>
+						{
+							ts.SetResult(new GetUserInfoResult
+							{
+								IsOk = false,
+								ErrCode = -1,
+								ErrMsg = resp.errMsg,
+							});
+						},
+						lang = options.lang,
+						withCredentials = options.withCredentials,
+					});
+				}
+
 				WX.GetSetting(new GetSettingOption
 				{
 					success = (resp) =>
 					{
 						if (resp.authSetting["scope.userInfo"])
 						{
-							// 已经授权，可以直接调用 getUserInfo 获取头像昵称
-							WX.GetUserInfo(new GetUserInfoOption
-							{
-								success = (resp) =>
-								{
-									var respUserInfo = resp.userInfo;
-									ts.SetResult(new GetUserInfoResult
-									{
-										ErrMsg = resp.errMsg,
-										IsOk = true,
-										ErrCode = 0,
-										cloudID = resp.cloudID,
-										encryptedData = resp.encryptedData,
-										iv = resp.iv,
-										rawData = resp.rawData,
-										signature = resp.signature,
-										userInfo = new()
-										{
-											avatarUrl = respUserInfo.avatarUrl,
-											city = respUserInfo.city,
-											country = respUserInfo.country,
-											gender = respUserInfo.gender,
-											language = respUserInfo.language,
-											nickName = respUserInfo.nickName,
-											province = respUserInfo.province,
-										},
-									});
-								},
-								fail = (resp) =>
-								{
-									ts.SetResult(new GetUserInfoResult
-									{
-										IsOk = false,
-										ErrCode = -1,
-										ErrMsg = resp.errMsg,
-									});
-								},
-								lang = options.lang,
-								withCredentials = options.withCredentials,
-							});
+							TryGetUserData();
 						}
 						else
 						{
@@ -195,15 +201,7 @@
 							});
 						}
 					},
-					fail = (resp) =>
-					{
-						ts.SetResult(new GetUserInfoResult
-						{
-							IsOk = false,
-							ErrCode = -1,
-							ErrMsg = resp.errMsg,
-						});
-					},
+					fail = (resp) => { TryGetUserData(); },
 				});
 
 
