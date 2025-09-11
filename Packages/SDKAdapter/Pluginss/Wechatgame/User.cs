@@ -173,8 +173,11 @@
 						{
 							// 否则，先通过 wx.createUserInfoButton 接口发起授权
 							var button = WX.CreateUserInfoButton(0, 0, Screen.width, Screen.height, "zh_CN", true);
-							button.OnTap((resp) =>
+
+							void OnTap(WXUserInfoResponse resp)
 							{
+								button.OffTap();
+								button.Destroy();
 								// 用户同意授权后回调，通过回调可获取用户头像昵称信息
 								var respUserInfo = resp.userInfo;
 								ts.SetResult(new GetUserInfoResult
@@ -198,7 +201,9 @@
 										province = respUserInfo.province,
 									},
 								});
-							});
+							}
+
+							button.OnTap(OnTap);
 						}
 					},
 					fail = (resp) => { TryGetUserData(); },
