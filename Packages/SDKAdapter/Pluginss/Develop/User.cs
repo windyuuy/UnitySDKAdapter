@@ -1,51 +1,64 @@
 #if UNITY_EDITOR || true
 
-using System.Threading.Tasks;
-using GDK;
-using Lang.Time;
+	using System.Threading.Tasks;
+	using GDK;
+	using Lang.Time;
 
-namespace DevelopGDK
-{
-    public class User : GDK.UserBase
-    {
-        public override bool CheckIsUserBind(long userId)
-        {
-            return true;
-        }
+	namespace DevelopGDK
+	{
+		public class User : GDK.UserBase
+		{
+			public override bool CheckIsUserBind(long userId)
+			{
+				return true;
+			}
 
-        public override Task<GetFriendCloudStorageResult> GetFriendCloudStorage(GetFriendCloudStorageReq obj)
-        {
-            return Task.FromResult(new GetFriendCloudStorageResult());
-        }
+			public override Task<GetFriendCloudStorageResult> GetFriendCloudStorage(GetFriendCloudStorageReq obj)
+			{
+				return Task.FromResult(new GetFriendCloudStorageResult());
+			}
 
-        public override Task<LoginResult> Login(LoginParams paras)
-        {
-            return Task.FromResult(new LoginResult()
-            {
-                IsOk = true,
-                OpenId = Date.Now().ToString(),
-            });
-        }
+			private const string OpenIdKey = "DevelopGDK_OpenId_Key";
 
-        public override Task SetUserCloudStorage(SetFriendCloudStorageReq obj)
-        {
-            return Task.CompletedTask;
-        }
+			public override Task<LoginResult> Login(LoginParams paras)
+			{
+				string openId;
+				if (UnityEngine.PlayerPrefs.HasKey(OpenIdKey))
+				{
+					openId = UnityEngine.PlayerPrefs.GetString(OpenIdKey);
+				}
+				else
+				{
+					openId = Date.Now().ToString();
+					UnityEngine.PlayerPrefs.SetString(OpenIdKey, openId);
+				}
 
-        public override Task ShowBindDialog()
-        {
-            return Task.CompletedTask;
-        }
+				return Task.FromResult(new LoginResult()
+				{
+					IsOk = true,
+					OpenId = openId,
+				});
+			}
 
-        public override Task showUserCenter()
-        {
-            return Task.CompletedTask;
-        }
+			public override Task SetUserCloudStorage(SetFriendCloudStorageReq obj)
+			{
+				return Task.CompletedTask;
+			}
 
-        public override Task<UserDataUpdateResult> Update()
-        {
-            return Task.FromResult(new UserDataUpdateResult());
-        }
-    }
-}
+			public override Task ShowBindDialog()
+			{
+				return Task.CompletedTask;
+			}
+
+			public override Task showUserCenter()
+			{
+				return Task.CompletedTask;
+			}
+
+			public override Task<UserDataUpdateResult> Update()
+			{
+				return Task.FromResult(new UserDataUpdateResult());
+			}
+		}
+	}
 #endif
