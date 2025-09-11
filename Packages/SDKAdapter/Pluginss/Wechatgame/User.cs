@@ -165,7 +165,7 @@
 				{
 					success = (resp) =>
 					{
-						if (resp.authSetting["scope.userInfo"])
+						if (resp.authSetting.TryGetValue("scope.userInfo", out var userInfoGranted) && userInfoGranted)
 						{
 							TryGetUserData();
 						}
