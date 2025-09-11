@@ -36,7 +36,7 @@ namespace GDK
                 signature = null,
                 userInfo = new UserInfo
                 {
-                    avatarUrl = "",
+                    avatarUrl = "https://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTL3uXLgmwvWbVzchuSPktrR11zeN9icDrhia7NE1bibIibaZUV9fsEDmbkVCwjRCgBI7wzdbkMia1uO4Aw/132",
                     city = null,
                     country = null,
                     gender = 0,

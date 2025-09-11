@@ -117,6 +117,11 @@
 			{
 				var ts = new TaskCompletionSource<GetUserInfoResult>();
 
+				void SetResult(GetUserInfoResult result)
+				{
+					ts.SetResult(result);
+				}
+
 				void TryGetUserData()
 				{
 					// 已经授权，可以直接调用 getUserInfo 获取头像昵称
@@ -125,7 +130,7 @@
 						success = (resp) =>
 						{
 							var respUserInfo = resp.userInfo;
-							ts.SetResult(new GetUserInfoResult
+							SetResult(new GetUserInfoResult
 							{
 								ErrMsg = resp.errMsg,
 								IsOk = true,
@@ -149,7 +154,7 @@
 						},
 						fail = (resp) =>
 						{
-							ts.SetResult(new GetUserInfoResult
+							SetResult(new GetUserInfoResult
 							{
 								IsOk = false,
 								ErrCode = -1,
@@ -180,7 +185,7 @@
 								button.Destroy();
 								// 用户同意授权后回调，通过回调可获取用户头像昵称信息
 								var respUserInfo = resp.userInfo;
-								ts.SetResult(new GetUserInfoResult
+								SetResult(new GetUserInfoResult
 								{
 									ErrMsg = resp.errMsg,
 									IsOk = true,
