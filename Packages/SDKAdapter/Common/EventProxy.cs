@@ -2,27 +2,27 @@ using System;
 
 namespace GDK
 {
-	public class EventProxy<T, TDelegate>
+	public class EventProxy<TTargetType, TSourceAction>
 	{
-		private Func<Action<T>, TDelegate> AddCallbackHandler;
-		private Action<TDelegate> RemoveCallbackHandler;
+		private Func<Action<TTargetType>, TSourceAction> AddCallbackHandler;
+		private Action<TSourceAction> RemoveCallbackHandler;
 
-		private Action<T> Callback;
-		private TDelegate CleanId;
+		private Action<TTargetType> Callback;
+		private TSourceAction CleanId;
 
-		private void EmitCallback(T obj)
+		private void EmitCallback(TTargetType obj)
 		{
 			Callback?.Invoke(obj);
 		}
 
-		public EventProxy(Func<Action<T>, TDelegate> addCallbackHandler,
-			Action<TDelegate> removeCallbackHandler)
+		public EventProxy(Func<Action<TTargetType>, TSourceAction> addCallbackHandler,
+			Action<TSourceAction> removeCallbackHandler)
 		{
 			AddCallbackHandler = addCallbackHandler;
 			RemoveCallbackHandler = removeCallbackHandler;
 		}
 
-		public void Add(Action<T> callback)
+		public void Add(Action<TTargetType> callback)
 		{
 			if (Callback == null)
 			{
@@ -32,7 +32,7 @@ namespace GDK
 			Callback += callback;
 		}
 
-		public void Remove(Action<T> callback)
+		public void Remove(Action<TTargetType> callback)
 		{
 			Callback -= callback;
 			if (Callback == null)

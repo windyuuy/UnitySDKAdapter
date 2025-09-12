@@ -18,7 +18,7 @@
 				return Task.FromResult(new GetFriendCloudStorageResult());
 			}
 
-			private const string OpenIdKey = "DevelopGDK_OpenId_Key";
+			public const string OpenIdKey = "DevelopGDK_OpenId_Key";
 
 			public override Task<LoginResult> Login(LoginParams paras)
 			{

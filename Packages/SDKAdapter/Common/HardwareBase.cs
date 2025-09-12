@@ -1,8 +1,24 @@
+using System;
 using System.Threading.Tasks;
 using UnityEngine;
 
 namespace GDK
 {
+	public class DeviceMotionBase : IDeviceMotion
+	{
+		public virtual Task<bool> Start(StartDeviceMotionOptions options)
+		{
+			return Task.FromResult(false);
+		}
+
+		public virtual Task<bool> Stop()
+		{
+			return Task.FromResult(false);
+		}
+
+		public virtual event Action<DoubleVector3> OnChange;
+	}
+
 	public class HardwareBase : IHardware
 	{
 		public IModuleMap Api { get; set; }
@@ -31,5 +47,7 @@ namespace GDK
 				system = SystemInfo.operatingSystem,
 			};
 		}
+
+		public virtual IDeviceMotion DeviceMotion { get; } = new DeviceMotionBase();
 	}
 }

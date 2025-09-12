@@ -1,3 +1,7 @@
+using System;
+using System.Threading.Tasks;
+using UnityEngine;
+
 namespace GDK
 {
 	public class DeviceInfo
@@ -36,15 +40,37 @@ namespace GDK
 
 		/// <summary>操作系统及版本</summary>
 		public string system;
-		
+
 		/// <summary>当前宿主名，如 Douyin</summary>
 		public string hostName;
+
 		/// <summary>当前宿主版本号，如 19.2.0</summary>
 		public string hostVersion;
+	}
+
+	public class StartDeviceMotionOptions
+	{
+		// game	适用于更新游戏的回调频率，在 20ms/次 左右
+		// ui	适用于更新 UI 的回调频率，在 60ms/次 左右
+		// normal	普通的回调频率，在 200ms/次 左右
+		public string IntervalType = "game";
+	}
+
+	/// <summary>
+	/// 设备方向
+	/// </summary>
+	public interface IDeviceMotion
+	{
+		public Task<bool> Start(StartDeviceMotionOptions options);
+		public Task<bool> Stop();
+
+		public event Action<DoubleVector3> OnChange;
 	}
 
 	public interface IHardware : IModule
 	{
 		public DeviceInfo GetDeviceInfo();
+
+		public IDeviceMotion DeviceMotion { get; }
 	}
 }
