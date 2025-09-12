@@ -49,29 +49,43 @@
 							var uwr = UnityWebRequest.Get(url);
 							yield return uwr.SendWebRequest();
 							var text = uwr.downloadHandler.text;
-							DevLog.Instance.Log($"Code2Session-Resp: {uwr.responseCode}, {text}");
+							var uwrResponseCode = uwr.responseCode;
+							var uwrResult = uwr.result;
+							DevLog.Instance.Log($"Code2Session-Resp: {uwrResponseCode}, {text}");
 							uwr.Dispose();
-							try
+							if (uwrResult == UnityWebRequest.Result.Success)
 							{
-								var resp = JsonUtility.FromJson<Code2SessionResp>(text);
-
-								ts.SetResult(new LoginResult()
+								try
 								{
-									IsOk = true,
-									Code = resp.errcode.ToString(),
-									OpenId = resp.openid,
-									Unionid = resp.unionid,
-									ErrMsg = resp.errmsg,
-								});
+									var resp = JsonUtility.FromJson<Code2SessionResp>(text);
+
+									ts.SetResult(new LoginResult()
+									{
+										IsOk = true,
+										Code = resp.errcode.ToString(),
+										OpenId = resp.openid,
+										Unionid = resp.unionid,
+										ErrMsg = resp.errmsg,
+									});
+								}
+								catch (Exception exception)
+								{
+									Debug.LogException(exception);
+									ts.SetResult(new LoginResult()
+									{
+										IsOk = false,
+										Code = uwrResponseCode.ToString(),
+										ErrMsg = "Code2Session-ParseJSON-error",
+									});
+								}
 							}
-							catch (Exception exception)
+							else
 							{
-								Debug.LogException(exception);
 								ts.SetResult(new LoginResult()
 								{
 									IsOk = false,
-									Code = resp1.code,
-									ErrMsg = "Code2Session-ParseJSON-failed",
+									Code = uwrResponseCode.ToString(),
+									ErrMsg = "Code2Session-Network-error",
 								});
 							}
 						}
