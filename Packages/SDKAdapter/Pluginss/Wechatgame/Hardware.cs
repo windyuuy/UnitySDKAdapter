@@ -12,10 +12,19 @@
 			public Task<bool> Start(StartDeviceMotionOptions options)
 			{
 				var ts = new TaskCompletionSource<bool>();
+				Debug.Log($"WX.StartDeviceMotionListening");
 				WX.StartDeviceMotionListening(new StartDeviceMotionListeningOption
 				{
-					success = (resp) => { ts.SetResult(true); },
-					fail = (resp) => { ts.SetResult(false); },
+					success = (resp) =>
+					{
+						Debug.Log($"WX.StartDeviceMotionListening-done");
+						ts.SetResult(true);
+					},
+					fail = (resp) =>
+					{
+						Debug.Log($"WX.StartDeviceMotionListening-failed: {resp.errMsg}");
+						ts.SetResult(false);
+					},
 					interval = options.IntervalType,
 				});
 				return ts.Task;
@@ -41,7 +50,8 @@
 
 				WX.OnDeviceMotionChange(Handle);
 				return Handle;
-			}, cleanId=>WX.OffDeviceMotionChange(cleanId));
+			}, cleanId => WX.OffDeviceMotionChange(cleanId));
+
 			public event Action<DoubleVector3> OnChange
 			{
 				add => OnChangeEvent.Add(value);

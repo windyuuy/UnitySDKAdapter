@@ -1,7 +1,9 @@
+using System;
 using UnityEngine;
 
 namespace GDK
 {
+	[Serializable]
 	public struct DoubleVector3
 	{
 		public double x;
@@ -18,6 +20,11 @@ namespace GDK
 		public Vector3 ToVector3()
 		{
 			return new Vector3((float)x, (float)y, (float)z);
+		}
+
+		public override string ToString()
+		{
+			return $"{x},{y},{z}";
 		}
 	}
 }

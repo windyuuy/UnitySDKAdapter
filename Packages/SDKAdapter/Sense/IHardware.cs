@@ -64,6 +64,12 @@ namespace GDK
 		public Task<bool> Start(StartDeviceMotionOptions options);
 		public Task<bool> Stop();
 
+		/// <summary>
+		/// 欧拉角
+		/// - x: 左右朝向, 水平0, 左正右负(180,-180)
+		/// - y: 前后朝向, 水平0, 下正上负(90,-90)
+		/// - z: 正面朝上时, 北0,顺时针增加(0,360)
+		/// </summary>
 		public event Action<DoubleVector3> OnChange;
 	}
 
