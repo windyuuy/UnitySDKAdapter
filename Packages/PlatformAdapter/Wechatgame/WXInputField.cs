@@ -1,9 +1,4 @@
-using System;
-using UnityEngine;
-using System.Collections;
-#if UNITY_WEBGL && SUPPORT_WECHATGAME && !UNITY_EDITOR
-using WeChatWASM;
-#endif
+using GDK;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
@@ -13,11 +8,14 @@ namespace UnityEngine.WXExt
     /// fix UGUI
     /// </summary>
     public class WXInputField : MonoBehaviour
-// #if UNITY_WEBGL && SUPPORT_WECHATGAME && !UNITY_EDITOR
         , IPointerClickHandler, IPointerExitHandler
-// #endif
     {
         public InputField input;
+
+        private void Reset()
+        {
+            input = this.GetComponent<InputField>();
+        }
 
         private void Start()
         {
@@ -31,25 +29,20 @@ namespace UnityEngine.WXExt
 
         public void OnPointerClick(PointerEventData eventData)
         {
-#if UNITY_WEBGL && SUPPORT_WECHATGAME && !UNITY_EDITOR
             Debug.Log("OnPointerClick");
             ShowKeyboard();
-#endif
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
-#if UNITY_WEBGL && SUPPORT_WECHATGAME && !UNITY_EDITOR
             Debug.Log("OnPointerExit");
             if (!input.isFocused)
             {
                 HideKeyboard();
             }
-#endif
         }
 
-#if UNITY_WEBGL && SUPPORT_WECHATGAME && !UNITY_EDITOR
-        public void OnInput(OnKeyboardInputListenerResult v)
+        public void OnInput(OnKeyboardInputResult v)
         {
             Debug.Log("onInput");
             Debug.Log(v.value);
@@ -59,7 +52,7 @@ namespace UnityEngine.WXExt
             }
         }
 
-        public void OnConfirm(OnKeyboardInputListenerResult v)
+        public void OnConfirm(OnKeyboardConfirmResult v)
         {
             // 输入法confirm回调
             Debug.Log("onConfirm");
@@ -67,7 +60,7 @@ namespace UnityEngine.WXExt
             HideKeyboard();
         }
 
-        public void OnComplete(OnKeyboardInputListenerResult v)
+        public void OnComplete(OnKeyboardCompleteResult v)
         {
             // 输入法complete回调
             Debug.Log("OnComplete");
@@ -79,7 +72,7 @@ namespace UnityEngine.WXExt
         {
             if (!_isShowKeyboard)
             {
-                var showOptions = new ShowKeyboardOption
+                var showOptions = new ShowKeyboardOptions
                 {
                     confirmHold = true,
                     defaultValue = input.text,
@@ -95,12 +88,12 @@ namespace UnityEngine.WXExt
                     Debug.Log($"maxlenU: {showOptions.maxLength}");
                     showOptions.maxLength = 10000;
                 }
-                WX.ShowKeyboard(showOptions);
+                UserAPI.Instance.Widgets.keyboard.ShowKeyboard(showOptions);
 
                 //绑定回调
-                WX.OnKeyboardConfirm(OnConfirm);
-                WX.OnKeyboardComplete(OnComplete);
-                WX.OnKeyboardInput(OnInput);
+                UserAPI.Instance.Widgets.keyboard.OnKeyboardConfirm(OnConfirm);
+                UserAPI.Instance.Widgets.keyboard.OnKeyboardComplete(OnComplete);
+                UserAPI.Instance.Widgets.keyboard.OnKeyboardInputEvent(OnInput);
                 _isShowKeyboard = true;
             }
         }
@@ -109,14 +102,13 @@ namespace UnityEngine.WXExt
         {
             if (_isShowKeyboard)
             {
-                WX.HideKeyboard(new HideKeyboardOption());
+                UserAPI.Instance.Widgets.keyboard.HideKeyboard();
                 //删除掉相关事件监听
-                WX.OffKeyboardInput(OnInput);
-                WX.OffKeyboardConfirm(OnConfirm);
-                WX.OffKeyboardComplete(OnComplete);
+                UserAPI.Instance.Widgets.keyboard.OffKeyboardInputEvent(OnInput);
+                UserAPI.Instance.Widgets.keyboard.OffKeyboardConfirm(OnConfirm);
+                UserAPI.Instance.Widgets.keyboard.OffKeyboardComplete(OnComplete);
                 _isShowKeyboard = false;
             }
         }
-#endif
     }
 }
