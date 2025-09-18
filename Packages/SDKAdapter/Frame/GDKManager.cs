@@ -35,14 +35,6 @@ namespace GDK
             var temp = config.register();
             IModuleMap map = new ModuleMapDefault();
             
-            {
-                var metaInfo = map.MetaInfo;
-                metaInfo.pluginName = config.name;
-                metaInfo.pluginVersion = config.version;
-                metaInfo.apiPlatformLocale = config.platform;
-                metaInfo.apiPlatformLocale = config.platformLocale;
-            }
-
             List<IModule> addonList = new();
             var fields = temp.GetType().GetFields();
             foreach (var field in fields)
@@ -59,6 +51,15 @@ namespace GDK
                     addonList.Add(addon);
                 }
                 Debug.Log($"add addon-done: {config.name}.{pname}");
+            }
+
+            // MetaInfo 也是 addon, 不能提前到 addon 加载前
+            {
+                var metaInfo = map.MetaInfo;
+                metaInfo.pluginName = config.name;
+                metaInfo.pluginVersion = config.version;
+                metaInfo.apiPlatformLocale = config.platform;
+                metaInfo.apiPlatformLocale = config.platformLocale;
             }
 
             var api = new UserAPI(map);

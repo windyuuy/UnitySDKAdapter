@@ -44,53 +44,64 @@
 							$"https://api.weixin.qq.com/sns/jscode2session?appid={paras.AppId}&secret={paras.AppSecret}&js_code={resp1.code}&grant_type=authorization_code";
 						DevLog.Instance.Log($"Code2Session: {url}");
 
-						IEnumerator Code2Session(string url)
+
+						ts.SetResult(new LoginResult()
 						{
-							var uwr = UnityWebRequest.Get(url);
-							yield return uwr.SendWebRequest();
-							var text = uwr.downloadHandler.text;
-							var uwrResponseCode = uwr.responseCode;
-							var uwrResult = uwr.result;
-							DevLog.Instance.Log($"Code2Session-Resp: {uwrResponseCode}, {text}");
-							uwr.Dispose();
-							if (uwrResult == UnityWebRequest.Result.Success)
-							{
-								try
-								{
-									var resp = JsonUtility.FromJson<Code2SessionResp>(text);
+							IsOk = true,
+							Code = resp1.code,
+							OpenId = "",
+							Unionid = "",
+							ErrMsg = resp1.errMsg,
+						});
 
-									ts.SetResult(new LoginResult()
-									{
-										IsOk = true,
-										Code = resp.errcode.ToString(),
-										OpenId = resp.openid,
-										Unionid = resp.unionid,
-										ErrMsg = resp.errmsg,
-									});
-								}
-								catch (Exception exception)
-								{
-									Debug.LogException(exception);
-									ts.SetResult(new LoginResult()
-									{
-										IsOk = false,
-										Code = uwrResponseCode.ToString(),
-										ErrMsg = "Code2Session-ParseJSON-error",
-									});
-								}
-							}
-							else
-							{
-								ts.SetResult(new LoginResult()
-								{
-									IsOk = false,
-									Code = uwrResponseCode.ToString(),
-									ErrMsg = "Code2Session-Network-error",
-								});
-							}
-						}
-
-						LoomMG.SharedLoom.StartCoroutine(Code2Session(url));
+						// IEnumerator Code2Session(string url)
+						// {
+						// 	var uwr = UnityWebRequest.Get(url);
+						// 	uwr.timeout = 1;
+						// 	yield return uwr.SendWebRequest();
+						// 	var text = uwr.downloadHandler.text;
+						// 	var uwrResponseCode = uwr.responseCode;
+						// 	var uwrResult = uwr.result;
+						// 	DevLog.Instance.Log($"Code2Session-Resp: {uwrResponseCode}, {text}");
+						// 	uwr.Dispose();
+						// 	if (uwrResult == UnityWebRequest.Result.Success)
+						// 	{
+						// 		try
+						// 		{
+						// 			var resp = JsonUtility.FromJson<Code2SessionResp>(text);
+						//
+						// 			ts.SetResult(new LoginResult()
+						// 			{
+						// 				IsOk = true,
+						// 				Code = resp.errcode.ToString(),
+						// 				OpenId = resp.openid,
+						// 				Unionid = resp.unionid,
+						// 				ErrMsg = resp.errmsg,
+						// 			});
+						// 		}
+						// 		catch (Exception exception)
+						// 		{
+						// 			Debug.LogException(exception);
+						// 			ts.SetResult(new LoginResult()
+						// 			{
+						// 				IsOk = false,
+						// 				Code = uwrResponseCode.ToString(),
+						// 				ErrMsg = "Code2Session-ParseJSON-error",
+						// 			});
+						// 		}
+						// 	}
+						// 	else
+						// 	{
+						// 		ts.SetResult(new LoginResult()
+						// 		{
+						// 			IsOk = false,
+						// 			Code = uwrResponseCode.ToString(),
+						// 			ErrMsg = "Code2Session-Network-error",
+						// 		});
+						// 	}
+						// }
+						//
+						// LoomMG.SharedLoom.StartCoroutine(Code2Session(url));
 					},
 					fail = (resp) =>
 					{
