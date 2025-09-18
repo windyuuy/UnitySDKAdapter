@@ -34,6 +34,15 @@ namespace GDK
                 Debug.Log($"GenGdk: {config.name}");
             var temp = config.register();
             IModuleMap map = new ModuleMapDefault();
+            
+            {
+                var metaInfo = map.MetaInfo;
+                metaInfo.pluginName = config.name;
+                metaInfo.pluginVersion = config.version;
+                metaInfo.apiPlatformLocale = config.platform;
+                metaInfo.apiPlatformLocale = config.platformLocale;
+            }
+
             List<IModule> addonList = new();
             var fields = temp.GetType().GetFields();
             foreach (var field in fields)
@@ -49,15 +58,7 @@ namespace GDK
                 {
                     addonList.Add(addon);
                 }
-                Debug.Log($"add addon-done: {pname}");
-            }
-
-            {
-                var metaInfo = map.MetaInfo;
-                metaInfo.pluginName = config.name;
-                metaInfo.pluginVersion = config.version;
-                metaInfo.apiPlatformLocale = config.platform;
-                metaInfo.apiPlatformLocale = config.platformLocale;
+                Debug.Log($"add addon-done: {config.name}.{pname}");
             }
 
             var api = new UserAPI(map);
