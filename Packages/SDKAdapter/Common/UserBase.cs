@@ -41,7 +41,7 @@ namespace GDK
                     country = null,
                     gender = 0,
                     language = null,
-                    nickName = "用户名六个字",
+                    nickName = "WDK用户名",
                     province = null,
                 },
                 ErrMsg = null

@@ -174,7 +174,7 @@
 							country = null,
 							gender = 0,
 							language = null,
-							nickName = "用户名六个字",
+							nickName = "TT用户名",
 							province = null,
 						},
 					});
