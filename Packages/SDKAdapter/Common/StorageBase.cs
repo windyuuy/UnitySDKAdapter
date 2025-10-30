@@ -62,5 +62,10 @@ namespace GDK
 		{
 			return UnityEngine.PlayerPrefs.HasKey(key);
 		}
+
+		public virtual void Save()
+		{
+			UnityEngine.PlayerPrefs.Save();
+		}
 	}
 }

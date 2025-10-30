@@ -67,6 +67,11 @@
 			{
 				return TT.PlayerPrefs.HasKey(key);
 			}
+
+			public void Save()
+			{
+				
+			}
 		}
 	}
 #endif

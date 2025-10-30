@@ -66,5 +66,10 @@ namespace GDK
 		 * @returns true：有，false：没有
 		 */
 		public bool HasKey(string key);
+		
+		/// <summary>
+		///   <para>Saves all modified preferences.</para>
+		/// </summary>
+		public void Save();
 	}
 }
